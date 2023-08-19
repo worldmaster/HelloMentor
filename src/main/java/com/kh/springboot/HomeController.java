@@ -10,6 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     @GetMapping("/")
     public String home(){
-        return "index";
+        return "mypage";
+    }
+
+    @GetMapping("/home_notification")
+    public String homeNotification() {
+        return "home_notification";
+    }
+
+    @GetMapping("/home_following_list")
+    public String homeFollowingList() {
+        return "home_following_list";
     }
 }
