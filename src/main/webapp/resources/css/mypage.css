@@ -21,7 +21,6 @@ ul > li {
 }
 
 
-
 /*====================================================================================== */
 /*======================================컨텐츠===========================================*/
 /*====================================================================================== */
@@ -87,7 +86,6 @@ ul > li {
 }
 
 
-
 /*====================================================================================== */
 /*======================================컨텐츠 라이트 컨테이너===========================================*/
 /*====================================================================================== */
@@ -104,7 +102,7 @@ ul > li {
     height: 100%;
 }
 
-.my_right_title{
+.my_right_title {
     text-align: left;
     font-size: 30px;
     line-height: 2.05;
@@ -112,34 +110,30 @@ ul > li {
     color: #48917A;
 }
 
-.my_notification{
+.my_notification {
     width: 100%;
     height: 94%;
 }
 
-.my_notifi_content1{
-    border: 1px solid green;
+.my_notifi_content1 {
     display: flex;
     justify-content: space-between;
 }
 
-.my_notifi_number{
+.my_notifi_number {
     color: #40E0D0;
 }
 
-#my_notifi_category, #my_notifi_button{
+#my_notifi_category, #my_notifi_button, my_post_category {
     border-radius: 5px;
 }
 
-#my_notifi_button{
+#my_notifi_button {
     background-color: #DFF6ED;
 }
 
-.my_notifi_content2{
-    border: 1px solid blue;
-}
 
-.my_notifi_box{
+.my_notifi_box {
     padding: 7px;
     border-radius: 5px;
     height: 3%;
@@ -148,7 +142,7 @@ ul > li {
     text-align: left;
 }
 
-#page-numbers span{
+#page-numbers span {
     margin-left: 3px;
     margin-right: 3px;
 }
@@ -156,6 +150,295 @@ ul > li {
 #previous-page, #next-page {
     cursor: pointer;
 }
+
+
+/*-----------------------홈 팔로잉 목록*/
+
+.my_following_content1 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+}
+
+.my_following_box {
+    display: flex;
+    width: 400px;
+    border-radius: 5px;
+    height: 150px;
+    background-color: #DFF6ED;
+    margin-top: 5%;
+}
+
+.my_following_box_1 {
+    width: 35%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.my_following_box_2 {
+    text-align: left;
+    width: 65%;
+    height: 100%;
+}
+
+.my_following_profile_img {
+    width: 120px;
+    height: 120px;
+    border-radius: 120px;
+    overflow: hidden;
+}
+
+.my_following_profile_img > img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.my_following_profile_name {
+    width: 97%;
+    display: flex;
+    font-size: 20px;
+    margin-top: 3%;
+    margin-left: 3%;
+    justify-content: space-between;
+}
+
+.my_following_favorite {
+    font-size: 24px;
+    margin-right: 3%;
+    text-align: right;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.my_following_favorite.clicked {
+    color: #40E0D0;
+}
+
+.my_following_favorite.scale {
+    transform: scale(1.5);
+}
+
+.my_following_profile_intro {
+    margin-top: 3%;
+    margin-left: 3%;
+}
+
+/*---------------------프로필 내정보수정*/
+.my_editinfo_content1 {
+    height: 55%;
+    width: 100%;
+}
+
+.my_editinfo_box_1 {
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 30%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.my_editinfo_profile_img {
+    width: 150px;
+    height: 150px;
+    border-radius: 150px;
+    overflow: hidden;
+}
+
+.my_editinfo_profile_img > img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+
+.my_editinfo_box_2 {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 2%;
+}
+
+.my_editinfo_box_3 {
+    display: flex;
+    margin-bottom: 2%;
+}
+
+.my_editinfo_inputbox {
+    width: 45%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+#edit_info_userId, #edit_info_userName,
+#edit_info_userPwd, #edit_info_useroriginPwd,
+#edit_info_usernewPwd, #edit_info_status, #edit_info_intro {
+    background-color: lightgray;
+    border-radius: 5px;
+    height: 35px;
+}
+
+.my_inputbox_row {
+    width: 45%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.my_editinfo_content2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15%;
+    width: 100%;
+}
+
+.my_editinfo_btnbox1 {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* 버튼 가로 중앙 정렬 */
+}
+
+.my_editinfo_btnbox1 > button, #withdrawyesButton, #withdrawnoButton {
+    background-color: #40E0D0;
+    border-radius: 5px;
+    width: 70px;
+    margin-left: 3%;
+    cursor: pointer;
+}
+
+.my_editinfo_btnbox2 {
+    position: absolute;
+    margin-left: 41.5%; /* 탈퇴하기 버튼을 우측으로 이동 */
+}
+
+.my_editinfo_btnbox2 > button {
+    border: none;
+    background-color: white;
+    color: #40E0D0;
+    cursor: pointer;
+}
+
+.withdrawmodal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+
+.width_draw_modal_content {
+    width: 400px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.my_editinfo_btnbox2 > button:focus {
+    outline: none;
+}
+
+/*프로필 내가 쓴 글*/
+
+.my_post_content1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.my_post_newfilter, .my_post_oldfilter {
+    cursor: pointer;
+}
+
+.my_post_content2 {
+    width: 100%;
+    margin-top: 3%;
+    display: flex;
+}
+
+.my_post_box {
+    display: flex;
+    padding: 7px;
+    border-radius: 5px;
+    height: 3%;
+    background-color: #DFF6ED;
+    margin-top: 1%;
+    text-align: left;
+}
+
+
+.my_post_box > div:nth-child(1), .my_post_content2 > div:nth-child(1) {
+    text-align: center;
+    width: 15%;
+}
+
+.my_post_box > div:nth-child(2), .my_post_content2 > div:nth-child(2) {
+    text-align: center;
+    width: 70%;
+}
+
+.my_post_box > div:nth-child(3), .my_post_content2 > div:nth-child(3) {
+    text-align: center;
+    width: 15%;
+}
+
+.my_post_content2 > div:nth-child(1), .my_post_content2 > div:nth-child(2), .my_post_content2 > div:nth-child(3) {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* 개발도우미_달력 */
+
+.product-calendar-box {
+
+    background-color: lightgray;
+    width: 100%;
+}
+
+.product-calendar-cell {
+    width: 175px;
+    height: 175px;
+}
+
+.product-calendar, #calendarTitle {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#calendar td {
+    border: 1px solid black;
+}
+
+#calendar td.product-calendar-cell {
+    text-align: left;
+    vertical-align: top;
+    padding-left: 5px;
+    padding-top: 5px;
+    cursor: pointer;
+}
+
+
+
+
 
 
 
