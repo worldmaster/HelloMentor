@@ -22,7 +22,7 @@
         </div>
         <div class="my_following_box_2">
             <div class="my_following_profile_name">
-                임재린(imjaelin)
+                imjaelin
 
                 <div class="my_following_favorite" onclick="toggleColor(this)">
                 ★

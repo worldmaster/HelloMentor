@@ -68,10 +68,6 @@
         <div class="my_left_content5-3" onclick="loadPage('${contextPath}/payment_exchange_history')">환전 내역</div>
     </div>
 
-    <div class="my_left_content6">
-        <div class="my_left_content6-1">설정</div>
-        <div class="my_left_content6-2" onclick="loadPage('${contextPath}/settings_notification_preferences')">알림 설정</div>
-    </div>
 </div>
 
 

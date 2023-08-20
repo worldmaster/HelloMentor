@@ -60,16 +60,12 @@ public class HomeController {
 
     @GetMapping("/payment_payment_history")
     public String paymentHistory() {
-        return "payment_payment_histor";
+        return "payment_payment_history";
     }
 
     @GetMapping("/payment_exchange_history")
     public String paymentExchangeHistory() {
-        return "payment_exchange_historyy";
+        return "payment_exchange_history";
     }
 
-    @GetMapping("/settings_notification_preferences")
-    public String settingsNotificationPreferences() {
-        return "settings_notification_preferences";
-    }
 }

@@ -436,6 +436,139 @@ ul > li {
     cursor: pointer;
 }
 
+/* 멘토 신청목록*/
+
+.my_mentorapp_content1 {
+}
+
+.my_mentorapp_box {
+    display: flex;
+    width: 100%;
+    border-radius: 5px;
+    height: 175px;
+    background-color: #DFF6ED;
+    margin: 3% auto auto;
+}
+
+.my_mentorapp_box_1 {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.my_mentorapp_box_2 {
+    text-align: left;
+    width: 75%;
+    height: 100%;
+}
+
+.my_mentorapp_name {
+    width: 100%;
+    display: flex;
+    font-size: 20px;
+    margin-top: 1%;
+    margin-left: 1%;
+    justify-content: space-between;
+}
+
+.my_mentorapp_favorite {
+    font-size: 24px;
+    margin-right: 3%;
+    text-align: right;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.my_mentorapp_favorite.clicked {
+    color: #40E0D0;
+}
+
+.my_mentorapp_favorite.scale {
+    transform: scale(1.5);
+}
+
+.my_mentorapp_profile_intro {
+    margin-top: 3%;
+    margin-left: 3%;
+}
+
+.my_mentorapp_title{
+    margin-top: 0.5%;
+    margin-left: 1%;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.my_mentorapp_intro {
+    margin-top: 1.5%;
+    margin-left: 1%;
+}
+
+.my_mentorapp_btnbox{
+    text-align: right;
+    /*margin-top: 3%;*/
+    margin-right: 3%;
+}
+
+.my_mentorapp_btn{
+    background-color: #DFF6ED;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.my_mentorapp_btn:hover{
+    background-color: #48917A;
+}
+
+
+.my_payment_box {
+    display: flex;
+    padding: 7px;
+    border-radius: 5px;
+    height: 3%;
+    background-color: #DFF6ED;
+    margin-top: 1%;
+    text-align: left;
+}
+
+.my_payment_content2 {
+    width: 100%;
+    margin-top: 3%;
+    display: flex;
+}
+
+
+.my_payment_box > div:nth-child(1), .my_payment_content2 > div:nth-child(1) {
+    text-align: center;
+    width: 35%;
+}
+
+.my_payment_box > div:nth-child(2), .my_payment_content2 > div:nth-child(2) {
+    text-align: center;
+    width: 20%;
+}
+
+.my_payment_box > div:nth-child(3), .my_payment_content2 > div:nth-child(3) {
+    text-align: center;
+    width: 20%;
+}
+
+.my_payment_box > div:nth-child(4), .my_payment_content2 > div:nth-child(4) {
+    text-align: center;
+    width: 25%;
+}
+
+.my_payment_content2 > div:nth-child(1), .my_payment_content2 > div:nth-child(2), .my_payment_content2 > div:nth-child(3), .my_payment_content2 > div:nth-child(4){
+    font-size: 24px;
+    font-weight: 600;
+}
+
+
+
 
 
 
