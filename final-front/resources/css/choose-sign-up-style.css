@@ -1,0 +1,71 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Pretendard Variable;
+    box-sizing: border-box;
+}
+
+.content {
+    height: 1436px;
+    /*컨텐츠 영역 사이즈*/
+    width: 1200px;
+    /*바꾸면 안 됨*/
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(180deg,
+            rgba(72, 145, 122, 0.2) 99.99%,
+            rgba(72, 145, 122, 0) 100%),
+        linear-gradient(180deg,
+            rgba(64, 224, 208, 0.6) 0%,
+            rgba(64, 224, 208, 0) 73.96%),
+        #fff;
+}
+
+.choose-wrap {
+    width: 1040px;
+    height: 590px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.choose1 {
+    background-color: white;
+    border: 1px solid;
+    width: 500px;
+    height: 590px;
+    border-radius: 10px;
+}
+
+.choose2 {
+    background-color: white;
+    border: 1px solid;
+    width: 500px;
+    height: 590px;
+    border-radius: 10px;
+}
+
+.choose {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.choose:hover {
+    cursor: pointer;
+}
+
+
+.choose-title {
+    font-size: 40px;
+    margin-bottom: 40px;
+}
+
+.choose-text {
+    margin-top: 40px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 28px;
+}

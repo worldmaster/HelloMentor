@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HelloMentor-신고하기</title>
+    <link href="../resources/css/report-style.css" rel="stylesheet" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="content">
+      <div class="report">
+        <div class="report-title">
+          <div id="report-title">신고하기</div>
+        </div>
+        <div class="report-form">
+          <form id="report-form" action="" method="post">
+            <div class="report-category">
+              <span>제목</span>
+              <select name="report-category" id="report-category">
+                <option value="0" selected>신고 유형 선택</option>
+                <option value="1">음란성 게시물 신고</option>
+                <option value="2">사행성 게시물 신고</option>
+                <option value="3">비방욕설 게시물 신고</option>
+                <option value="4">광고성 게시물 신고</option>
+                <option value="5">기타 게시물 신고</option>
+              </select>
+            </div>
+            <div class="report-content">
+              <span>내용</span>
+              <textarea name="report-content" id="report-content"></textarea>
+            </div>
+            <div class="report-attch">
+              <span>첨부파일</span>
+              <input class="upload-name" style="display: none" />
+              <label for="report-attch">추가</label>
+              <input type="file" name="report-attch" id="report-attch" />
+            </div>
+          </form>
+        </div>
+        <div class="report-btns">
+          <button type="button" onclick="" id="cancel-btn">취소</button>
+          <button type="submit" form="report-form" id="report-btn">작성</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      $("#report-attch").on("change", function () {
+        $(".upload-name").css("display", "inline-block");
+        var fileName = $("#report-attch")
+          .val()
+          .split("/")
+          .pop()
+          .split("\\")
+          .pop();
+        $(".upload-name").val(fileName);
+      });
+    </script>
+  </body>
+</html>

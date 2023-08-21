@@ -1,0 +1,98 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Pretendard Variable;
+    box-sizing: border-box;
+}
+
+.content {
+    height: 1496px;
+    width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+}
+
+.chatlist {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 1000px;
+    height: 1400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chatlist-title {
+    width: 840px;
+    height: 40px;
+    margin-top: 80px;
+    margin-bottom: 20px;
+}
+
+#chatlist-title {
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.chatroom-area {
+    width: 820px;
+    height: 1160px;
+    overflow: auto;
+}
+
+.chatroom-area::-webkit-scrollbar-track {
+    background-color: white;
+}
+
+
+.chatroom {
+    width: 800px;
+    height: 200px;
+    border-radius: 10px;
+    background-color: #DFF6ED;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.chatroom-name {
+    width: 720px;
+    height: 40px;
+    margin-top: 30px;
+    font-size: 40px;
+}
+
+.chatroom-info {
+    width: 720px;
+    height: 48px;
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+}
+
+.chatroom-with {
+    width: 380px;
+}
+
+.chat-count {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+    background-color: #40E0D0;
+    color: white;
+    font-size: 52px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 84px;
+    top: 8px;
+    right: 20px;
+}
