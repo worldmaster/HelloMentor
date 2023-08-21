@@ -1,0 +1,274 @@
+body{
+            
+    box-sizing: border-box;/*바꾸면 안 됨*/
+    text-align: center;/*바꾸면 안 됨*/
+    width: 1200px;/*바꾸면 안 됨*/
+}
+
+.territory{/*헤더, 푸터 가로 길이 설정*/
+    border: 1px solid red;
+    width: 1200px;/*바꾸면 안 됨*/
+    margin: auto;
+}
+
+ul>li{
+    list-style-type: none;
+}
+
+/*====================================================================================== */
+/*======================================헤더=============================================*/
+/*====================================================================================== */
+
+header{
+    height: 64px;/*바꾸면 안 됨*/
+}
+
+
+
+
+/*====================================================================================== */
+/*======================================컨텐츠===========================================*/
+/*====================================================================================== */
+.content{
+    border: 1px solid red;
+    height: 1000px; /*컨텐츠 영역 사이즈*/
+    width: 1200px;/*바꾸면 안 됨*/
+    margin: auto;
+}
+
+
+
+/*====================================================================================== */
+/*======================================푸터=============================================*/
+/*====================================================================================== */
+footer{
+    height: 440px;/*바꾸면 안 됨*/
+    font-size: 11px;
+}
+#sideMenuBar{
+border: 1px solid;
+height: 1000px;
+width: 300px;
+}
+#inputMenuBar{
+border: 1px solid;
+height: 1000px;
+width: 896px;
+position: relative;
+top:-1002px;
+left:302px;
+}
+#sideMenuBar li{
+ text-align: center;  
+ list-style:none;
+ font-size: 20px;
+ 
+}
+
+/* 회원상세정보 상단창 전체 */
+#memberHeader h1{
+text-align: left;
+}
+
+#memberBox{
+position: relative;
+top:-120px;
+left: 250px;
+}
+
+#memberState li{
+text-align: left;
+list-style-type : none;
+margin-bottom: 10px;
+position: relative; top:-98px; left: 480px;
+}
+
+#memberImg{
+ position: relative; top:70px; left:100px;
+ width: 200px;
+ height: 200px; 
+  border-radius: 100px;
+  overflow: hidden;
+} 
+/* 회원상세정보 끝*/
+
+/* 소개글 관련 */
+#allButton :hover{
+cursor: pointer;
+}
+#fullIntroduction{
+position: relative;
+left: 350px;
+top: -250px;
+}
+
+#contentGrey{
+position: relative;
+top:0px;
+border: 0px solid;
+background-color: gainsboro;
+width: 650px;
+height: 500px;
+border-radius: 10px;
+border-top-left-radius: 0px;
+}
+
+#contentWhite{
+position: relative;
+top: 60px;
+left:20px;
+border: 0px solid;
+background-color: white;
+width: 610px;
+height: 420px;
+border-radius: 10px;
+}
+
+#contentWhite p{
+text-align: left;
+font-size: 20px;
+position: relative;
+left:100px;
+top:10px;
+}
+
+#contentWhite input{
+border: 0.1px solid;
+border-radius: 10px;
+}
+
+.wantMento{
+width: 400px;
+height: 40px;
+}
+.ability{
+width:400px;
+height: 80px;
+}
+.self{
+width: 400px;
+height: 80px;
+}
+
+#introductionText{
+border: 1px solid;
+background-color:green;
+width: 120px;
+height: 50px;
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+position: relative;
+top:90px;
+}
+#boardListMain h3{
+padding: 13px;
+}
+#boardListMain{
+border: 0px solid;
+background-color: gainsboro;
+width: 120px;
+height: 50px;
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+position: relative;
+top:21px;
+left:130px;
+}
+
+
+
+  /* 신고목록 리스트 내용 전체박스 */ 
+  #memberContent{
+   text-align: center; position: relative; left: 70px;
+}
+
+/* 컨텐츠내에 최상단 */ 
+#memberHeader{
+position: relative;
+right: 220px;
+top:50px;
+}
+
+/* 리스트 타이틀내용 */
+#boardListTitle{
+   text-align: center;
+   width: 400px; 
+   height: 50px;
+   border: 0px solid;
+   position: relative;
+  left: 0px;
+  top:0px;
+}
+
+/* 리스트 내용 위치조정 */
+#boardList{
+text-align: center;
+border: 0px solid;
+border-radius: 10px;
+background-color: gainsboro;
+width: 550px;
+height: 55px;
+position: relative;
+left: 30px;
+top: 10px;
+font-size: 20px;
+}
+
+#boardList div{
+position: relative;
+text-align: left;
+left:-55px;
+top:15px;
+}
+
+.first { 
+border: 0px solid red; 
+float: left;
+width:28%;
+margin-left: 60px;  
+box-sizing: border-box; 
+} 
+.second{ 
+border: 0px solid green; 
+float: left; margin-left: 0;
+width:30%; 
+box-sizing: border-box; 
+} 
+.third{ 
+border: 0px solid blue; 
+float:left; 
+margin-left: 0px;
+width:30%; 
+box-sizing: border-box; 
+}
+
+ /* 페이징처리 */
+.board_page{
+position: absolute;
+top:360px;
+left: 0px;
+right:0px;
+}
+.board_page a{
+display: inline-block;
+width: 30px;
+height: 30px;
+vertical-align: middle;
+border-left: 0;
+line-height: 100%;
+color: #000;
+text-decoration-line: none;
+}
+.board_page a.btn{
+padding-top: 2px;
+font-size: 1.7rem;
+letter-spacing: -3px;
+}  
+.board_page a.num{
+padding-top: 5px;
+font-size: 1.7rem;
+}
+.board_page a.num.selected{
+background-color: gainsboro;
+color: #fff;
+} 

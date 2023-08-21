@@ -1,0 +1,159 @@
+
+body{
+            
+    box-sizing: border-box;/*바꾸면 안 됨*/
+    text-align: center;/*바꾸면 안 됨*/
+    width: 1200px;/*바꾸면 안 됨*/
+}
+
+.territory{/*헤더, 푸터 가로 길이 설정*/
+    border: 1px solid red;
+    width: 1200px;/*바꾸면 안 됨*/
+    margin: auto;
+}
+
+ul>li{
+    list-style-type: none;
+}
+
+/*====================================================================================== */
+/*======================================헤더=============================================*/
+/*====================================================================================== */
+
+header{
+    height: 64px;/*바꾸면 안 됨*/
+}
+
+
+
+
+/*====================================================================================== */
+/*======================================컨텐츠===========================================*/
+/*====================================================================================== */
+.content{
+    border: 1px solid red;
+    height: 1000px; /*컨텐츠 영역 사이즈*/
+    width: 1200px;/*바꾸면 안 됨*/
+    margin: auto;
+}
+
+li{
+    list-style:none;
+}
+#inputMenuBar hr{
+    position: relative;
+    left:-45px;
+    width: 800px;
+}
+
+/*====================================================================================== */
+/*======================================푸터=============================================*/
+/*====================================================================================== */
+footer{
+    height: 440px;/*바꾸면 안 됨*/
+    font-size: 11px;
+}
+#sideMenuBar{
+border: 1px solid;
+height: 1000px;
+width: 300px;
+}
+#inputMenuBar{
+border: 1px solid;
+height: 1000px;
+width: 896px;
+position: relative;
+top:-1002px;
+left:302px;
+}
+#sideMenuBar li{
+ text-align: center;  
+ list-style:none;
+ font-size: 20px;
+ 
+}
+
+/* 회원상세정보 상단창 전체 */
+#memberHeader h1{
+text-align: left;
+}
+
+#memberBox{
+position: relative;
+top:-250px;
+left: 250px;
+}
+
+
+
+/* 회원상세정보 끝*/
+
+/* 소개글 관련 */
+#버튼용 :hover{
+cursor: pointer;
+}
+
+/* 컨텐츠내에 최상단 */ 
+#memberHeader{
+position: relative;
+right: 200px;
+top:200px;
+}
+
+.noticeTitle{
+border:0.1px solid;
+border-radius: 10px;
+width: 800px;
+}
+.choose{
+position: relative;
+top:5px;
+}  
+
+#noticeWrite li{
+float: left;
+}
+
+.noticeContent{
+position: relative;
+top:15px;
+border:0.1px solid;
+border-radius: 10px;
+width: 800px;
+height: 250px;
+text-indent: 10px;
+}
+.noticeMain div{
+text-align: left;
+}
+
+#loginButton{
+position: relative;
+top:-20px;
+left: 325px;  
+}
+#qText{
+font-size: 20px;
+position: relative;
+left:-25px;
+}
+#aText{
+font-size: 20px;
+position: relative;
+left:-30px;
+top:60px;
+}
+#questionBox{
+position: relative;
+top:-50px;
+}
+#allButton input{
+width: 100px;
+height:40px;
+position: relative;
+left:-80px;
+margin-left: 80px;
+border-radius: 10px;
+border: 1px solid;
+}
+
