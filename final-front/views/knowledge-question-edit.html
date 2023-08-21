@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자식인_글수정_질문자</title>
+    <link href="../resources/css/normal-frame.css" rel="stylesheet">
+    <link href="../resources/css/knowledge-question-edit.css" rel="stylesheet">
+</head>
+<body>
+      
+    <header class="territory">
+ 
+    </header>
+    
+    <div class="content">
+            
+       
+        <h1 class="main-text">지식인</h1>
+       
+
+
+
+        <form action="#" method="post">
+            <!-- 지식인form안에.txt -->
+            <table id="knowledge-table">
+            <tr>
+                <th>분야</th>
+                <td>
+                    <select name="knowledge-kind" id="knowledge-kind">
+                        <option value="1">&nbsp;회원정보/로그인</option>
+                        <option value="2">&nbsp;서비스/이용권</option>
+                        <option value="3">&nbsp;결제/해지/환불</option>
+                        <option value="4">&nbsp;오류</option>
+                        <option value="5">&nbsp;이벤트</option>
+                        <option value="6">&nbsp;기타</option>
+                    </select>
+                </td>
+            </tr>
+            
+            <tr>
+                <th>제목</th>
+                <td><input type="text" id="knowledge-title" name="title" placeholder="제목을 입력하세요" required></td>
+            </tr>
+            
+            <tr>
+                <th>내용</th>
+                <td>
+                    <textarea id="knowledge-content" name="knowledge-content"  required  placeholder="내용을 입력하세요"></textarea>
+                </td>
+            </tr>
+
+            <tr>
+                <th>첨부파일</th>
+                <td>
+                    <label for="knowledge-file">
+                        <div id="knowledge-upload">파일 업로드하기</div>
+                    </label>
+                    <input type="file" id="knowledge-file" name="upfile">
+                </td>
+            </tr>
+
+            </table>
+            <br>
+            <div align="center">
+                <button type="button" id="knowledge-reset">취소</button>
+                <button type="submit" id="knowledge-submit">수정</button>
+            </div>
+        </form>
+
+            
+
+
+
+
+
+
+
+
+       
+    </div>
+
+    <footer class="territory" id="footer">
+        <hr>
+        <br>
+        <a href="">공지사항</a> &nbsp;&nbsp;&nbsp;
+        <a href="">1:1 실시간 채팅</a>
+        <br>
+
+        
+
+    </footer>
+
+</body>
+</html>
