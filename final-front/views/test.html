@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .radio-group {
+    display: inline-block;
+    padding: 10px;
+    border: 1px solid #b53131;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color 0.3s;
+  }
+
+  .selected {
+    border-color: #299c57;
+    
+  }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('.radio-group input[type="radio"]').click(function(event) {
+      event.stopPropagation(); // 라디오 버튼 클릭 시 이벤트 전파 중지
+      $('.radio-group').removeClass('selected'); // 모든 그룹의 선택 해제
+      $(this).closest('.radio-group').addClass('selected'); // 클릭한 라디오 버튼이 속한 그룹 선택
+    });
+  });
+</script>
+</head>
+<body>
+
+<form id="payment-form" class="payment-form-class">
+  <div class="radio-group">
+    <input type="radio" id="option1" name="payment-option" value="option1">
+    <label id="token-price">10</label>
+    <img src="resources/images/token.png" class="container">
+    <label id="price" class="price">₩1,000</label>
+  </div>
+  <div class="radio-group">
+    <input type="radio" id="option2" name="payment-option" value="option2">
+    <label id="token-price">50</label>
+    <img src="resources/images/token.png" class="container">
+    <label id="price" class="price">₩5,000</label>
+  </div>
+  <!-- 다른 radio-group들도 동일한 방식으로 추가 -->
+  
+  <button type="button" id="cancel-button">취소</button>
+  <button type="button" id="pay-button">충전</button>
+</form>
+
+</body>
+</html>
