@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>자식인_글작성_질문자</title>
+    <link href="../../../static/css/normal-frame.css" rel="stylesheet" />
+    <link href="../../../static/css/knowledge-question.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="content">
+      <div class="section">
+        <div class="title">지식인</div>
+
+        <form action="#" method="post" id="knowledge-write-form">
+          <!-- 지식인form안에.txt -->
+          <table id="knowledge-table">
+            <tr>
+              <th>분야</th>
+              <td>
+                <select name="knowledge-kind" id="knowledge-kind">
+                  <option value="1">회원정보/로그인</option>
+                  <option value="2">서비스/이용권</option>
+                  <option value="3">결제/해지/환불</option>
+                  <option value="4">오류</option>
+                  <option value="5">이벤트</option>
+                  <option value="6">기타</option>
+                </select>
+              </td>
+            </tr>
+
+            <tr>
+              <th>제목</th>
+              <td>
+                <input
+                  type="text"
+                  id="knowledge-title"
+                  name="title"
+                  placeholder="제목을 입력하세요"
+                  required
+                />
+              </td>
+            </tr>
+
+            <tr>
+              <th>내용</th>
+              <td>
+                <textarea
+                  id="knowledge-content"
+                  name="knowledge-content"
+                  required
+                  placeholder="내용을 입력하세요"
+                ></textarea>
+              </td>
+            </tr>
+
+            <tr>
+              <th>첨부파일</th>
+              <td>
+                <label for="knowledge-file">
+                  <div id="knowledge-upload">파일 업로드하기</div>
+                </label>
+                <input type="file" id="knowledge-file" name="upfile" />
+              </td>
+            </tr>
+          </table>
+        </form>
+        <div class="knowledge-btns">
+          <button type="button" id="knowledge-reset-btn">취소</button>
+          <button
+            type="submit"
+            form="knowledge-write-form"
+            id="knowledge-submit-btn"
+          >
+            작성
+          </button>
+          <!-- 수정시에 아래가 뜨고 처음 작성시에만 작성이 뜨게한다. -->
+          <!-- <button
+            type="submit"
+            form="knowledge-write-form"
+            id="knowledge-submit-btn"
+          >
+            수정
+          </button> -->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

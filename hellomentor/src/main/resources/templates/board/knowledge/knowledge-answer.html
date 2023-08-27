@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>자식인_글작성_답변자</title>
+    <link href="../../../static/css/normal-frame.css" rel="stylesheet" />
+    <link href="../../../static/css/knowledge-answer.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="content">
+      <div class="section">
+        <div class="title">지식인</div>
+
+        <form action="#" method="post">
+          <!-- 회원가입form안에.txt -->
+          <table id="knowledge-table">
+            <tr>
+              <th>답변</th>
+              <td>
+                <textarea
+                  id="knowledge-content"
+                  name="knowledge-content"
+                  required
+                  placeholder="내용을 입력하세요"
+                ></textarea>
+              </td>
+            </tr>
+            <tr>
+              <th>첨부파일</th>
+              <td>
+                <label for="knowledge-file">
+                  <div id="knowledge-upload">파일 업로드하기</div>
+                </label>
+                <input type="file" id="knowledge-file" name="upfile" />
+              </td>
+            </tr>
+          </table>
+          <div align="center">
+            <button type="button" id="knowledge-back">취소</button>
+            <!-- 최초 답변 등록시에만 보여짐 -->
+            <button type="submit" id="knowledge-reply">답변</button>
+            <!-- 지식인 답글 수정 시에만 보여짐 -->
+            <!-- <button type="submit" id="knowledge-change">수정</button> -->
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

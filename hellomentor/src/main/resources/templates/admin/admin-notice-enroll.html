@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HelloMentor-공지사항</title>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../static/css/admin-notice-enroll-style.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="content">
+      <div class="notice-wrap">
+        <div id="notice-headline">공지사항</div>
+        <form id="notice-form" action="">
+          <div class="notice-write">
+            <input
+              type="text"
+              name="noticeTitle"
+              id="noticeTitle"
+              placeholder="제목 작성"
+              maxlength="25"
+            />
+            <br />
+            <select name="choose" id="choose">
+              <option value="0" selected>분류</option>
+              <option value="1">회원정보/로그인</option>
+              <option value="2">서비스/이용권</option>
+              <option value="3">결제/해지/환불</option>
+              <option value="4">오류</option>
+              <option value="5">이벤트</option>
+              <option value="6">기타</option>
+            </select>
+            <br />
+            <textarea
+              name="noticeContent"
+              id="noticeContent"
+              placeholder="내용 작성"
+            ></textarea>
+          </div>
+        </form>
+
+        <div class="send-btn">
+          <button id="back-btn" type="button" onclick="">목록</button>
+          <button id="send-btn" type="submit" form="notice-form">글작성</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function () {
+        $("textarea").on("input", function () {
+          this.style.height = "auto";
+          this.style.height = this.scrollHeight + "px";
+        });
+      });
+    </script>
+  </body>
+</html>

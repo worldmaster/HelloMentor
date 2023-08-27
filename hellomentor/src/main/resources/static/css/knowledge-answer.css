@@ -1,0 +1,106 @@
+/* 작성 폼 시작 */
+#knowledge-table {
+    font-size: 17px;
+    margin-top: 120px;
+    margin-bottom: 40px;
+    border-spacing: 0 20px;
+}
+
+#knowledge-table tr td {
+    text-align: left;
+
+}
+
+#knowledge-table tr th {
+    text-align: left;
+    vertical-align: top;
+}
+
+
+
+
+
+/* 내용 */
+#knowledge-content {
+    font-size: 17px;
+    width: 650px;
+    border-radius: 10px;
+    border: 1px solid rgb(223, 219, 219);
+    text-align: left;
+    padding: 10px;
+    overflow: hidden;
+    height: auto;
+    min-height: 350px;
+    vertical-align: top;
+    resize: none;
+}
+
+#knowledge-content:focus {
+    border-color: #48917A;
+    outline: none;
+}
+
+
+
+
+
+/* 첨부파일 */
+#knowledge-file {
+    display: none;
+}
+
+#knowledge-upload {
+    font-size: 17px;
+    height: 26px;
+    width: 140px;
+    border: 0px solid;
+    cursor: pointer;
+    text-align: center;
+    margin: 0px 0px 12px 15px;
+    color: #48917A;
+}
+
+
+
+
+
+
+/* 취소, 작성 버튼 */
+#knowledge-back {
+    font-size: 17px;
+    height: 36px;
+    width: 100px;
+    background: #DFF6ED;
+    border-radius: 10px;
+    border: 0px solid;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+    margin-right: 40px;
+    cursor: pointer;
+}
+
+#knowledge-back:hover {
+    color: white;
+}
+
+#knowledge-change,
+#knowledge-reply {
+    font-size: 17px;
+    height: 36px;
+    width: 100px;
+
+    background: #48917A;
+    border-radius: 10px;
+    border: 0px solid;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+}
+
+#knowledge-change:hover {
+    color: white;
+}
+
+#knowledge-reply:hover {
+    color: white;
+}
+
+/* 취소, 작성 버튼 끝 */
