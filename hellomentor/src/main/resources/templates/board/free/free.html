@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>자유게시판_글작성</title>
+    <link href="../../../static/css/normal-frame.css" rel="stylesheet" />
+    <link href="../../../static/css/free.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="content">
+      <div class="section">
+        <div class="title">자유게시판</div>
+
+        <form action="#" method="post">
+          <!-- 회원가입form안에.txt -->
+          <table id="free-table">
+            <tr>
+              <th>제목</th>
+              <td>
+                <input
+                  type="text"
+                  id="free-title"
+                  name="title"
+                  placeholder="제목을 입력하세요"
+                  required
+                />
+              </td>
+            </tr>
+
+            <tr>
+              <th>내용</th>
+              <td>
+                <textarea
+                  id="free-content"
+                  name="free-content"
+                  required
+                  placeholder="내용을 입력하세요"
+                ></textarea>
+              </td>
+            </tr>
+
+            <tr>
+              <th>첨부파일</th>
+              <td>
+                <label for="free-file">
+                  <div id="free-upload">파일 업로드하기</div>
+                </label>
+                <input type="file" id="free-file" name="upfile" />
+              </td>
+            </tr>
+          </table>
+          <div align="center">
+            <button type="button" id="free-back">취소</button>
+            <!-- 최초 작성시 -->
+            <button type="submit" id="free-enroll">작성</button>
+            <!-- 수정시 -->
+            <!-- <button type="submit" id="free-change">수정</button> -->
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

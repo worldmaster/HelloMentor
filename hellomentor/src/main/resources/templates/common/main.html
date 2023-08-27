@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HelloMentor</title>
+
+    <link href="../../static/css/main-style.css" rel="stylesheet" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="content">
+      <div class="section-wrap">
+        <div class="section-wrap1">
+          <div class="section section1">
+            <div class="section-title">
+              <div class="st section-free">자유게시판</div>
+              <div class="best-hot" id="hot">HOT</div>
+            </div>
+            <div class="section-line">
+              <div class="line-info">
+                <div class="line-writer">mentor15</div>
+                <div class="count-box">
+                  <div clss="line-recomend"><b>추천수 </b>10</div>
+                  <div class="line-count"><b>조회수 </b>16</div>
+                </div>
+              </div>
+              <div class="line-title">개붕이들</div>
+            </div>
+            <div class="section-line">
+              <div class="line-info">
+                <div class="line-writer">mentor15</div>
+                <div class="count-box">
+                  <div clss="line-recomend"><b>추천수 </b>10</div>
+                  <div class="line-count"><b>조회수 </b>16</div>
+                </div>
+              </div>
+              <div class="line-title">야붕이들</div>
+            </div>
+            <div class="section-line">
+              <div class="line-info">
+                <div class="line-writer">mentor15</div>
+                <div class="count-box">
+                  <div clss="line-recomend"><b>추천수 </b>10</div>
+                  <div class="line-count"><b>조회수 </b>16</div>
+                </div>
+              </div>
+              <div class="line-title">애붕이들</div>
+            </div>
+            <div class="section-line">
+              <div class="line-info">
+                <div class="line-writer">mentor15</div>
+                <div class="count-box">
+                  <div clss="line-recomend"><b>추천수 </b>10</div>
+                  <div class="line-count"><b>조회수 </b>16</div>
+                </div>
+              </div>
+              <div class="line-title">붕이들</div>
+            </div>
+            <div class="section-line">
+              <div class="line-info">
+                <div class="line-writer">mentor15</div>
+                <div class="count-box">
+                  <div clss="line-recomend"><b>추천수 </b>10</div>
+                  <div class="line-count"><b>조회수 </b>16</div>
+                </div>
+              </div>
+              <div class="line-title">붕붕이들</div>
+            </div>
+          </div>
+          <div class="section section2">
+            <div class="section-title">
+              <div class="st section-knowledge">지식인</div>
+              <div class="best-hot" id="best">BEST</div>
+            </div>
+            <div class="section-line"></div>
+            <div class="section-line"></div>
+            <div class="section-line"></div>
+            <div class="section-line"></div>
+            <div class="section-line"></div>
+          </div>
+        </div>
+        <div class="section-wrap2">
+          <div class="section section3">
+            <div class="section-title">
+              <div class="st section-study">스터디모집</div>
+            </div>
+            <div class="section-line"></div>
+            <div class="section-line"></div>
+            <div class="section-line"></div>
+            <div class="section-line"></div>
+            <div class="section-line"></div>
+          </div>
+          <div class="section section4">
+            <div class="section-title">
+              <div class="st section-mentoring">멘토링</div>
+            </div>
+            <div class="section-line"></div>
+            <div class="section-line"></div>
+            <div class="section-line"></div>
+            <div class="section-line"></div>
+            <div class="section-line"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $(".section-line").mouseenter(function () {
+          $(this).addClass("animate__animated animate__pulse animate__faster");
+        });
+
+        $(".section-line").mouseleave(function () {
+          $(this).removeClass(
+            "animate__animated animate__pulse animate__faster"
+          );
+        });
+      });
+    </script>
+  </body>
+</html>

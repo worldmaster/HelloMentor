@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HelloMentor-멘토링</title>
+    <link rel="stylesheet" href="../../static/css/matching-list.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="content">
+      <div class="section">
+        <div class="title">멘티링</div>
+        <!-- 멘티 로그인의 경우 해당 title로 교체 -->
+        <!-- <div class="title">멘토링</div> -->
+
+        <div class="search-option">
+          <div>
+            <form>
+              <div class="search-bar">
+                <!-- 멘티 로그인의 경우 아래 select가 뜨게 함 -->
+                <!-- <select id="search-option">
+                  <option value="title">제목</option>
+                  <option value="id">아이디</option>
+                </select> -->
+                <input type="text" id="keyword" />
+                <button type="submit" id="search-btn">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 36 36"
+                    fill="none"
+                  >
+                    <path
+                      id="search-logo"
+                      d="M34.8017 32.1983L26.735 24.15C28.7487 21.5892 29.8402 18.4244 29.8333 15.1667C29.8333 12.2659 28.9732 9.43023 27.3616 7.01831C25.75 4.60639 23.4593 2.72653 20.7794 1.61644C18.0994 0.506355 15.1504 0.215906 12.3053 0.781822C9.46029 1.34774 6.84694 2.7446 4.79577 4.79577C2.7446 6.84694 1.34774 9.46029 0.781822 12.3053C0.215906 15.1504 0.506355 18.0994 1.61644 20.7794C2.72653 23.4593 4.60639 25.75 7.01831 27.3616C9.43023 28.9732 12.2659 29.8333 15.1667 29.8333C18.4244 29.8402 21.5892 28.7487 24.15 26.735L32.1983 34.8017C32.5436 35.1469 33.0118 35.3408 33.5 35.3408C33.9882 35.3408 34.4564 35.1469 34.8017 34.8017C35.1469 34.4564 35.3408 33.9882 35.3408 33.5C35.3408 33.0118 35.1469 32.5436 34.8017 32.1983ZM7.39334 23.0317C5.57256 21.2512 4.42597 18.8941 4.14919 16.3625C3.8724 13.831 4.48257 11.2818 5.8756 9.14994C7.26862 7.01807 9.35819 5.43558 11.7878 4.67247C14.2174 3.90935 16.8365 4.01288 19.1983 4.9654C21.5601 5.91791 23.5183 7.6604 24.7387 9.89558C25.9591 12.1308 26.3661 14.7201 25.8904 17.2219C25.4146 19.7237 24.0856 21.983 22.1299 23.6142C20.1743 25.2454 17.7132 26.1475 15.1667 26.1667C12.2503 26.1641 9.45426 25.0035 7.39334 22.94V23.0317Z"
+                      fill="#222221"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </form>
+            <div class="order-option">
+              <a href="">신규가입순</a>
+              <span>|</span>
+              <!-- 멘티로그인의 경우 인기순이 뜬다 -->
+              <!-- <a href="">인기순</a> -->
+              <!-- 멘토로그인의 경우 최근등록순이 뜬다 -->
+              <a href="">최근등록순</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="list-section">
+          <div class="item-list">
+            <div class="list-item">
+              <!-- 멘토 로그인의 경우 아래 정보가 뜬다 -->
+              <p>멘티아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p>
+              <!-- 멘티 로그인의 경우 아래 정보가 뜬다-->
+              <!-- <p>멘토링 제목</p>
+              <p>멘토아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p> -->
+            </div>
+            <div class="list-item">
+              <!-- 멘토 로그인의 경우 아래 정보가 뜬다 -->
+              <p>멘티아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p>
+              <!-- 멘티 로그인의 경우 아래 정보가 뜬다-->
+              <!-- <p>멘토링 제목</p>
+              <p>멘토아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p> -->
+            </div>
+            <div class="list-item">
+              <!-- 멘토 로그인의 경우 아래 정보가 뜬다 -->
+              <p>멘티아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p>
+              <!-- 멘티 로그인의 경우 아래 정보가 뜬다-->
+              <!-- <p>멘토링 제목</p>
+              <p>멘토아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p> -->
+            </div>
+            <div class="list-item">
+              <!-- 멘토 로그인의 경우 아래 정보가 뜬다 -->
+              <p>멘티아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p>
+              <!-- 멘티 로그인의 경우 아래 정보가 뜬다-->
+              <!-- <p>멘토링 제목</p>
+              <p>멘토아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p> -->
+            </div>
+            <div class="list-item">
+              <!-- 멘토 로그인의 경우 아래 정보가 뜬다 -->
+              <p>멘티아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p>
+              <!-- 멘티 로그인의 경우 아래 정보가 뜬다-->
+              <!-- <p>멘토링 제목</p>
+              <p>멘토아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p> -->
+            </div>
+            <div class="list-item">
+              <!-- 멘토 로그인의 경우 아래 정보가 뜬다 -->
+              <p>멘티아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p>
+              <!-- 멘티 로그인의 경우 아래 정보가 뜬다-->
+              <!-- <p>멘토링 제목</p>
+              <p>멘토아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p> -->
+            </div>
+            <div class="list-item">
+              <!-- 멘토 로그인의 경우 아래 정보가 뜬다 -->
+              <p>멘티아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p>
+              <!-- 멘티 로그인의 경우 아래 정보가 뜬다-->
+              <!-- <p>멘토링 제목</p>
+              <p>멘토아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p> -->
+            </div>
+            <div class="list-item">
+              <!-- 멘토 로그인의 경우 아래 정보가 뜬다 -->
+              <p>멘티아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p>
+              <!-- 멘티 로그인의 경우 아래 정보가 뜬다-->
+              <!-- <p>멘토링 제목</p>
+              <p>멘토아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p> -->
+            </div>
+            <div class="list-item">
+              <!-- 멘토 로그인의 경우 아래 정보가 뜬다 -->
+              <p>멘티아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p>
+              <!-- 멘티 로그인의 경우 아래 정보가 뜬다-->
+              <!-- <p>멘토링 제목</p>
+              <p>멘토아이디</p>
+              <p>한줄소개</p>
+              <p>선호언어</p> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="write-my-info">
+          <button class="wmi-btn" onclick="">내 정보 작성</button>
+          <!-- 작성을 완료한 회원의 경우에만 내 정보 수정 -->
+          <!-- <button class="wmi-btn" onclick="">내 정보 수정</button> -->
+        </div>
+
+        <div align="center" class="paging-area">
+          <button onclick="location.href= '#' ">이전 페이지</button>
+          <button onclick="location.href='#'">1</button>
+          <button onclick="location.href='#'">2</button>
+          <button onclick="location.href='#'">3</button>
+          <button onclick="location.href='#'">4</button>
+          <button onclick="location.href='#'">5</button>
+          <button onclick="location.href='#'">6</button>
+          <button onclick="location.href='#'">7</button>
+          <button onclick="location.href='#'">8</button>
+          <button onclick="location.href='#'">9</button>
+          <button onclick="location.href='#'">10</button>
+          <button onclick="location.href = '#'">다음 페이지</button>
+        </div>
+      </div>
+    </div>
+
+    <!--첫번째 모달창 이거는 또 다른 데이터가 나와야됨.-->
+    <div id="main-modal" class="modal">
+      <div class="modal-content">
+        <div class="detail_user">
+          <div class="detail-section1">
+            <div class="profile-img-container">
+              <img src="../../static/img/profile.png" />
+            </div>
+            <div class="infomation">
+              <div>아이디</div>
+              <button class="follow-button">팔로우</button>
+            </div>
+          </div>
+          <div class="introduce-line">한줄 자기소개</div>
+
+          <div class="detail-section2">
+            <!-- 멘토로 로그인하면 아래 정보가 뜬다 -->
+            <span>원하는 멘토링</span>
+            <div id="product-description"></div>
+
+            <span>멘티 학력 정보 및 개발 능력</span>
+            <div id="product-description"></div>
+
+            <span>멘티 자기소개</span>
+            <div id="product-description"></div>
+            <!-- 멘티로 로그인하면 아래 정보가 뜬다 -->
+            <!-- <span>멘토링 제목</span>
+
+            <span>멘토 커리어</span>
+            <div id="product-description"></div>
+
+            <span>멘토 학력 정보 및 개발 능력</span>
+            <div id="product-description"></div>
+
+            <span>멘토 자기소개</span>
+            <div id="product-description"></div> -->
+          </div>
+          <!-- 멘토 로그인 시 -->
+          <button class="suggest-btn">제안하기</button>
+          <!-- 멘티 로그인 시 -->
+          <!-- <div class="pay-token"><b>결제 토큰 | </b> 100토큰</div>
+          <button class="pay-btn">결제하기</button> -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      //모달창
+      document.addEventListener("DOMContentLoaded", function () {
+        const listItems = document.querySelectorAll(".list-item");
+        const mainModal = document.getElementById("main-modal");
+        const payBtn = document.querySelector(".pay-btn");
+        const suggestBtn = document.querySelector(".suggest-btn");
+
+        listItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            mainModal.style.display = "grid";
+          });
+        });
+
+        suggestBtn.addEventListener("click", function (event) {
+          event.stopPropagation();
+          mainModal.style.display = "none";
+        });
+
+        // 멘티 로그인 시
+        // payBtn.addEventListener("click", function (event) {
+        //   event.stopPropagation();
+        //   mainModal.style.display = "none";
+
+        //   let userChoice = confirm("결제하시겠습니까?");
+
+        //   if (userChoice) {
+        //     if (userTokens < requiredTokens) {
+        //       // 사용자의 토큰이 부족한 경우
+        //       let topUpChoice = confirm(
+        //         "토큰이 모자랍니다. 토큰 충전 페이지로 이동할까요?"
+        //       );
+        //       if (topUpChoice) {
+        //         // 사용자가 토큰 충전 페이지로 이동하기를 원하는 경우, 해당 페이지로 리다이렉트.
+        //         // location.href = '토큰 충전 페이지 URL';
+        //       }
+        //     } else {
+        //       alert("결제가 완료되었습니다.");
+        //       // 결제 정보를 보내고 회원 토큰 차감
+        //     }
+        //   } else {
+        //     alert("결제가 취소되었습니다.");
+        //   }
+        // });
+
+        const modals = document.querySelectorAll(".modal");
+        modals.forEach((modal) => {
+          modal.addEventListener("click", function (event) {
+            if (event.target === modal) {
+              modal.style.display = "none";
+            }
+          });
+        });
+      });
+
+      // //결제
+      // const paymentButton = document.getElementsByClassName("pay-btn");
+
+      // paymentButton.addEventListener("click", () => {
+      //   // 결제 확인 창 띄우기
+      //   const confirmation = confirm(
+      //     "정말로 결제하시겠습니까? 결제하시려면 확인을 눌러주세요."
+      //   );
+
+      //   if (confirmation) {
+      //     // 결제하기 버튼을 누르면 서버로 결제 데이터 전송
+      //     const paymentData = {
+      //       // 결제에 필요한 데이터를 포함한 객체
+      //     };
+
+      //     // 실제로는 서버로 결제 데이터를 전송하는 코드를 작성해야됨.
+      //     // 예를 들어, AJAX나 Fetch API 등을 사용해서 백앤드로 보내야됨 하아씨발...
+      //     // ajax쓰는거 두번하기 귀찮아서 모달 하나로 갈려했는데 어차피 결국 알림창 뜨게 해서 결제하려면
+      //     // 두번써야되네 ㅆ2발
+      //     // fetch('/processPayment', {
+      //     //   method: 'POST',
+      //     //   headers: {
+      //     //     'Content-Type': 'application/json',
+      //     //   },
+      //     //   body: JSON.stringify(paymentData),
+      //     // })
+      //     // .then(response => response.json())
+      //     // .then(data => {
+      //     //   alert("결제가 완료되었습니다.");
+      //     // })
+      //     // .catch(error => {
+      //     //   alert("결제 처리 중 오류가 발생하였습니다.");
+      //     // });
+      //   } else {
+      //     alert("결제가 취소되었습니다.");
+      //   }
+      // });
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        $("#search-btn").mouseenter(function () {
+          $("#search-btn>svg").addClass("animate__animated animate__swing");
+        });
+
+        $("#search-btn").mouseleave(function () {
+          $("#search-btn>svg").removeClass("animate__animated animate__swing");
+        });
+
+        $(".list-item").mouseenter(function () {
+          $(this).addClass("animate__animated animate__pulse animate__faster");
+        });
+
+        $(".list-item").mouseleave(function () {
+          $(this).removeClass(
+            "animate__animated animate__pulse animate__faster"
+          );
+        });
+
+        $(".follow-button").on("click", function () {
+          const $this = $(this);
+
+          if ($this.text() === "팔로우") {
+            $this.text("팔로잉");
+            $this.css("background-color", "#48917A");
+          } else {
+            $this.text("팔로우");
+            $this.css("background-color", "#DFF6ED");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
