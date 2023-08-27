@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1:1문의 등록</title>
+    <link href="../../../static/css/normal-frame.css" rel="stylesheet" />
+    <link href="../../../static/css/cs-menu.css" rel="stylesheet" />
+    <link href="../../../static/css/inquiry-insert.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="content">
+      <div class="section">
+        <div class="title">1:1문의</div>
+
+        <!-- 메뉴바 -->
+        <div align="center" class="cs-menu-bar">
+          <div class="cs-menu"><a href="#">공지사항</a></div>
+          <div class="cs-menu"><a href="#">FAQ</a></div>
+          <div class="cs-menu" id="selected-menu"><a href="#">1:1문의</a></div>
+          <div class="cs-menu"><a href="#">문의내역</a></div>
+        </div>
+        <!-- 메뉴바 끝 -->
+
+        <form action="#" method="post">
+          <!-- 회원가입form안에.txt -->
+          <table id="inquiry-table">
+            <tr>
+              <th>분류</th>
+              <td>
+                <select name="inquiry-kind" id="inquiry-kind">
+                  <option value="1">회원정보/로그인</option>
+                  <option value="2">서비스/이용권</option>
+                  <option value="3">결제/해지/환불</option>
+                  <option value="4">오류</option>
+                  <option value="5">이벤트</option>
+                  <option value="6">기타</option>
+                </select>
+              </td>
+            </tr>
+
+            <tr>
+              <th>제목</th>
+              <td>
+                <input
+                  type="text"
+                  id="inquiry-title"
+                  name="title"
+                  placeholder="제목을 입력하세요"
+                  required
+                />
+              </td>
+            </tr>
+
+            <tr>
+              <th>내용</th>
+              <td>
+                <textarea
+                  id="inquiry-content"
+                  name="inquiry-content"
+                  required
+                  placeholder="내용을 입력하세요"
+                ></textarea>
+              </td>
+            </tr>
+
+            <tr>
+              <th>첨부파일</th>
+              <td>
+                <label for="inquiry-file">
+                  <div id="inquiry-upload">파일 업로드하기</div>
+                </label>
+                <input type="file" id="inquiry-file" name="upfile" />
+              </td>
+            </tr>
+          </table>
+          <br />
+          <div align="center">
+            <button type="button" id="inquiry-reset">취소</button>
+            <button type="submit" id="inquiry-submit">작성</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

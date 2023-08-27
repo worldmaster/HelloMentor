@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HelloMentor-스터디</title>
+    <link rel="stylesheet" href="../../../static/css/updateStudy.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="content">
+      <div class="section">
+        <div class="title">스터디</div>
+
+        <div class="study-detail">
+          <div class="study-info">
+            <div id="study-info1">
+              <span><b>study제목</b></span>
+              <div>
+                <div id="study-writer">mentee02</div>
+                <div id="study-create-date">2023-08-08</div>
+                <div id="study-count">조회수 | 130</div>
+              </div>
+            </div>
+            <div id="study-info2">
+              <span>현재 참여 인원</span>
+              <span>3명 / 5명</span>
+            </div>
+          </div>
+
+          <div class="study-content"></div>
+        </div>
+        <!-- 신고하기 링크는 작성자는 안보임-->
+        <a href="" class="report-this-board">신고하기</a>
+
+        <div class="study-btns">
+          <button type="button" class="s-btns" id="list-button" onclick="">
+            목록
+          </button>
+          <!-- 스터디 작성자는 신청이 안보임 -->
+          <button type="submit" class="s-btns" id="apply-button">신청</button>
+          <!-- 수정, 삭제 버튼은 작성자만 보이게 설정 -->
+          <!-- <button type="button" class="s-btns" id="edit-button">수정</button> -->
+          <!-- <button type="button" class="s-btns" id="delete-button">삭제</button> -->
+        </div>
+
+        <div class="reply-count">댓글 | 3</div>
+        <form action="" method="post">
+          <div class="reply-write-section">
+            <textarea class="reply-write"></textarea>
+            <button id="reply-send">등록</button>
+          </div>
+        </form>
+
+        <table id="reply-list">
+          <tbody>
+            <tr>
+              <td width="550px">내용내용</td>
+              <td width="80px">mentee01</td>
+              <td width="5px">|</td>
+              <td width="100px">2023-08-08</td>
+              <td width="50px">
+                <svg
+                  class="trash-logo"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M3 6H21"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M10 11V17"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M14 11V17"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td>내용내용</td>
+              <td>mentee01</td>
+              <td>|</td>
+              <td>2023-08-08</td>
+              <td>
+                <svg
+                  class="trash-logo"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M3 6H21"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M10 11V17"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M14 11V17"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td>내용내용</td>
+              <td>mentee01</td>
+              <td>|</td>
+              <td>2023-08-08</td>
+              <td>
+                <svg
+                  class="trash-logo"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M3 6H21"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M10 11V17"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M14 11V17"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $(".trash-logo").mouseenter(function () {
+          $(this).addClass("animate__animated animate__swing");
+        });
+
+        $(".trash-logo").mouseleave(function () {
+          $(this).removeClass("animate__animated animate__swing");
+        });
+      });
+    </script>
+  </body>
+</html>

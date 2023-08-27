@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HelloMentor-신고관리</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../static/css/admin-report-list-style.css"
+    />
+  </head>
+  <body>
+    <div class="content">
+      <div class="sideMenuBar">
+        <div class="sideMenus">
+          <div class="sideMenu"><a href="">회원관리</a></div>
+          <div class="sideMenu"><a href="">문의관리</a></div>
+          <div class="sideMenu"><a href="">신고관리</a></div>
+          <div class="sideMenu"><a href="">공지사항</a></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="report-list-wrap">
+          <div class="report-title">신고 관리</div>
+          <div class="list-order">
+            <div id="new-order" onclick="">최신순</div>
+            <div id="old-order" onclick="">오래된순</div>
+          </div>
+          <div class="report-accept">
+            <div>접수완료</div>
+            <div class="wrap">
+              <input type="checkbox" class="sr-only" id="check" />
+              <label for="check">
+                <div class="button">
+                  <div class="inside"></div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="report-list">
+            <table id="report-list">
+              <thead>
+                <tr>
+                  <th width="100px">신고목록</th>
+                  <th width="150px">아이디</th>
+                  <th width="400px">신고제목</th>
+                  <th>등록일</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>mentee01</td>
+                  <td>사행성 게시글 신고합니다</td>
+                  <td>2023-08-08</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>mentee01</td>
+                  <td>사행성 게시글 신고합니다</td>
+                  <td>2023-08-08</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>mentee01</td>
+                  <td>사행성 게시글 신고합니다</td>
+                  <td>2023-08-08</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>mentee01</td>
+                  <td>사행성 게시글 신고합니다</td>
+                  <td>2023-08-08</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>mentee01</td>
+                  <td>사행성 게시글 신고합니다</td>
+                  <td>2023-08-08</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>mentee01</td>
+                  <td>사행성 게시글 신고합니다</td>
+                  <td>2023-08-08</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>mentee01</td>
+                  <td>사행성 게시글 신고합니다</td>
+                  <td>2023-08-08</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>mentee01</td>
+                  <td>사행성 게시글 신고합니다</td>
+                  <td>2023-08-08</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>mentee01</td>
+                  <td>사행성 게시글 신고합니다</td>
+                  <td>2023-08-08</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>mentee01</td>
+                  <td>사행성 게시글 신고합니다</td>
+                  <td>2023-08-08</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div align="center" class="paging-area">
+            <button onclick="location.href= '#' ">이전 페이지</button>
+            <button onclick="location.href='#'">1</button>
+            <button onclick="location.href='#'">2</button>
+            <button onclick="location.href='#'">3</button>
+            <button onclick="location.href = '#'">다음 페이지</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

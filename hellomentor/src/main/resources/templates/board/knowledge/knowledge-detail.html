@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>자식인_상세페이지</title>
+    <link href="../../../static/css/normal-frame.css" rel="stylesheet" />
+    <link href="../../../static/css/knowledge-detail.css" rel="stylesheet" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="content">
+      <div class="section">
+        <div class="title">지식인</div>
+
+        <div class="question-language">
+          <div id="question-language">Q.</div>
+
+          <div class="knowledge-info">
+            <div class="knowledge-title">안녕하세요</div>
+            <div id="knowledge-info">
+              <div>작성자</div>
+              <div>2023-08-08</div>
+              <div id="knowledge-count">
+                <img src="../../../static/img/see.png" class="seeimg1" />
+                <span>100</span>
+              </div>
+              <div id="knowledge-chosen">채택완료</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="knowledge-content">안녕하세요</div>
+
+        <!--지식인 정보 및 내용 끝-->
+
+        <!--신고-->
+
+        <div id="move-to-report"><a href="#">신고하기</a></div>
+
+        <!--하단 버튼-->
+        <!-- 아래 버튼은 작성자만 보여진다. -->
+        <div class="knowledge-btns">
+          <button type="button" onclick="" id="move-to-change">수정</button>
+          <button type="button" onclick="" id="move-to-delete">삭제</button>
+        </div>
+        <!--하단 버튼 끝-->
+
+        <!--좋아요-->
+        <svg
+          class="heart-logo"
+          xmlns="http://www.w3.org/2000/svg"
+          width="60"
+          height="60"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M19 14C20.49 12.54 22 10.79 22 8.5C22 7.04131 21.4205 5.64236 20.3891 4.61091C19.3576 3.57946 17.9587 3 16.5 3C14.74 3 13.5 3.5 12 5C10.5 3.5 9.26 3 7.5 3C6.04131 3 4.64236 3.57946 3.61091 4.61091C2.57946 5.64236 2 7.04131 2 8.5C2 10.8 3.5 12.55 5 14L12 21L19 14Z"
+            stroke="black"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span id="count-love">10</span>
+
+        <!--답변 버튼-->
+        <div class="knowledge-reply">
+          <button id="move-to-insert" onclick="location.href=''">
+            답변하기
+          </button>
+        </div>
+
+        <div id="answer-language">
+          <span id="answer-logo">A.</span>
+          <span id="answer-quantity">2개</span>
+        </div>
+
+        <!--채택된 답변 시작-->
+        <!-- 채택된 답변 존재시에만 뜬다. -->
+        <div class="chosen-reply-section">
+          <div class="chosen-reply-info">
+            <div>작성자</div>
+            <div>2023-08-08</div>
+            <div id="knowledge-chosen">채택된 답변</div>
+          </div>
+          <div class="correct-content">안녕하세요</div>
+        </div>
+
+        <!--채택된 답변끝-->
+
+        <!--일반 답변 시작-->
+        <!-- 채택된 답변이 존재할시 insert-correct 버튼은 눌릴수 없게 설정하기 -->
+        <div class="knowledge-reply-list">
+          <div class="reply-section">
+            <div class="reply-info">
+              <div>작성자</div>
+              <div>2023-08-08</div>
+              <button type="button" class="insert-correct">채택하기</button>
+            </div>
+            <div class="answer-content">안녕하세요</div>
+          </div>
+
+          <div class="reply-section">
+            <div class="reply-info">
+              <div>작성자</div>
+              <div>2023-08-08</div>
+              <button type="button" class="insert-correct">채택하기</button>
+            </div>
+            <div class="answer-content">안녕하세요</div>
+          </div>
+
+          <div class="reply-section">
+            <div class="reply-info">
+              <div>작성자</div>
+              <div>2023-08-08</div>
+              <button type="button" class="insert-correct">채택하기</button>
+            </div>
+            <div class="answer-content">안녕하세요</div>
+          </div>
+
+          <div class="reply-section">
+            <div class="reply-info reply-section1">
+              <div>작성자</div>
+              <div>2023-08-08</div>
+              <!-- 해당 작성자 로그인 시에만 delete-reply가 뜬다. -->
+              <div class="delete-reply">
+                <svg
+                  class="trash-logo"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M3 6H21"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M10 11V17"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M14 11V17"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <div class="answer-content">안녕하세요</div>
+            <!-- 해당 작성자 로그인 시에만 answer-edit이 보인다.-->
+            <div class="answer-edit">
+              <a href="">수정하기</a>
+            </div>
+          </div>
+        </div>
+
+        <!--일반 답변끝-->
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $(".heart-logo").mouseenter(function () {
+          $(this).addClass("animate__animated animate__pulse animate__faster");
+        });
+
+        $(".heart-logo").mouseleave(function () {
+          $(this).removeClass(
+            "animate__animated animate__pulse animate__faster"
+          );
+        });
+
+        $(".heart-logo").click(function () {
+          $(this).toggleClass("heart-red");
+        });
+
+        $(".trash-logo").mouseenter(function () {
+          $(this).addClass("animate__animated animate__swing");
+        });
+
+        $(".trash-logo").mouseleave(function () {
+          $(this).removeClass("animate__animated animate__swing");
+        });
+      });
+    </script>
+  </body>
+</html>
