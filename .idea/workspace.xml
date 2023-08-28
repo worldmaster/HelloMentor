@@ -5,58 +5,252 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="78b6e093-a4f2-4932-a83f-c827e60d9f63" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shin10075.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shin10075.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/java/com/kh/hellomentor/HellomentorApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/css/footer-style.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/css/header-style.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/css/mypage.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/Facebook.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/HELLO_MENTO_LOGO.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/Instagram.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/Twitter.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/bell-logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/messenger-logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/profile-img.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/js/my_left_menu.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/devhelper_calendar.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/devhelper_codelab.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/footer.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/header.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/home_following_list.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/home_notification.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/mentoring_mentor_applications.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/mentoring_mentor_registdetail.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/mypage.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/mypage_left_menu.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/payment_exchange_history.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/payment_payment_history.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/profile_edit_info.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/profile_my_post.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/profile_my_reply.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/web.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/index.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/login/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/login/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/matching/insertMemberInfo.html" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/matching/insertMemberInfo.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/FAQ.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/adimin-main-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/admin-member-detail-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/admin-member-list-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/admin-notice-enroll-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/admin-question-answer-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/admin-report-detail-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/admin-report-list-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/chatlist-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/chatroom-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/choose-sign-up-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/cs-menu.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/faq-board.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/footer-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/free-board.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/free-detail.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/free.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/header-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/inquiry-board.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/inquiry-detail.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/inquiry-insert.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/insertMemberInfo.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/insertStudy.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/knowledge-answer.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/knowledge-board.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/knowledge-detail.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/knowledge-question.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/login-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/main-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/matching-list.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/normal-frame.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/notice-board.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/notice-detail.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/report-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/sign-up-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/studyList.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/tokdenExchange.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/tokenInsert.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/css/updateStudy.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/Facebook.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/HELLO_MENTOR_LOGO.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/Instagram.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/Twitter.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/afterlove.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/beforelove.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/bell-logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/messenger-logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/plant.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/profile-img.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/profile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/search.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/see.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/token.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/trash.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/waterpot.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/admin/admin-faq-write.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/admin/admin-main.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/admin/admin-member-detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/admin/admin-member-list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/admin/admin-notice-enroll.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/admin/admin-question-answer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/admin/admin-report-detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/admin/admin-report-list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/faq/faq-board.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/free/free-board.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/free/free-detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/free/free.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/inquiry/inquiry-board.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/inquiry/inquiry-detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/inquiry/inquiry-insert.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/knowledge/knowledge-answer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/knowledge/knowledge-board.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/knowledge/knowledge-detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/knowledge/knowledge-question.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/notice/notice-board.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/notice/notice-detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/study/insertStudy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/study/studyList.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/study/updateStudy.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/chatting/chatlist.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/chatting/chatroom.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/common/footer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/common/header.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/common/main.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/common/report.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/login/choose-sign-up.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/login/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/login/sign-up.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/matching/insertMemberInfo.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/matching/matching-list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/token/tokenExchange.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hellomentor/src/main/resources/templates/token/tokenInsert.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ee.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/FAQ.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/chatlist-style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/chatroom-style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/choose-sign-up-style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/cs-menu.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/detailStudy.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/faq-board.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/footer-style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/free-board.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/free-detail.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/free-edit.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/free-insert.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/header-style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/inquiry-board.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/inquiry-detail.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/inquiry-insert.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/insertMeti.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/insertMeto.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/insertStudy.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/knowledge-answer-edit.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/knowledge-answer-insert.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/knowledge-best.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/knowledge-board.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/knowledge-detail.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/knowledge-question-edit.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/knowledge-question-insert.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/login-style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/main-style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/metiLoginList.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/metoLoginList.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/normal-frame.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/notice-board.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/notice-detail.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/report-style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/sign-up-mentee-style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/sign-up-mentor-style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/studyList.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/tokdenExchange.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/tokenInsert.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/updateStudy.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/공지사항.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/관리자메인페이지.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/문의내역.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/신고관리 목록.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/신고관리상세페이지.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/회원상세정보_게시글목록.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/회원상세정보_소개글.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/css/회원정보관리.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/Facebook.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/HELLO_MENTOR_LOGO.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/Instagram.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/Twitter.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/afterlove.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/beforelove.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/bell-logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/messenger-logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/plant.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/profile-img.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/profile.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/search.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/see.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/token.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/trash.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/resources/img/waterpot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/FAQ.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/chatlist.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/chatroom.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/choose-sign-up.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/detailStudy.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/faq-board.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/footer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/free-board.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/free-detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/free-edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/free-insert.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/header.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/inquiry-board.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/inquiry-detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/inquiry-insert.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/insertMeti.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/insertMeto.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/insertStudy.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/knowledge-answer-edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/knowledge-answer-insert.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/knowledge-best.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/knowledge-board.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/knowledge-detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/knowledge-question-edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/knowledge-question-insert.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/main.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/metiLoginList.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/metoLoginList.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/notice-board.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/notice-detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/sign-up-mentee.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/sign-up-mentor.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/studyList.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/test.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/tokenExchange.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/tokenInsert.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/updateStudy.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/공지사항.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/관리자메인페이지.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/문의내역.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/신고관리 목록.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/신고관리상세페이지.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/회원상세정보_게시글목록.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/회원상세정보_소개글.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/final-front/views/회원정보관리.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/java/com/kh/hellomentor/HellomentorApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/java/com/kh/hellomentor/HellomentorApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/resources/css/footer-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/css/footer-style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/resources/css/header-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/css/header-style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/resources/css/mypage.css" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/css/mypage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/resources/img/Facebook.png" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/Facebook.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/resources/img/HELLO_MENTO_LOGO.png" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/HELLO_MENTO_LOGO.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/resources/img/Instagram.png" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/Instagram.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/resources/img/Twitter.png" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/Twitter.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/resources/img/bell-logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/bell-logo.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/resources/img/messenger-logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/messenger-logo.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/resources/img/profile-img.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/img/profile-img.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/resources/js/my_left_menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/resources/js/my_left_menu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/devhelper_calendar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/devhelper_calendar.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/devhelper_codelab.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/devhelper_codelab.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/footer.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/footer.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/header.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/header.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/home_following_list.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/home_following_list.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/home_notification.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/home_notification.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/mentoring_mentor_applications.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/mentoring_mentor_applications.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/mentoring_mentor_registdetail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/mentoring_mentor_registdetail.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/mypage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/mypage.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/mypage_left_menu.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/mypage_left_menu.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/payment_exchange_history.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/payment_exchange_history.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/payment_payment_history.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/payment_payment_history.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/profile_edit_info.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/profile_edit_info.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/profile_my_post.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/profile_my_post.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/views/profile_my_reply.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/views/profile_my_reply.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hellomentor/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/hellomentor-old/src/main/webapp/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -68,41 +262,37 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/sin-yongsu/Desktop/FINAL/shin10075&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/sin-yongsu/Desktop/FINAL/shin10075/hellomentor/src/main/resources/templates",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;Properties&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Properties"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/hellomentor/src/main/resources/static/img" />
-      <recent name="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/attachment" />
       <recent name="$PROJECT_DIR$/hellomentor/src/main/resources/templates" />
       <recent name="$PROJECT_DIR$/hellomentor/src/main/resources/static/js" />
+      <recent name="$PROJECT_DIR$/hellomentor/src/main/resources/static/img" />
       <recent name="$PROJECT_DIR$/hellomentor/src/main/resources/static/css" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/hellomentor/src/main/resources/static/img/profile" />
       <recent name="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/faq" />
       <recent name="$PROJECT_DIR$/hellomentor/src/main/resources/templates/common" />
       <recent name="$PROJECT_DIR$/hellomentor/src/main/resources/templates/token" />
       <recent name="$PROJECT_DIR$/hellomentor/src/main/resources/templates/matching" />
+      <recent name="$PROJECT_DIR$/hellomentor/src/main/resources/templates/board/inquiry" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -115,10 +305,6 @@
       <updated>1693108029197</updated>
       <workItem from="1693108030592" duration="217000" />
       <workItem from="1693124809243" duration="4115000" />
-      <workItem from="1693130644601" duration="4013000" />
-      <workItem from="1693212329529" duration="32000" />
-      <workItem from="1693212366031" duration="770000" />
-      <workItem from="1693214043161" duration="581000" />
     </task>
     <servers />
   </component>

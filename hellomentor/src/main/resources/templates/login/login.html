@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HelloMentor-로그인</title>
-    <link th:href="@{/css/login-style.css}" rel="stylesheet" />
+    <link href="../../static/css/login-style.css" rel="stylesheet" />
   </head>
   <body>
     <canvas id="matrix" width="1920" height="1080"></canvas>
@@ -144,7 +144,7 @@
     <div class="content">
       <div class="loginMain">
         <div class="login-logo">
-          <img th:src="@{/img/HELLO_MENTOR_LOGO.png}" />
+          <img src="../../static/img/HELLO_MENTOR_LOGO.png" />
         </div>
         <div class="login">
           <input
@@ -165,7 +165,7 @@
           />
         </div>
         <div class="loginButton">
-          <button type="submit" id="login-btn">
+          <button type="button" onclick="location.href=''" id="login-btn">
             로그인
           </button>
         </div>
