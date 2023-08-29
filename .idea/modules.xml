@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/HelloMentor.iml" filepath="$PROJECT_DIR$/.idea/HelloMentor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hellomentor.iml" filepath="$PROJECT_DIR$/.idea/modules/hellomentor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hellomentor.main.iml" filepath="$PROJECT_DIR$/.idea/modules/hellomentor.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hellomentor.test.iml" filepath="$PROJECT_DIR$/.idea/modules/hellomentor.test.iml" />
     </modules>
   </component>
 </project>
