@@ -10,13 +10,9 @@ import java.util.List;
 @Service
 public class MemberServiceImpl implements MemberService {
 
-    @Autowired
-    private MemberDao memberDao;
 
-    @Override
-    public List<Board> getPostsByUserNo(int userNo) {
-        return memberDao.getPostsByUserNo(userNo);
-    }
+
+
 }
 
 

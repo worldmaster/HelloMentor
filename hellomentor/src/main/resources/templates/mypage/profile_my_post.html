@@ -15,18 +15,12 @@
         <div class="my_post_content1-2">
             <select name="my_post_category" id="my_post_category">
                 <option value="" selected>분류</option>
-                <option value="가">가</option>
-                <option value="나">나</option>
-                <option value="다">다</option>
-                <option value="라">라</option>
-                <option value="마">마</option>
+                <option th:each="boardType : ${boardTypes}" th:value="${boardType}" th:text="${boardType}"></option>
             </select>
-
         </div>
         <div>
             <span class="my_post_newfilter">최신순</span> ㅣ <span class="my_post_oldfilter">과거순</span>
         </div>
-
     </div>
 
     <div class="my_post_content2">
@@ -41,34 +35,19 @@
         </div>
     </div>
 
-
     <div class="my_post_content3">
-        <div th:each="i: ${#numbers.sequence(1, 17)}" class="my_post_box">
+        <div th:each="post : ${myPosts}" class="my_post_box">
             <div>
-                <span>자유게시판</span>
+                <span th:text="${post.boardType}">게시판</span>
             </div>
             <div>
-                <span>가나다라마바사아자차카</span>
+                <span th:text="${post.pTitle}">제목</span>
             </div>
             <div>
-                <span>23.05.27</span>
+                <span th:text="${post.createDate}">작성일자</span>
             </div>
         </div>
     </div>
-
-<!--    <div class="my_post_content3">-->
-<!--        <div th:each="post : ${myPosts}" class="my_post_box">-->
-<!--            <div>-->
-<!--                <span th:text="${post.boardType}">게시판</span>-->
-<!--            </div>-->
-<!--            <div>-->
-<!--                <span th:text="${post.pTitle}">제목</span>-->
-<!--            </div>-->
-<!--            <div>-->
-<!--                <span th:text="${post.createDate}">작성일자</span>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 
 
     <div class="my_notifi_content3">
