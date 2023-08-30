@@ -42,3 +42,4 @@ application-aws.properties
 ### macOS ###
 # General
 .DS_Store
+/.metadata/
