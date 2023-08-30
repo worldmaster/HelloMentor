@@ -15,6 +15,12 @@ public class HomeController {
     public String myPage() {
         return "mypage/mypage";
     }
+
+
+    @RequestMapping("/main")
+    public String main() {
+        return "common/main";
+    }
 }
 
 
