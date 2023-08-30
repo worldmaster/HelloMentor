@@ -2,6 +2,7 @@ package com.kh.hellomentor.board.model.service;
 
 import com.kh.hellomentor.board.model.dao.BoardDao;
 import com.kh.hellomentor.board.model.vo.Board;
+import com.kh.hellomentor.board.model.vo.Reply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +18,10 @@ public class BoardServiceImpl implements BoardService {
     public List<Board> getPostsByUserNo(int userNo) {
         return boardDao.getPostsByUserNo(userNo);
     }
+
+    @Override
+    public List<Reply> getReplyByUserNo(int userNo) {
+        return boardDao.getReplyByUserNo(userNo);
+    }
 }
+
