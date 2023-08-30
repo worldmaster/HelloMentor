@@ -1,7 +1,6 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: Pretendard Variable;
     box-sizing: border-box;
 }
 
@@ -36,7 +35,7 @@
 
 .chatroom-name {
     font-size: 40px;
-    font-weight: 700;
+    font-family: "bd";
     margin-left: 40px;
 }
 
@@ -127,7 +126,7 @@
     width: 100px;
     height: 32px;
     font-size: 20px;
-    font-weight: 700;
+    font-family: "bd";
     background-color: #40E0D0;
     border: none;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4) !important;

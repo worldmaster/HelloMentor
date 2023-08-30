@@ -1,7 +1,6 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: "bd";
     box-sizing: border-box;
 }
 
@@ -29,7 +28,7 @@
     width: 800px;
     margin-top: 100px;
     font-size: 40px;
-    font-weight: 700;
+    font-family: "bd";
 }
 
 .search-option {
@@ -153,7 +152,7 @@
 }
 
 .study-title {
-    font-weight: 700;
+    font-family: "bd";
 }
 
 .so-group2 {
@@ -167,7 +166,7 @@
 }
 
 .recruitment {
-    font-weight: 700;
+    font-family: "bd";
 }
 
 .write-btn {
@@ -187,7 +186,7 @@
     border: 0px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4) !important;
     cursor: pointer;
-    font-weight: bold;
+    font-family: "bd";
     font-size: 20px;
 }
 
@@ -205,8 +204,6 @@
     cursor: pointer;
     border-radius: 8px;
     border: 1px solid rgb(226, 219, 219);
-    font-weight: 500;
-
 }
 
 .paging-area button.active {
