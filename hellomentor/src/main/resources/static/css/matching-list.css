@@ -1,7 +1,6 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: "sg";
     box-sizing: border-box;
 }
 
@@ -28,7 +27,7 @@
     width: 800px;
     margin-top: 100px;
     font-size: 40px;
-    font-weight: 700;
+    font-family: "bd";
 }
 
 .search-option {
@@ -157,7 +156,7 @@
     width: 130px;
     height: 32px;
     font-size: 20px;
-    font-weight: 700;
+    font-family: "bd";
     border-radius: 10px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4) !important;
 }
@@ -176,8 +175,6 @@
     cursor: pointer;
     border-radius: 8px;
     border: 1px solid rgb(226, 219, 219);
-    font-weight: 500;
-
 }
 
 .paging-area button.active {
@@ -264,7 +261,7 @@
     width: 100px;
     height: 32px;
     font-size: 20px;
-    font-weight: 700;
+    font-family: "bd";
     cursor: pointer;
 }
 
@@ -295,7 +292,7 @@
 
 .detail-section2>span {
     font-size: 20px;
-    font-weight: 700;
+    font-family: "bd";
     margin-top: 10px;
     margin-bottom: 4px;
 }
@@ -324,7 +321,7 @@
     width: 100px;
     height: 32px;
     font-size: 20px;
-    font-weight: 700;
+    font-family: "bd";
     cursor: pointer;
 }
 
