@@ -21,6 +21,15 @@ public class HomeController {
     public String main() {
         return "common/main";
     }
+    
+    @RequestMapping("/choose-sign-up")
+    public String chooseSignUp() {
+        return "login/choose-sign-up";
+    }
+    @RequestMapping("/sign-up")
+    public String signUp() {
+        return "login/sign-up";
+    }
 }
 
 
