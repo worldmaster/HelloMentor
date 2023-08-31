@@ -10,73 +10,7 @@ public interface BoardService {
     List<Board> getPostsByUserNo(int userNo);
 
     List<Reply> getReplyByUserNo(int userNo);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
 	public List<Board> selectNoticeList(int currentPage, Map<String, Object> paramMap);
 	

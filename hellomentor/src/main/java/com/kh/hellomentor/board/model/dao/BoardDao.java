@@ -28,65 +28,7 @@ public class BoardDao {
     public List<Reply> getReplyByUserNo(int userNo) {
         return session.selectList("boardMapper.getMyReply", userNo);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
     // 공지사항 게시글 조회, 글 갯수 조회 (페이징바)
     public List<Board> selectNoticeList(int currentPage, Map<String , Object> paramMap){
