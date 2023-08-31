@@ -55,7 +55,6 @@ public class BoardController {
 
         model.addAttribute("myPosts", postsWithReplacedBoardType);
         model.addAttribute("boardTypes", uniqueBoardTypes);
-
         return "mypage/profile_my_post";
     }
 

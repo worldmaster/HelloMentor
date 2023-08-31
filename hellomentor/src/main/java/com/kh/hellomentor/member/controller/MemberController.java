@@ -14,6 +14,10 @@ import com.kh.hellomentor.member.model.service.MemberService;
 import com.kh.hellomentor.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -63,7 +67,19 @@ public class MemberController {
   		}
   		return url;
   	}
-  	
-}
-   
+
+		@RequestMapping("/home_following_list")
+		public String getFollowList(Model model) {
+			int userNo = 2;
+
+			List<Map<String, Object>> followingList = mService.getFollowList(userNo);
+
+			model.addAttribute("followingList", followingList);
+
+			return "mypage/home_following_list";
+		}
+	}
+
+
+
    
