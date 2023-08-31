@@ -1,52 +1,159 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="boardMapper">
 
+ 
+<!-- resultMap 시작 -->
+	<resultMap id="boardResultSet" type="board">
+		<id column="POST_NO" property="postNo" />
+		<result column="USER_WRITER_NO" property="userNo" />
+		<result column="POST_TITLE" property="pTitle" />
+		<result column="POST_CONTENT" property="pContent" />
+		<result column="IS_DELETE" property="isDeleted" />
+		<result column="VIEWS" property="views" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="BOARD_TYPE" property="boardType" />
+	</resultMap>
+	
+	<resultMap id="categoryResultSet" type="category">
+		<id column="CATEGORY_ID" property="categoryId" />
+		<result column="BOARD_TYPE" property="boardType" />
+		<result column="CATEGORY" property="category" />
+	</resultMap>
+	
+	<resultMap id="inquiryResultSet" type="inquiry">
+		<id column="POST_NO" property="postNo" />
+		<result column="CATEGORY_ID" property="categoryId" />
+		<result column="IS_PROCESSED" property="isProcessed" />
+		<result column="CATEGORY_ID" property="answer" />
+	</resultMap>
+	
+	<resultMap id="answerResultSet" type="answer">
+		<id column="POST_NO" property="postNo" />
+		<result column="K_POST_NO" property="kPostNo" />
+		<result column="IS_ACCEPTED" property="isAccepted" />
+	</resultMap>
+	
+	<resultMap id="freeResultSet" type="free">
+		<id column="POST_NO" property="postNo" />
+		<result column="UPVOTES" property="upVotes" />
+	</resultMap>
+	
+	<resultMap id="knowledgeResultSet" type="knowledge">
+		<id column="POST_NO" property="postNo" />
+		<result column="CATEGORY_ID" property="categoryId" />
+		<result column="UPVOTES" property="upVotes" />
+	</resultMap>
+	
+	<resultMap id="memberResultSet" type="member">
+		<id column="USER_NO" property="postNo" />
+		<result column="USER_ID" property="userId" />
+		<result column="USER_PWD" property="userPwd" />
+		<result column="USER_NAME" property="userName" />
+		<result column="PHONE" property="phone" />
+		<result column="EMAIL" property="email" />
+		<result column="ENROLL_DATE" property="enrollDate" />
+		<result column="STATUS" property="status" />
+		<result column="INTRODUCTION" property="introduction" />
+		<result column="MEMBER_TYPE" property="memberType" />
+		<result column="TOKEN" property="token" />
+		<result column="GRADE" property="grade" />
+	</resultMap>
+	
+	<resultMap id="replyResultSet" type="reply">
+		<id column="REPLY_ID" property="replyId" />
+		<result column="POST_NO" property="postNo" />
+		<result column="USER_NO" property="userNo" />
+		<result column="REPLY_CONTENT" property="rContent" />
+		<result column="IS_DELETE" property="isDeleted" />
+		<result column="CREATE_AT" property="createDate" />
+	</resultMap>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
-    <resultMap id="boardResultMap" type="board">
-        <id column="POST_NO" property="postNo"/>
-        <result column="USER_WRITER_NO" property="userNo"/>
-        <result column="POST_TITLE" property="pTitle"/>
-        <result column="BOARD_TYPE" property="boardType"/>
-    </resultMap>
+	<!-- 공지사항 게시글 조회 + 검색 -->
+	<select id="selectNoticeList" parameterType="hashmap"
+		resultMap="boardResultSet">
+		SELECT
+			POST_NO,
+			POST_TITLE,
+			CREATE_DATE,
+			C.CATEGORY
+		FROM BOARD B
+		JOIN CATEGORY C ON B.BOARD_TYPE = C.BOARD_TYPE
+		WHERE IS_DELETE = FALSE 
+			AND B.BOARD_TYPE = #{boardType}
+			
+		<if test="keyword != null and keyword != ''">
+			AND BOARD_TITLE LIKE '%${keyword}%'
+		</if>
+		
+		ORDER BY CREATE_DATE DESC
+	</select>
 
-    <select id="getMyPost" resultMap="boardResultMap" parameterType="int">
-        SELECT POST_NO,
-               USER_WRITER_NO,
-               POST_TITLE,
-               BOARD_TYPE
-        FROM BOARD
-        WHERE USER_WRITER_NO = #{userNo}
-    </select>
-
-    <resultMap id="replyResultMap" type="reply">
-        <id column="REPLY_ID" property="replyId"/>
-        <result column="POST_NO" property="postNo"/>
-        <result column="USER_NO" property="userNo"/>
-        <result column="REPLY_CONTENT" property="rContent"/>
-        <result column="CREATE_AT" property="createDate"/>
-        <association property="boardType" javaType="String">
-            <result column="BOARD_TYPE" property="boardType"/>
-        </association>
-    </resultMap>
-
-
-
-    <select id="getMyReply" resultMap="replyResultMap" parameterType="int">
-        SELECT
-            r.REPLY_ID,
-            r.POST_NO,
-            r.USER_NO,
-            r.REPLY_CONTENT,
-            r.CREATE_AT,
-            b.BOARD_TYPE
-        FROM
-            REPLY r
-                JOIN
-            BOARD b ON r.POST_NO = b.POST_NO
-        WHERE
-            r.USER_NO = #{userNo}
-    </select>
-
+	<!-- 게시판 글 갯수 조회(페이징바) -->
+	<select id="selectListCount" parameterType="hashmap"
+		resultType="int">
+		SELECT
+			COUNT(*)
+		FROM BOARD B
+		JOIN CATEGORY C ON B.BOARD_TYPE = C.BOARD_TYPE
+		WHERE IS_DELETE = FALSE 
+			AND B.BOARD_TYPE = #{boardType}
+			
+		<if test="keyword != null and keyword != ''">
+			AND BOARD_TITLE LIKE '%${keyword}%'
+		</if>
+		
+		ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<!-- 게시판 조회수 증가 -->
+	<update id="increaseCount" parameterType="int">
+		UPDATE BOARD
+		   SET VIEWS = VIEWS +1
+		 WHERE POST_NO = #{글번호}
+	</update>
+	
+	
+	<!-- 게시판 댓글 작성 -->
+	<insert id="insertReply" parameterType="reply">
+		INSERT INTO REPLY (
+			POST_NO,
+			USER_NO,
+			REPLY_CONTENT,
+			IS_DELETE,
+			CREATE_AT
+		) VALUES (
+			#{postNo},
+			#{userNo},
+			#{rContent},
+			DEFAULT,
+			DEFAULT
+		)
+	</insert>
+	
+	<!-- 게시판 댓글 조회 -->
+	<select id="selectReplyList" resultMap="replyResultSet" parameterType="int">
+		SELECT
+			REPLY_NO,
+			REPLY_CONTENT,
+			REF_BNO,
+			USER_ID REPLY_WRITER,
+			R.CREATE_DATE,
+			R.STATUS
+		FROM REPLY R
+		JOIN MEMBER M ON R.REPLY_WRITER = M.USER_NO
+		WHERE REF_BNO = #{bno}
+		  AND R.STATUS = 'Y' 
+	</select>
+	
 
 </mapper>

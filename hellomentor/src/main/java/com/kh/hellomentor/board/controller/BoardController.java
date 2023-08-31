@@ -1,19 +1,26 @@
 package com.kh.hellomentor.board.controller;
 
-import com.kh.hellomentor.board.model.service.BoardService;
-import com.kh.hellomentor.board.model.vo.Board;
-import com.kh.hellomentor.board.model.vo.Reply;
-import com.kh.hellomentor.member.controller.MemberController;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.kh.hellomentor.board.model.service.BoardService;
+import com.kh.hellomentor.board.model.vo.Board;
+import com.kh.hellomentor.board.model.vo.Reply;
+import com.kh.hellomentor.common.template.Pagination;
+import com.kh.hellomentor.common.vo.PageInfo;
+import com.kh.hellomentor.member.controller.MemberController;
 
 @Controller
 public class BoardController {
@@ -104,5 +111,28 @@ public class BoardController {
         }
     }
 
+    
+    // 공지사항 게시글 조회, 글 갯수 조회 (페이징바)
+ 	@GetMapping("/list/{boardType}") 
+ 	public String selectList(@PathVariable("boardType") String boardType,
+ 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, 
+ 			Model model,
+ 			@RequestParam Map<String, Object> paramMap
+ 			) {
+ 		
+ 		paramMap.put("boardType", boardType);
+ 		List<Board> list = boardService.selectNoticeList(currentPage, paramMap);
 
+ 		// 총 게시글 갯수
+ 		int total = boardService.selectListCount(paramMap);
+ 		int pageLimit = 10;
+ 		int boardLimit = 5;
+ 		PageInfo pi = Pagination.getPageInfo(total, currentPage, pageLimit, boardLimit);
+
+ 		model.addAttribute("param", paramMap);
+ 		model.addAttribute("list", list);
+ 		model.addAttribute("pi", pi);
+
+ 		return "board/notice/notice-board";
+ 	}
 }
