@@ -16,6 +16,7 @@
         <div class="my_post_content1-2">
             <select name="my_post_category" id="my_post_category">
                 <option value="" selected>분류</option>
+                <option value="">전체 보기</option>
                 <option th:each="boardType : ${boardTypes}" th:value="${boardType}" th:text="${boardType}"></option>
             </select>
 

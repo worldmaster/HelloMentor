@@ -24,5 +24,4 @@ public class Member {
     private String memberType;
     private int token;
     private String grade;
-
 }

@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hellomentor.member.model.vo.Member;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public class MemberDao {
 
@@ -19,5 +22,8 @@ public class MemberDao {
     public int insertMember(Member m) {
 	return sqlSession.insert("memberMapper.insertMember", m);
 }
-   
+
+    public List<Map<String, Object>> getFollowList(int userNo) {
+        return sqlSession.selectList("memberMapper.getFollowList", userNo);
+    }
 }
