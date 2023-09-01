@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.board.model.vo.Board;
+import com.kh.hellomentor.board.model.vo.Inquiry;
 import com.kh.hellomentor.board.model.vo.Reply;
 import com.kh.hellomentor.member.controller.MemberController;
 
@@ -30,7 +32,14 @@ public class BoardDao {
     }
 
     
-    // 공지사항 게시글 조회, 글 갯수 조회 (페이징바)
+    
+    
+    
+    
+    
+    
+    // 이찬우 구역 시작
+    // 1. 공지사항 게시글 조회, 글 갯수 조회 (페이징바) (미완성)
     public List<Board> selectNoticeList(int currentPage, Map<String , Object> paramMap){
 		int offset = (currentPage -1) * 5;
 		int limit  = 5;
@@ -43,4 +52,15 @@ public class BoardDao {
 	public int selectListCount(Map<String , Object> paramMap) {
 		return session.selectOne("boardMapper.selectListCount", paramMap);
 	}
+	// 2. 1:1문의 등록 (미완성)
+	public int insertInqueryBoard(Board board) {
+		return session.insert("boardMapper.insertInqueryBoard", board);
+	}
+	public int insertInquiry(Inquiry inquery) {
+		return session.insert("boardMapper.insertInquiry", inquery);
+	}
+	public int insertInquiryAttachment(List<Attachment> list) {
+		return session.insert("boardMapper.insertInquiryAttachment", list);
+	}
+	//이찬우 구역 끝
 }

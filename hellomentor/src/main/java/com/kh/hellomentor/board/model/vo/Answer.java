@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Answer {
     private int postNo;
-    private int kPostNo;
+    private int knowledgePostNo;
     private boolean isAccepted;
 
 

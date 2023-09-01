@@ -1,44 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FAQ_메인페이지</title>
-    <link href="../../../static/css/normal-frame.css" rel="stylesheet" />
-    <link href="../../../static/css/cs-menu.css" rel="stylesheet" />
-    <link href="../../../static/css/faq-board.css" rel="stylesheet" />
+    <link  th:href="@{/css/normal-frame.css}" rel="stylesheet" />
+    <link  th:href="@{/css/cs-menu.css}" rel="stylesheet" />
+    <link  th:href="@{/css/faq-board.css}" rel="stylesheet" />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
+     <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css}" 
+ 	 rel="stylesheet" />
 
+	
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
   </head>
   <body>
+  
+  <div th:insert="common/header :: header"></div>
+  
+  
     <div class="content">
       <div class="section">
         <div class="title">FAQ</div>
 
         <!-- 메뉴바 -->
         <div align="center" class="cs-menu-bar">
-          <div class="cs-menu"><a href="#">공지사항</a></div>
-          <div class="cs-menu" id="selected-menu"><a href="#">FAQ</a></div>
-          <div class="cs-menu"><a href="#">1:1문의</a></div>
-          <div class="cs-menu"><a href="#">문의내역</a></div>
+          <div class="cs-menu"><a th:href="@{/notice-board}">공지사항</a></div>
+          <div class="cs-menu" id="selected-menu"><a th:href="@{/faq-board}">FAQ</a></div>
+          <div class="cs-menu"><a th:href="@{/inquiry-insert}">1:1문의</a></div>
+          <div class="cs-menu"><a th:href="@{/inquiry-board}">문의내역</a></div>
         </div>
         <!-- 메뉴바 끝 -->
 
         <!-- 분류, 검색창 -->
-        <form action="#" method="get">
+        <form th:action="@{}" method="get">
           <div id="kind-search">
             <select name="faq-kind" id="faq-kind">
-              <option value="1">회원정보/로그인</option>
-              <option value="2">서비스/이용권</option>
-              <option value="3">결제/해지/환불</option>
-              <option value="4">오류</option>
-              <option value="5">이벤트</option>
-              <option value="6">기타</option>
+              <option value="10">계정</option>
+              <option value="11">결제/환불</option>
+              <option value="12">서비스</option>
+              <option value="13">오류</option>
             </select>
 
             <input type="text" id="keyword" name="keyword" value="" />
@@ -127,63 +128,6 @@
               </td>
             </tr>
 
-            <tr class="faq-item">
-              <td>점검</td>
-              <td>서버 점검 안내</td>
-              <td class="trashbtn">
-                <!-- 관리자만 보이게 설정 -->
-                <svg
-                  class="trash-logo"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M3 6H21"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M10 11V17"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M14 11V17"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </td>
-            </tr>
-
-            <tr class="faq-content">
-              <td colspan="3" class="faq-content-td">
-                <div class="faq-detail-content">펼쳐지는 내용</div>
-              </td>
-            </tr>
           </tbody>
         </table>
 
@@ -226,5 +170,9 @@
         });
       });
     </script>
+    
+    <div th:insert="common/footer :: footer"></div>
+    
+    
   </body>
 </html>
