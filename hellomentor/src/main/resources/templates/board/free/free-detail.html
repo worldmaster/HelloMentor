@@ -1,246 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>자유게시판_상세페이지</title>
-    <link href="../../../static/css/normal-frame.css" rel="stylesheet" />
-    <link href="../../../static/css/free-detail.css" rel="stylesheet" />
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>자유게시판_상세페이지</title>
+<link  th:href="@{/css/normal-frame.css}" rel="stylesheet" />
+<link  th:href="@{/css/free-detail.css}" rel="stylesheet" />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-  </head>
-  <body>
-    <div class="content">
-      <div class="section">
-        <div class="title">자유게시판</div>
+<link
+	th:href="@{https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css}"
+	rel="stylesheet" />
 
-        <!--게시판 정보 및 내용 시작-->
-        <div class="free-info">
-          <div class="free-title">안녕하세요</div>
-          <div id="free-info">
-            <div>작성자</div>
-            <div>2023-08-08</div>
-            <div id="free-count">
-              <img src="../../../static/img/see.png" class="seeimg1" />
-              <span>100</span>
-            </div>
-          </div>
-        </div>
 
-        <div class="free-content">안녕하세요</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 
-        <!--게시판 정보 및 내용 끝-->
+</head>
+<body>
 
-        <!--신고-->
-        <!-- 신고하기는 글의 작성자는 볼 수 없다. -->
-        <div id="move-to-report"><a href="#">신고하기</a></div>
+<div th:insert="common/header :: header"></div>
 
-        <!--하단 버튼-->
-        <!-- 아래 버튼은 작성자만 보여진다. -->
-        <div class="free-btns">
-          <button type="button" onclick="" id="move-to-change">수정</button>
-          <button type="button" onclick="" id="move-to-delete">삭제</button>
-        </div>
-        <!--하단 버튼 끝-->
 
-        <!--좋아요-->
-        <svg
-          class="heart-logo"
-          xmlns="http://www.w3.org/2000/svg"
-          width="60"
-          height="60"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
+	<div class="content">
+		<div class="section">
+			<div class="title">자유게시판</div>
+
+			<!--게시판 정보 및 내용 시작-->
+			<div class="free-info">
+				<div class="free-title">안녕하세요</div>
+				<div id="free-info">
+					<div>작성자</div>
+					<div>2023-08-08</div>
+					<div id="free-count">
+						<img th:src="@{/img/see.png}" class="seeimg1" /> <span>100</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="free-content">안녕하세요</div>
+
+			<!--게시판 정보 및 내용 끝-->
+
+			<!--신고-->
+			<!-- 신고하기는 글의 작성자는 볼 수 없다. -->
+			<div id="move-to-report">
+				<a th:href="@{}">신고하기</a>
+			</div>
+
+			<!--하단 버튼-->
+			<!-- 아래 버튼은 작성자만 보여진다. -->
+			<div class="free-btns">
+				<button type="button" onclick="" id="move-to-change">수정</button>
+				<button type="button" onclick="" id="move-to-delete">삭제</button>
+			</div>
+			<!--하단 버튼 끝-->
+
+			<!--좋아요-->
+			<svg class="heart-logo" xmlns="http://www.w3.org/2000/svg" width="60"
+				height="60" viewBox="0 0 24 24" fill="none">
           <path
-            d="M19 14C20.49 12.54 22 10.79 22 8.5C22 7.04131 21.4205 5.64236 20.3891 4.61091C19.3576 3.57946 17.9587 3 16.5 3C14.74 3 13.5 3.5 12 5C10.5 3.5 9.26 3 7.5 3C6.04131 3 4.64236 3.57946 3.61091 4.61091C2.57946 5.64236 2 7.04131 2 8.5C2 10.8 3.5 12.55 5 14L12 21L19 14Z"
-            stroke="black"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+					d="M19 14C20.49 12.54 22 10.79 22 8.5C22 7.04131 21.4205 5.64236 20.3891 4.61091C19.3576 3.57946 17.9587 3 16.5 3C14.74 3 13.5 3.5 12 5C10.5 3.5 9.26 3 7.5 3C6.04131 3 4.64236 3.57946 3.61091 4.61091C2.57946 5.64236 2 7.04131 2 8.5C2 10.8 3.5 12.55 5 14L12 21L19 14Z"
+					stroke="black" stroke-width="2" stroke-linecap="round"
+					stroke-linejoin="round" />
         </svg>
-        <span id="count-love">10</span>
+			<span id="count-love">10</span>
 
-        <!--댓글 등록-->
-        <div class="reply-count">댓글 | 3</div>
-        <form action="" method="post">
-          <div class="reply-write-section">
-            <textarea class="reply-write"></textarea>
-            <button id="reply-send">등록</button>
-          </div>
-        </form>
+			<!--댓글 등록-->
+			<div class="reply-count">댓글 | 3</div>
+			<form th:action="@{}" method="post">
+				<div class="reply-write-section">
+					<textarea class="reply-write"></textarea>
+					<button id="reply-send">등록</button>
+				</div>
+			</form>
 
-        <!-- 댓글 목록 -->
-        <table id="reply-list">
-          <tbody>
-            <tr>
-              <td width="550px">내용내용</td>
-              <td width="80px">mentee01</td>
-              <td width="5px">|</td>
-              <td width="100px">2023-08-08</td>
-              <td width="50px">
-                <!-- 댓글 작성자만 깡통이 보인다.-->
-                <svg
-                  class="trash-logo"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
+			<!-- 댓글 목록 -->
+			<table id="reply-list">
+				<tbody>
+					<tr>
+						<td width="550px">내용내용</td>
+						<td width="80px">mentee01</td>
+						<td width="5px">|</td>
+						<td width="100px">2023-08-08</td>
+						<td width="50px">
+							<!-- 댓글 작성자만 깡통이 보인다.--> <svg class="trash-logo"
+								xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+								viewBox="0 0 24 24" fill="none">
+                  <path d="M3 6H21" stroke="black" stroke-width="2"
+									stroke-linecap="round" stroke-linejoin="round" />
                   <path
-                    d="M3 6H21"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M10 11V17"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M14 11V17"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
+									d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
+									stroke="black" stroke-width="2" stroke-linecap="round"
+									stroke-linejoin="round" />
+                  <path d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
+									stroke="black" stroke-width="2" stroke-linecap="round"
+									stroke-linejoin="round" />
+                  <path d="M10 11V17" stroke="black" stroke-width="2"
+									stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M14 11V17" stroke="black" stroke-width="2"
+									stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-              </td>
-            </tr>
-            <tr>
-              <td>내용내용</td>
-              <td>mentee01</td>
-              <td>|</td>
-              <td>2023-08-08</td>
-              <td>
-                <svg
-                  class="trash-logo"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
+						</td>
+					</tr>
+					<tr>
+						<td>내용내용</td>
+						<td>mentee01</td>
+						<td>|</td>
+						<td>2023-08-08</td>
+						<td><svg class="trash-logo"
+								xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+								viewBox="0 0 24 24" fill="none">
+                  <path d="M3 6H21" stroke="black" stroke-width="2"
+									stroke-linecap="round" stroke-linejoin="round" />
                   <path
-                    d="M3 6H21"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
+									d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
+									stroke="black" stroke-width="2" stroke-linecap="round"
+									stroke-linejoin="round" />
+                  <path d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
+									stroke="black" stroke-width="2" stroke-linecap="round"
+									stroke-linejoin="round" />
+                  <path d="M10 11V17" stroke="black" stroke-width="2"
+									stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M14 11V17" stroke="black" stroke-width="2"
+									stroke-linecap="round" stroke-linejoin="round" />
+                </svg></td>
+					</tr>
+					<tr>
+						<td>내용내용</td>
+						<td>mentee01</td>
+						<td>|</td>
+						<td>2023-08-08</td>
+						<td><svg class="trash-logo"
+								xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+								viewBox="0 0 24 24" fill="none">
+                  <path d="M3 6H21" stroke="black" stroke-width="2"
+									stroke-linecap="round" stroke-linejoin="round" />
                   <path
-                    d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M10 11V17"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M14 11V17"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </td>
-            </tr>
-            <tr>
-              <td>내용내용</td>
-              <td>mentee01</td>
-              <td>|</td>
-              <td>2023-08-08</td>
-              <td>
-                <svg
-                  class="trash-logo"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M3 6H21"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M10 11V17"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M14 11V17"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <script>
+									d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
+									stroke="black" stroke-width="2" stroke-linecap="round"
+									stroke-linejoin="round" />
+                  <path d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
+									stroke="black" stroke-width="2" stroke-linecap="round"
+									stroke-linejoin="round" />
+                  <path d="M10 11V17" stroke="black" stroke-width="2"
+									stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M14 11V17" stroke="black" stroke-width="2"
+									stroke-linecap="round" stroke-linejoin="round" />
+                </svg></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script>
       $(document).ready(function () {
         $(".heart-logo").mouseenter(function () {
           $(this).addClass("animate__animated animate__pulse animate__faster");
@@ -265,5 +177,9 @@
         });
       });
     </script>
-  </body>
+    
+    <div th:insert="common/footer :: footer"></div>
+    
+    
+</body>
 </html>

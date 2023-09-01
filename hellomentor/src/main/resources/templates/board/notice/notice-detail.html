@@ -1,27 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>공지사항_상세페이지</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link th:href="@{/css/normal-frame.css}" rel="stylesheet" />
+    <link th:href="@{/css/cs-menu.css}" rel="stylesheet" />
+    <link th:href="@{/css/notice-detail.css}" rel="stylesheet" />
+    
+    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css}" 
+  rel="stylesheet" />
 
-    <link href="../../../static/css/normal-frame.css" rel="stylesheet" />
-    <link href="../../../static/css/cs-menu.css" rel="stylesheet" />
-    <link href="../../../static/css/notice-detail.css" rel="stylesheet" />
+	
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
   </head>
 
   <body>
+  
+  <div th:insert="common/header :: header"></div>
+  
+  
     <div class="content">
       <div class="section">
         <div class="title">공지사항</div>
 
         <!-- 메뉴바 -->
         <div align="center" class="cs-menu-bar">
-          <div class="cs-menu" id="selected-menu"><a href="#">공지사항</a></div>
-          <div class="cs-menu"><a href="#">FAQ</a></div>
-          <div class="cs-menu"><a href="#">1:1문의</a></div>
-          <div class="cs-menu"><a href="#">문의내역</a></div>
+          <div class="cs-menu" id="selected-menu"><a th:href="@{/notice-board}">공지사항</a></div>
+          <div class="cs-menu"><a th:href="@{/faq-board}">FAQ</a></div>
+          <div class="cs-menu"><a th:href="@{/inquiry-insert}">1:1문의</a></div>
+          <div class="cs-menu"><a th:href="@{/inquiry-board}">문의내역</a></div>
         </div>
         <!-- 메뉴바 끝 -->
 
@@ -47,13 +55,17 @@
 
         <!--하단 버튼-->
         <div class="notice-btns">
-          <button type="button" onclick="" id="list-btn">목록</button>
+          <button type="button"  th:onclick="" id="list-btn">목록</button>
           <!-- 관리자만 삭제가 보인다. -->
-          <button type="button" onclick="" id="delete-btn">삭제</button>
+          <button type="button"  th:onclick="" id="delete-btn">삭제</button>
         </div>
 
         <!--하단 버튼 끝-->
       </div>
     </div>
+    
+    <div th:insert="common/footer :: footer"></div>
+    
+    
   </body>
 </html>

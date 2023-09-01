@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.kh.hellomentor.board.model.dao.BoardDao;
 import com.kh.hellomentor.board.model.vo.Board;
+import com.kh.hellomentor.board.model.vo.Inquiry;
 import com.kh.hellomentor.board.model.vo.Reply;
+import com.kh.hellomentor.common.Utils;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -28,6 +30,13 @@ public class BoardServiceImpl implements BoardService {
 
     
     
+    
+    
+    
+    
+    
+    //이찬우 구역 시작
+    //1. 공지사항 목록 select
     @Override
     public List<Board> selectNoticeList(int currentPage, Map<String, Object> paramMap){
 		return boardDao.selectNoticeList(currentPage, paramMap);
@@ -37,5 +46,12 @@ public class BoardServiceImpl implements BoardService {
 	public int selectListCount(Map<String, Object> paramMap) {
 		return boardDao.selectListCount(paramMap);
 	}
+    
+    //2. 1:1문의 작성
+    @Override
+	public int insertInquiry(Board board, List<Attachment> list, Inquiry inquiry, String inquiry, String webPath) throws Exception {
+
+    }
+    //이찬우 구역 끝
 }
 

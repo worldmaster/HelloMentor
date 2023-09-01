@@ -287,6 +287,7 @@
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
     cursor: pointer;
     font-family: "bd";
+    margin-left:100px;
 }
 
 .insert-correct:hover {

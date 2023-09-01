@@ -15,8 +15,8 @@ import java.sql.Date;
 public class Board {
     private int postNo;
     private int userNo;
-    private String pTitle;
-    private String pContent;
+    private String postTitle;
+    private String postContent;
     private boolean isDeleted;
     private int views;
     private Date createDate;

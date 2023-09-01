@@ -1,9 +1,14 @@
 package com.kh.hellomentor.board.controller;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,16 +16,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hellomentor.board.model.service.BoardService;
+import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.board.model.vo.Board;
+import com.kh.hellomentor.board.model.vo.Inquiry;
 import com.kh.hellomentor.board.model.vo.Reply;
+import com.kh.hellomentor.common.Utils;
 import com.kh.hellomentor.common.template.Pagination;
 import com.kh.hellomentor.common.vo.PageInfo;
 import com.kh.hellomentor.member.controller.MemberController;
+import com.kh.hellomentor.member.model.vo.Member;
 
 @Controller
 public class BoardController {
@@ -29,6 +41,9 @@ public class BoardController {
 
     @Autowired
     private BoardService boardService;
+    
+	@Autowired
+	private ServletContext application;
 
 
     //    마이페이지 내가 쓴 글
@@ -111,7 +126,17 @@ public class BoardController {
     }
 
     
-    // 공지사항 게시글 조회, 글 갯수 조회 (페이징바)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //이찬우 구역 시작
+    //1. 공지사항 게시글 조회, 글 갯수 조회 (페이징바)
  	@GetMapping("/list/{boardType}") 
  	public String selectList(@PathVariable("boardType") String boardType,
  			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, 
@@ -134,4 +159,72 @@ public class BoardController {
 
  		return "board/notice/notice-board";
  	}
+ 	
+ 	//2. 문의 내역 insert
+ 	@PostMapping("/insert.iq")
+	public String insertBoard(
+			Board board, 
+			Inquiry inquiry,
+			@RequestParam(value = "upfile", required = false) List<MultipartFile> upfiles,
+			HttpSession session, 
+			Model model,
+			@ModelAttribute("loginUser") Member loginUser
+			) {
+
+		// 이미지, 파일을 저장할 저장경로 얻어오기
+		// /resources/images/board/{boardCode}/
+		String webPath = "/resources/images/attachment/";
+		String severFolderPath = application.getRealPath(webPath);
+
+		// Board 객체에 데이터 추가(boardCode , boardWriter)
+		board.setUserNo(loginUser.getUserNo());
+
+		// 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
+		File dir = new File(severFolderPath);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+
+		// 첨부파일같은 경우 선택하고 안하고 상관없이 객체는 생성이 된다 단, 길이가 0일수가 있음.
+		// 전달된 파일이 있는경우 해당파일을 웹서버에 저장하고, Attachment테이블에 해당정보를 등록.
+		// 없는경우 위프로세스를 패스할것.
+
+		List<Attachment> attachList = new ArrayList();
+		
+		int level = -1;
+		for (MultipartFile upfile : upfiles) {
+			// input[name=upFile]로 만들어두면 비어있는 file이 넘어올수 있음.
+			level++;
+			if (upfile.isEmpty())
+				continue;
+
+			// 1. 파일명 재정의 해주는 함수.
+			String changeName = Utils.saveFile(upfile, severFolderPath);
+			Attachment at = Attachment.
+							builder().
+							changeName(changeName).
+							originName(upfile.getOriginalFilename()).
+							build();
+			attachList.add(at);
+		}
+
+		int result = 0;
+
+		try {
+			result = boardService.insertInquiry(board, attachList, inquiry, severFolderPath, webPath);
+		} catch (Exception e) {
+			//log.error("error = {}", e.getMessage());
+			e.printStackTrace();
+		}
+
+		if (result > 0) {
+			session.setAttribute("alertMsg", "게시글 작성에 성공하셨습니다.");
+			return "redirect:/board/list/" ;
+		} else {
+			model.addAttribute("errorMsg", "게시글 작성 실패");
+			return "common/errorPage";
+		}
+	}
+ 	//이찬우 구역 끝
+ 	
 }

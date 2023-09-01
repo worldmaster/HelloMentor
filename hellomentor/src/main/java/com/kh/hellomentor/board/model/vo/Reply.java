@@ -16,7 +16,7 @@ public class Reply {
     private int replyId;
     private int postNo;
     private int userNo;
-    private String rContent;
+    private String replyContent;
     private String isDeleted;
     private Date createDate;
     private String boardType;
