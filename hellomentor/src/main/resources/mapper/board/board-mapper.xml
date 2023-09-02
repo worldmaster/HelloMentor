@@ -7,8 +7,8 @@
     <resultMap id="boardResultMap" type="board">
         <id column="POST_NO" property="postNo"/>
         <result column="USER_WRITER_NO" property="userNo"/>
-        <result column="POST_TITLE" property="pTitle"/>
-        <result column="POST_CONTENT" property="pContent"/>
+        <result column="POST_TITLE" property="postTitle"/>
+        <result column="POST_CONTENT" property="postContent"/>
         <result column="IS_DELETE" property="isDeleted"/>
         <result column="VIEWS" property="views"/>
         <result column="CREATE_DATE" property="createDate"/>
@@ -30,7 +30,7 @@
 
     <resultMap id="answerResultMap" type="answer">
         <id column="POST_NO" property="postNo"/>
-        <result column="K_POST_NO" property="kPostNo"/>
+        <result column="K_POST_NO" property="knowledgePostNo"/>
         <result column="IS_ACCEPTED" property="isAccepted"/>
     </resultMap>
 
@@ -64,7 +64,7 @@
         <id column="REPLY_ID" property="replyId"/>
         <result column="POST_NO" property="postNo"/>
         <result column="USER_NO" property="userNo"/>
-        <result column="REPLY_CONTENT" property="rContent"/>
+        <result column="REPLY_CONTENT" property="replyContent"/>
         <result column="IS_DELETE" property="isDeleted"/>
         <result column="CREATE_AT" property="createDate"/>
         <association property="boardType" javaType="String">
@@ -76,7 +76,7 @@
     <!-- 이찬우 구역 시작 -->
     <!-- 1. 공지사항 게시글 조회 + 검색 -->
     <select id="selectNoticeList" parameterType="hashmap"
-            resultMap="boardResultSet">
+            resultMap="boardResultMap">
         SELECT
         POST_NO,
         POST_TITLE,
@@ -121,7 +121,7 @@
          VIEWS,
          CREATE_DATE,
          BOARD_TYPE)
-        VALUES (#{userNo}, #{pTitle}, #{pContent}, DEFAULT, 0, DEFAULT, 'A')
+        VALUES (#{userNo}, #{postTitle}, #{postContent}, DEFAULT, 0, DEFAULT, 'A')
     </insert>
     <insert id="insertInquiry" parameterType="inquiry">
         INSERT INTO INQUIRY_BOARD

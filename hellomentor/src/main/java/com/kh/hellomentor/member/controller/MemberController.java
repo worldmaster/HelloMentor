@@ -70,16 +70,16 @@ public class MemberController {
         return url;
     }
 
-    @RequestMapping("/home_following_list")
-    public String getFollowList(Model model) {
-        int userNo = 2;
-
-        List<Map<String, Object>> followingList = mService.getFollowList(userNo);
-
-        model.addAttribute("followingList", followingList);
-
-        return "mypage/home_following_list";
-    }
+//    @RequestMapping("/home_following_list")
+//    public String getFollowList(Model model) {
+//        int userNo = 2;
+//
+//        List<Map<String, Object>> followingList = mService.getFollowList(userNo);
+//
+//        model.addAttribute("followingList", followingList);
+//
+//        return "mypage/home_following_list";
+//    }
 }
 
 
