@@ -41,9 +41,9 @@ public class BoardController {
 
     @Autowired
     private BoardService boardService;
-    
-	@Autowired
-	private ServletContext application;
+
+    @Autowired
+    private ServletContext application;
 
 
     //    마이페이지 내가 쓴 글
@@ -100,7 +100,6 @@ public class BoardController {
     }
 
 
-
     //    게시판 타입 이름으로 바꿔주는 메소드
     private String replaceBoardType(String originalBoardType) {
         switch (originalBoardType) {
@@ -125,106 +124,97 @@ public class BoardController {
         }
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     //이찬우 구역 시작
     //1. 공지사항 게시글 조회, 글 갯수 조회 (페이징바)
- 	@GetMapping("/list/{boardType}") 
- 	public String selectList(@PathVariable("boardType") String boardType,
- 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, 
- 			Model model,
- 			@RequestParam Map<String, Object> paramMap
- 			) {
- 		
- 		paramMap.put("boardType", boardType);
- 		List<Board> list = boardService.selectNoticeList(currentPage, paramMap);
+    @GetMapping("/list/{boardType}")
+    public String selectList(@PathVariable("boardType") String boardType,
+                             @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+                             Model model,
+                             @RequestParam Map<String, Object> paramMap
+    ) {
 
- 		// 총 게시글 갯수
- 		int total = boardService.selectListCount(paramMap);
- 		int pageLimit = 10;
- 		int boardLimit = 5;
- 		PageInfo pi = Pagination.getPageInfo(total, currentPage, pageLimit, boardLimit);
+        paramMap.put("boardType", boardType);
+        List<Board> list = boardService.selectNoticeList(currentPage, paramMap);
 
- 		model.addAttribute("param", paramMap);
- 		model.addAttribute("list", list);
- 		model.addAttribute("pi", pi);
+        // 총 게시글 갯수
+        int total = boardService.selectListCount(paramMap);
+        int pageLimit = 10;
+        int boardLimit = 5;
+        PageInfo pi = Pagination.getPageInfo(total, currentPage, pageLimit, boardLimit);
 
- 		return "board/notice/notice-board";
- 	}
- 	
- 	//2. 문의 내역 insert
- 	@PostMapping("/insert.iq")
-	public String insertBoard(
-			Board board, 
-			Inquiry inquiry,
-			@RequestParam(value = "upfile", required = false) List<MultipartFile> upfiles,
-			HttpSession session, 
-			Model model,
-			@ModelAttribute("loginUser") Member loginUser
-			) {
+        model.addAttribute("param", paramMap);
+        model.addAttribute("list", list);
+        model.addAttribute("pi", pi);
 
-		// 이미지, 파일을 저장할 저장경로 얻어오기
-		// /resources/images/board/{boardCode}/
-		String webPath = "/resources/images/attachment/";
-		String severFolderPath = application.getRealPath(webPath);
+        return "board/notice/notice-board";
+    }
 
-		// Board 객체에 데이터 추가(boardCode , boardWriter)
-		board.setUserNo(loginUser.getUserNo());
+    //2. 문의 내역 insert
+    @PostMapping("/insert.iq")
+    public String insertBoard(
+            Board board,
+            Inquiry inquiry,
+            @RequestParam(value = "upfile", required = false) List<MultipartFile> upfiles,
+            HttpSession session,
+            Model model,
+            @ModelAttribute("loginUser") Member loginUser
+    ) {
 
-		// 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
-		File dir = new File(severFolderPath);
-		if (!dir.exists()) {
-			dir.mkdirs();
-		}
+        // 이미지, 파일을 저장할 저장경로 얻어오기
+        // /resources/images/board/{boardCode}/
+        String webPath = "/resources/images/attachment/";
+        String severFolderPath = application.getRealPath(webPath);
 
-		// 첨부파일같은 경우 선택하고 안하고 상관없이 객체는 생성이 된다 단, 길이가 0일수가 있음.
-		// 전달된 파일이 있는경우 해당파일을 웹서버에 저장하고, Attachment테이블에 해당정보를 등록.
-		// 없는경우 위프로세스를 패스할것.
+        // Board 객체에 데이터 추가(boardCode , boardWriter)
+        board.setUserNo(loginUser.getUserNo());
 
-		List<Attachment> attachList = new ArrayList();
-		
-		int level = -1;
-		for (MultipartFile upfile : upfiles) {
-			// input[name=upFile]로 만들어두면 비어있는 file이 넘어올수 있음.
-			level++;
-			if (upfile.isEmpty())
-				continue;
+        // 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
+        File dir = new File(severFolderPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
 
-			// 1. 파일명 재정의 해주는 함수.
-			String changeName = Utils.saveFile(upfile, severFolderPath);
-			Attachment at = Attachment.
-							builder().
-							changeName(changeName).
-							originName(upfile.getOriginalFilename()).
-							build();
-			attachList.add(at);
-		}
+        // 첨부파일같은 경우 선택하고 안하고 상관없이 객체는 생성이 된다 단, 길이가 0일수가 있음.
+        // 전달된 파일이 있는경우 해당파일을 웹서버에 저장하고, Attachment테이블에 해당정보를 등록.
+        // 없는경우 위프로세스를 패스할것.
 
-		int result = 0;
+        List<Attachment> attachList = new ArrayList();
 
-		try {
-			result = boardService.insertInquiry(board, attachList, inquiry, severFolderPath, webPath);
-		} catch (Exception e) {
-			//log.error("error = {}", e.getMessage());
-			e.printStackTrace();
-		}
+        int level = -1;
+        for (MultipartFile upfile : upfiles) {
+            // input[name=upFile]로 만들어두면 비어있는 file이 넘어올수 있음.
+            level++;
+            if (upfile.isEmpty())
+                continue;
 
-		if (result > 0) {
-			session.setAttribute("alertMsg", "게시글 작성에 성공하셨습니다.");
-			return "redirect:/board/list/" ;
-		} else {
-			model.addAttribute("errorMsg", "게시글 작성 실패");
-			return "common/errorPage";
-		}
-	}
- 	//이찬우 구역 끝
- 	
+            // 1. 파일명 재정의 해주는 함수.
+            String changeName = Utils.saveFile(upfile, severFolderPath);
+            Attachment at = Attachment.
+                    builder().
+                    changeName(changeName).
+                    originName(upfile.getOriginalFilename()).
+                    build();
+            attachList.add(at);
+        }
+
+        int result = 0;
+
+        try {
+            result = boardService.insertInquiry(board, attachList, inquiry, severFolderPath, webPath);
+        } catch (Exception e) {
+            //log.error("error = {}", e.getMessage());
+            e.printStackTrace();
+        }
+
+        if (result > 0) {
+            session.setAttribute("alertMsg", "게시글 작성에 성공하셨습니다.");
+            return "redirect:/board/list/";
+        } else {
+            model.addAttribute("errorMsg", "게시글 작성 실패");
+            return "common/errorPage";
+        }
+    }
+    //이찬우 구역 끝
+
 }

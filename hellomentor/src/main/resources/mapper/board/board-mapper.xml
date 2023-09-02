@@ -73,8 +73,7 @@
     </resultMap>
 
 
-
-	<!-- 이찬우 구역 시작 -->
+    <!-- 이찬우 구역 시작 -->
     <!-- 1. 공지사항 게시글 조회 + 검색 -->
     <select id="selectNoticeList" parameterType="hashmap"
             resultMap="boardResultSet">
@@ -111,44 +110,39 @@
 
         ORDER BY CREATE_DATE DESC
     </select>
-    
+
     <!-- 1:1문의 insert -->
-    <insert id="insertInqueryBoard" parameterType="board">
-	    INSERT INTO BOARD
-	  	  (USER_WRITER_NO, 
-	    	POST_TITLE, 
-	   		POST_CONTENT, 
-	    	IS_DELETE, 
-	   		VIEWS, 
-	    	CREATE_DATE, 
-	    	BOARD_TYPE)
-	    VALUES
-	    	(#{userNo}, #{pTitle}, #{pContent}, DEFAULT, 0, DEFAULT, 'A')
-	</insert>	
-	 <insert id="insertInquiry" parameterType="inquery">
-        INSERT INTO INQUIRY_BOARD 
-       		 (POST_NO, 
-       		 CATEGORY_ID,
-       		 IS_PROCESSED)
-        VALUES 
-        	((SELECT MAX(POST_NO) FROM BOARD), #{categoryId}, DEFAULT)
-      </insert>
-       <insert id="insertInquiryAttachment" parameterType="list">
-		INSERT INTO ATTACHMENT
-			(POST_NO,
-			 FILE_ORIGIN_NAME,
-			 FILE_CHANGE_NAME,
-			 FILE_PATH,
-			 FILE_SIZE
-		)VALUES(
-		
-		) 
-			 
-<!-- 이찬우 구역 끝 -->			
+    <insert id="insertInquiryBoard" parameterType="board">
+        INSERT INTO BOARD
+        (USER_WRITER_NO,
+         POST_TITLE,
+         POST_CONTENT,
+         IS_DELETE,
+         VIEWS,
+         CREATE_DATE,
+         BOARD_TYPE)
+        VALUES (#{userNo}, #{pTitle}, #{pContent}, DEFAULT, 0, DEFAULT, 'A')
+    </insert>
+    <insert id="insertInquiry" parameterType="inquiry">
+        INSERT INTO INQUIRY_BOARD
+        (POST_NO,
+         CATEGORY_ID,
+         IS_PROCESSED)
+        VALUES ((SELECT MAX(POST_NO) FROM BOARD), #{categoryId}, DEFAULT)
+    </insert>
+    <insert id="insertInquiryAttachment" parameterType="list">
+    INSERT INTO ATTACHMENT
+    (POST_NO,
+    FILE_ORIGIN_NAME,
+    FILE_CHANGE_NAME,
+    FILE_PATH,
+    FILE_SIZE
+    )VALUES(
 
+    )
+    </insert>
 
-
-
+    <!-- 이찬우 구역 끝 -->
 
 
     <!--마이페이지 글 조회-->

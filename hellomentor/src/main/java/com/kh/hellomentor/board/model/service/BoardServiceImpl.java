@@ -3,6 +3,7 @@ package com.kh.hellomentor.board.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.hellomentor.board.model.vo.Attachment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,29 +29,23 @@ public class BoardServiceImpl implements BoardService {
         return boardDao.getReplyByUserNo(userNo);
     }
 
-    
-    
-    
-    
-    
-    
-    
+
     //이찬우 구역 시작
     //1. 공지사항 목록 select
     @Override
-    public List<Board> selectNoticeList(int currentPage, Map<String, Object> paramMap){
-		return boardDao.selectNoticeList(currentPage, paramMap);
-	}
-	
+    public List<Board> selectNoticeList(int currentPage, Map<String, Object> paramMap) {
+        return boardDao.selectNoticeList(currentPage, paramMap);
+    }
+
     @Override
-	public int selectListCount(Map<String, Object> paramMap) {
-		return boardDao.selectListCount(paramMap);
-	}
-    
+    public int selectListCount(Map<String, Object> paramMap) {
+        return boardDao.selectListCount(paramMap);
+    }
+
     //2. 1:1문의 작성
     @Override
-	public int insertInquiry(Board board, List<Attachment> list, Inquiry inquiry, String inquiry, String webPath) throws Exception {
-
+    public int insertInquiry(Board board, List<Attachment> list, Inquiry inquiry, String severFolderPath, String webPath) throws Exception {
+        return 0;
     }
     //이찬우 구역 끝
 }

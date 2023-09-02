@@ -15,6 +15,7 @@ import com.kh.hellomentor.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -22,63 +23,64 @@ import java.util.Map;
 @Controller
 @Slf4j
 public class MemberController {
-   
-       @Autowired
-      private MemberService mService;
-   
-      @PostMapping("login.me")
-      public String loginMember(
-                        @ModelAttribute Member m , 
-                        HttpSession session , 
-                        Model model
-            ) {
-         Member loginUser = mService.loginUser(m);
-         String url = "";
-         if(loginUser != null) {
-        	 if(loginUser.getUserId().equals("admin")){
-        		 session.setAttribute("loginUser", loginUser);
-        		 model.addAttribute("message","관리자로 로그인했습니다.");
-                 url = "admin/admin-main";
-        	 }else {
-        		 session.setAttribute("loginUser", loginUser);
-        		 model.addAttribute("message", loginUser.getUserName()+"님 반갑습니다");
-                 url = "common/main";
-        	 }
-        	 }else {
-        		 model.addAttribute("message","아이디 또는 비밀번호를 확인해주세요.");
-        		 url = "login/login";
-        	 }
-         return url;
-      }
-      @PostMapping("/sign.up")
-  	public String insertMember(@Validated Member m , HttpSession session, Model model ,BindingResult bindingResult) {
-  		int result = mService.insertMember(m);
-  		String url = "";
-  		
-  		System.out.println(m);
-  		if(result > 0) {
-  			//성공시
-  			model.addAttribute("message","회원가입을 축하드립니다. 로그인 해주세요");
-   		 url = "login/login";
-  		}else {
-  			//실패 - 에러페이지로
-  			model.addAttribute("message","회원가입 실패");
-  	   		 url = "login/login";
-  		}
-  		return url;
-  	}
 
-		@RequestMapping("/home_following_list")
-		public String getFollowList(Model model) {
-			int userNo = 2;
+    @Autowired
+    private MemberService mService;
 
-			List<Map<String, Object>> followingList = mService.getFollowList(userNo);
+    @PostMapping("login.me")
+    public String loginMember(
+            @ModelAttribute Member m,
+            HttpSession session,
+            RedirectAttributes redirectAttributes
+    ) {
+        Member loginUser = mService.loginUser(m);
+        String url = "";
+        if (loginUser != null) {
+            if (loginUser.getUserId().equals("admin")) {
+                session.setAttribute("loginUser", loginUser);
+                redirectAttributes.addFlashAttribute("message", "관리자로 로그인했습니다.");
+                url = "redirect:/adminMain";
+            } else {
+                session.setAttribute("loginUser", loginUser);
+                redirectAttributes.addFlashAttribute("message", loginUser.getUserName() + "님 반갑습니다");
+                url = "redirect:/main";
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("message", "아이디 또는 비밀번호를 확인해주세요.");
+            url = "redirect:/";
+        }
+        return url;
+    }
 
-			model.addAttribute("followingList", followingList);
+    @PostMapping("/sign.up")
+    public String insertMember(@Validated Member m, HttpSession session, Model model, BindingResult bindingResult) {
+        int result = mService.insertMember(m);
+        String url = "";
 
-			return "mypage/home_following_list";
-		}
-	}
+        System.out.println(m);
+        if (result > 0) {
+            //성공시
+            model.addAttribute("message", "회원가입을 축하드립니다. 로그인 해주세요");
+            url = "login/login";
+        } else {
+            //실패 - 에러페이지로
+            model.addAttribute("message", "회원가입 실패");
+            url = "login/login";
+        }
+        return url;
+    }
+
+    @RequestMapping("/home_following_list")
+    public String getFollowList(Model model) {
+        int userNo = 2;
+
+        List<Map<String, Object>> followingList = mService.getFollowList(userNo);
+
+        model.addAttribute("followingList", followingList);
+
+        return "mypage/home_following_list";
+    }
+}
 
 
 

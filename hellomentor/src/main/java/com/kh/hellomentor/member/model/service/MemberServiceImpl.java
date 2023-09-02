@@ -10,15 +10,15 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
-   @Autowired
-   private MemberDao memberDao;
-   
-   @Override
-   public Member loginUser(Member m) {
-      return memberDao.loginUser(m);
-   }
+    @Autowired
+    private MemberDao memberDao;
+
+    @Override
+    public Member loginUser(Member m) {
+        return memberDao.loginUser(m);
+    }
 
     @Override
     public int insertMember(Member m) {

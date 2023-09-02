@@ -13,21 +13,15 @@ public interface BoardService {
 
     List<Reply> getReplyByUserNo(int userNo);
 
-    
-    
-    
-    
-    
-    
-    
+
     //이찬우 구역 시작
     //1. 공지사항 목록 select
-	public List<Board> selectNoticeList(int currentPage, Map<String, Object> paramMap);
-	
-	public int selectListCount(Map<String, Object> paramMap);
-	
-	//2. 1:1문의 작성
-	public int insertInquiry(Board board, List<Attachment> list, Inquiry inquiry, String serverPath, String webPath) throws Exception;
+    public List<Board> selectNoticeList(int currentPage, Map<String, Object> paramMap);
+
+    public int selectListCount(Map<String, Object> paramMap);
+
+    //2. 1:1문의 작성
+    public int insertInquiry(Board board, List<Attachment> list, Inquiry inquiry, String serverPath, String webPath) throws Exception;
 
 
 }

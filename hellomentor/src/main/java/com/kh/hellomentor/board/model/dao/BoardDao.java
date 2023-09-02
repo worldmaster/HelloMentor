@@ -31,36 +31,33 @@ public class BoardDao {
         return session.selectList("boardMapper.getMyReply", userNo);
     }
 
-    
-    
-    
-    
-    
-    
-    
+
     // 이찬우 구역 시작
     // 1. 공지사항 게시글 조회, 글 갯수 조회 (페이징바) (미완성)
-    public List<Board> selectNoticeList(int currentPage, Map<String , Object> paramMap){
-		int offset = (currentPage -1) * 5;
-		int limit  = 5;
-		
-		RowBounds rowBounds = new RowBounds(offset,limit);
-		
-		return session.selectList("boardMapper.selectNoticeList" , paramMap , rowBounds);
-	}
-	
-	public int selectListCount(Map<String , Object> paramMap) {
-		return session.selectOne("boardMapper.selectListCount", paramMap);
-	}
-	// 2. 1:1문의 등록 (미완성)
-	public int insertInqueryBoard(Board board) {
-		return session.insert("boardMapper.insertInqueryBoard", board);
-	}
-	public int insertInquiry(Inquiry inquery) {
-		return session.insert("boardMapper.insertInquiry", inquery);
-	}
-	public int insertInquiryAttachment(List<Attachment> list) {
-		return session.insert("boardMapper.insertInquiryAttachment", list);
-	}
-	//이찬우 구역 끝
+    public List<Board> selectNoticeList(int currentPage, Map<String, Object> paramMap) {
+        int offset = (currentPage - 1) * 5;
+        int limit = 5;
+
+        RowBounds rowBounds = new RowBounds(offset, limit);
+
+        return session.selectList("boardMapper.selectNoticeList", paramMap, rowBounds);
+    }
+
+    public int selectListCount(Map<String, Object> paramMap) {
+        return session.selectOne("boardMapper.selectListCount", paramMap);
+    }
+
+    // 2. 1:1문의 등록 (미완성)
+    public int insertInqueryBoard(Board board) {
+        return session.insert("boardMapper.insertInqueryBoard", board);
+    }
+
+    public int insertInquiry(Inquiry inquery) {
+        return session.insert("boardMapper.insertInquiry", inquery);
+    }
+
+    public int insertInquiryAttachment(List<Attachment> list) {
+        return session.insert("boardMapper.insertInquiryAttachment", list);
+    }
+    //이찬우 구역 끝
 }

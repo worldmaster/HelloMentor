@@ -7,9 +7,9 @@ import java.util.Map;
 
 public interface MemberService {
 
-   Member loginUser(Member m);
+    Member loginUser(Member m);
 
-   int insertMember(Member m);
+    int insertMember(Member m);
 
     List<Map<String, Object>> getFollowList(int userNo);
 }
