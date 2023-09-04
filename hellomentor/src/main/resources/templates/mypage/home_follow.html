@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+
+    <script>
+        function loadPage(pageName) {
+            $.get(pageName, function(data) {
+                $('.my_following').html(data);
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="my_right_title">팔로잉/팔로워 목록</div>
+<br>
+<button type="button" onclick="loadPage('home_following_list')">팔로잉</button>
+<button type="button" onclick="loadPage('home_follower_list')">팔로워</button>
+<div class="my_following">
+</div>
+</body>
+</html>

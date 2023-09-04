@@ -11,7 +11,7 @@
         <result column="EMAIL" property="email"/>
         <result column="ENROLL_DATE" property="enrollDate"/>
         <result column="STATUS" property="status"/>
-        <result column="INTRODUTION" property="introduction"/>
+        <result column="INTRODUCTION" property="introduction"/>
         <result column="MEMBER_TYPE" property="memberType"/>
         <result column="TOKEN" property="token"/>
         <result column="GRADE" property="grade"/>
@@ -25,6 +25,10 @@
         <result column="FILE_PATH" property="filePath"/>
         <result column="FILE_SIZE" property="fileSize"/>
     </resultMap>
+
+
+
+
 
     <select id="loginUser" parameterType="member" resultMap="memberResultSet">
         SELECT *
@@ -56,6 +60,28 @@
         FROM PROFILE_IMG
         WHERE USER_NO = #{userNo}
     </select>
+
+    <select id="getFollowList" parameterType="int" resultMap="memberResultSet">
+        SELECT M.*
+        FROM FOLLOW AS F
+                 INNER JOIN MEMBER AS M ON F.FROM_USER = M.USER_NO
+        WHERE F.TO_USER = #{userNo}
+    </select>
+
+    <select id="getProfileList" parameterType="int" resultMap="profileResultSet">
+        SELECT M.*, P.*
+        FROM MEMBER AS M
+                 LEFT JOIN PROFILE_IMG AS P ON M.USER_NO = P.USER_NO
+        WHERE M.USER_NO = #{userNo}
+    </select>
+
+    <select id="getFollowerList" parameterType="int" resultMap="memberResultSet">
+        SELECT M.*
+        FROM FOLLOW AS F
+                 INNER JOIN MEMBER AS M ON F.FROM_USER = M.USER_NO
+        WHERE F.FROM_USER = #{userNo}
+    </select>
+
 
 </mapper>
 

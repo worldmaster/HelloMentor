@@ -48,8 +48,11 @@ public class BoardController {
 
     //    마이페이지 내가 쓴 글
     @RequestMapping("/profile_my_post")
-    public String profileMyPost(Model model) {
-        int userNo = 2;
+    public String profileMyPost(Model model, HttpSession session) {
+
+        Member loginUser = (Member) session.getAttribute("loginUser");
+
+        int userNo = loginUser.getUserNo();
 
         List<Board> myPosts = boardService.getPostsByUserNo(userNo);
 
@@ -75,8 +78,10 @@ public class BoardController {
 
     // 마이페이지 내가 쓴 댓글
     @RequestMapping("/profile_my_reply")
-    public String profileMyReply(Model model) {
-        int userNo = 2;
+    public String profileMyReply(Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+
+        int userNo = loginUser.getUserNo();
 
         List<Reply> myReplies = boardService.getReplyByUserNo(userNo);
 
