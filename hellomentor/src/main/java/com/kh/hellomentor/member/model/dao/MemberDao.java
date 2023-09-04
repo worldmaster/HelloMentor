@@ -31,7 +31,16 @@ public class MemberDao {
         return sqlSession.insert("memberMapper.insertMember", m);
     }
 
-    public List<Map<String, Object>> getFollowList(int userNo) {
+    public List<Member> getFollowList(int userNo) {
         return sqlSession.selectList("memberMapper.getFollowList", userNo);
+    }
+
+
+    public List<Profile> getProfileList(int userNo) {
+        return sqlSession.selectList("memberMapper.getProfileList", userNo);
+    }
+
+    public List<Member> getFollwerList(int userNo) {
+        return sqlSession.selectList("memberMapper.getFollowerList",userNo);
     }
 }
