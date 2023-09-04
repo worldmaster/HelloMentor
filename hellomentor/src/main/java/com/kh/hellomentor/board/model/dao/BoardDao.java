@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.board.model.vo.Board;
+import com.kh.hellomentor.board.model.vo.BoardType;
 import com.kh.hellomentor.board.model.vo.Inquiry;
 import com.kh.hellomentor.board.model.vo.Reply;
 import com.kh.hellomentor.member.controller.MemberController;
@@ -34,26 +35,31 @@ public class BoardDao {
 
     // 이찬우 구역 시작
     // 1. 공지사항 게시글 조회, 글 갯수 조회 (페이징바) (미완성)
-    public List<Board> selectNoticeList(int currentPage, Map<String, Object> paramMap) {
+	
+    public List<Board> selectNoticeList(int currentPage) {
         int offset = (currentPage - 1) * 5;
         int limit = 5;
 
         RowBounds rowBounds = new RowBounds(offset, limit);
 
-        return session.selectList("boardMapper.selectNoticeList", paramMap, rowBounds);
+        return session.selectList("boardMapper.selectNoticeList", rowBounds);
     }
 
-    public int selectListCount(Map<String, Object> paramMap) {
-        return session.selectOne("boardMapper.selectListCount", paramMap);
+    public int selectNoticeListCount() {
+        return session.selectOne("boardMapper.selectNoticeListCount");
     }
 
     // 2. 1:1문의 등록 (미완성)
-    public int insertInqueryBoard(Board board) {
-        return session.insert("boardMapper.insertInqueryBoard", board);
-    }
-
-    public int insertInquiry(Inquiry inquery) {
-        return session.insert("boardMapper.insertInquiry", inquery);
+    public int insertInquiry(Board board) {
+    	int result = 0;
+    	result = session.insert("boardMapper.insertInquiry" , board);
+		
+		if(result > 0) {
+			result = board.getPostNo();
+			// 게시글 삽입 성공시 selectKey태그를 사용하여 셋팅한 boardNo값을 b에 담아줌.
+		}
+		
+		return result;
     }
 
     public int insertInquiryAttachment(List<Attachment> list) {
