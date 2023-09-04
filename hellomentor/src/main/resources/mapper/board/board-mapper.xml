@@ -44,6 +44,11 @@
         <result column="CATEGORY_ID" property="categoryId"/>
         <result column="UPVOTES" property="upVotes"/>
     </resultMap>
+    
+    <resultMap id="boardTypeResultMap" type="boardtype">
+        <id column="BOARD_TYPE" property="boardtype"/>
+        <result column="BOARD_NAME" property="boardName"/>
+    </resultMap>
 
     <resultMap id="memberResultMap" type="member">
         <id column="USER_NO" property="postNo"/>
@@ -71,48 +76,48 @@
             <result column="BOARD_TYPE" property="boardType"/>
         </association>
     </resultMap>
+    
+     <resultMap id="attachmentResultMap" type="attachment">
+        <id column="ATTACHMENT_ID" property="attachmentId"/>
+        <result column="POST_NO" property="postNo"/>
+        <result column="FILE_CHANGE_NAME" property="changeName"/>
+        <result column="FILE_SIZE" property="fileSize"/>
+        <result column="FILE_PATH" property="filePath"/>
+        <result column="FILE_ORIGIN_NAME" property="originName"/>
+    </resultMap>
 
 
     <!-- 이찬우 구역 시작 -->
-    <!-- 1. 공지사항 게시글 조회 + 검색 -->
-    <select id="selectNoticeList" parameterType="hashmap"
-            resultMap="boardResultMap">
-        SELECT
-        POST_NO,
-        POST_TITLE,
-        CREATE_DATE,
-        C.CATEGORY
+    <!-- 1. 공지사항 게시글 조회 -->
+
+    <select id="selectNoticeList" resultMap="boardResultMap">
+ 		SELECT
+       	 B.POST_NO,
+       	 B.POST_TITLE,
+      	 B.CREATE_DATE,
+       	 C.CATEGORY AS BOARD_TYPE
         FROM BOARD B
-        JOIN CATEGORY C ON B.BOARD_TYPE = C.BOARD_TYPE
+        JOIN INQUIRY_BOARD I ON B.POST_NO = I.POST_NO 
+        JOIN CATEGORY C ON I.CATEGORY_ID = C.CATEGORY_ID
         WHERE IS_DELETE = FALSE
-        AND B.BOARD_TYPE = #{boardType}
-
-        <if test="keyword != null and keyword != ''">
-            AND BOARD_TITLE LIKE '%${keyword}%'
-        </if>
-
-        ORDER BY CREATE_DATE DESC
+         AND B.BOARD_TYPE = 'N'
+        ORDER BY B.POST_NO DESC
     </select>
 
     <!-- 1. 게시판 글 갯수 조회(페이징바) -->
-    <select id="selectListCount" parameterType="hashmap"
-            resultType="int">
+    
+	
+    <select id="selectNoticeListCount" resultType="int">
         SELECT
         COUNT(*)
         FROM BOARD B
-        JOIN CATEGORY C ON B.BOARD_TYPE = C.BOARD_TYPE
         WHERE IS_DELETE = FALSE
-        AND B.BOARD_TYPE = #{boardType}
-
-        <if test="keyword != null and keyword != ''">
-            AND BOARD_TITLE LIKE '%${keyword}%'
-        </if>
-
-        ORDER BY CREATE_DATE DESC
+        AND B.BOARD_TYPE = 'N'
+        ORDER BY B.CREATE_DATE DESC
     </select>
 
-    <!-- 1:1문의 insert -->
-    <insert id="insertInquiryBoard" parameterType="board">
+    <!-- 2. 1:1문의 insert -->
+    <insert id="insertInquiry" parameterType="board">
         INSERT INTO BOARD
         (USER_WRITER_NO,
          POST_TITLE,
@@ -123,23 +128,26 @@
          BOARD_TYPE)
         VALUES (#{userNo}, #{postTitle}, #{postContent}, DEFAULT, 0, DEFAULT, 'A')
     </insert>
-    <insert id="insertInquiry" parameterType="inquiry">
+<!--     <insert id="insertInquiry" parameterType="boa">
         INSERT INTO INQUIRY_BOARD
         (POST_NO,
          CATEGORY_ID,
          IS_PROCESSED)
         VALUES ((SELECT MAX(POST_NO) FROM BOARD), #{categoryId}, DEFAULT)
-    </insert>
+    </insert> -->
     <insert id="insertInquiryAttachment" parameterType="list">
-    INSERT INTO ATTACHMENT
-    (POST_NO,
-    FILE_ORIGIN_NAME,
-    FILE_CHANGE_NAME,
-    FILE_PATH,
-    FILE_SIZE
-    )VALUES(
-
-    )
+    	INSERT INTO ATTACHMENT(POST_NO,FILE_ORIGIN_NAME, FILE_CHANGE_NAME, FILE_PATH)
+	 	SELECT C.* FROM 
+	 	(
+	 		<foreach collection="list" item="attch" separator="UNION ALL">
+	 			SELECT
+	 				#{attch.originName} as FILE_ORIGIN_NAME,
+	 				#{attch.changeName} as FILE_CHANGE_NAME,
+	 				#{attch.postNo} as POST_NO,
+	 				#{attch.filePath} as FILE_PATH,
+	 			FROM DUAL
+	 		</foreach>
+	 	) C
     </insert>
 
     <!-- 이찬우 구역 끝 -->

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>공지사항_메인페이지</title>
-    <link th:href="@{/css/notice-style.css}" rel="stylesheet" />
+    <link th:href="@{/css/notice-board.css}" rel="stylesheet" />
     <link th:href="@{/css/cs-menu.css}" rel="stylesheet" />
     <link th:href="@{/css/normal-frame.css}" rel="stylesheet" />
-
+	 
     <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css}" 
   rel="stylesheet" />
 
@@ -33,7 +34,7 @@
         <!-- 메뉴바 끝 -->
 
         <!-- 분류, 검색창 -->
-        <form th:action="@{}" method="get">
+        <!-- <form th:action="@{}" method="get">
           <div id="kind-search">
             <select name="noticekind" id="noticekind">
               <option value="6">안내</option>
@@ -60,7 +61,7 @@
               </svg>
             </button>
           </div>
-        </form>
+        </form> -->
         <!-- 분류, 검색창 끝 -->
 
         <!-- 게시글 -->
@@ -73,18 +74,14 @@
             </tr>
           </thead>
           <tbody>
-            <th:block th:if="${empty list}">
-                <tr>
-                    <td colspan="3">공지사항이 존재하지 않습니다</td>
-                </tr>
-            </th:block>
-		 	<c:forEach var="n" items="${list}">
-                   <tr>
-                       <td th:text="${n.boardType}"></td>
-                       <td th:text="${n.postTitle}"></td>
-                       <td th:text="${n.createDate}"></td>
-                   </tr>
-               </c:forEach>
+          <tr th:if="${#lists.isEmpty(list)}">
+            <td colspan="3">공지사항이 존재하지 않습니다</td>
+        </tr>
+		 	 <tr th:each="n : ${list}">
+		         <td th:text="${n.boardType}">분류</td>
+		         <td th:text="${n.postTitle}">제목</td>
+		         <td th:text="${n.createDate}">작성일자</td>
+      		</tr>
           </tbody>
         </table>
         <!-- 게시글 끝 -->
@@ -93,40 +90,32 @@
         
         
         <!-- 관리자만 글 작성 가능 -->
-		  <th:block th:if="${loginUser.userId == 'admin'}">
+		<!--   <th:block th:if="${loginUser.userId == 'admin'}">
               <div id="move-to-insert"><a th:href="">글 작성</a></div>
           </th:block>
-		
+		 -->
 		
 		
 
         <!--페이징바-->
-        <div align="center" class="paging-area">
-        <ul class="pagination">
-			 <th:block th:choose>
-                 <th:block th:when="${pi.currentPage eq 1}">
-                     <li class="page-item disabled"><a class="page-link" th:href="@{}">이전 페이지</a></li>
-                 </th:block>
-                 <th:block th:otherwise>
-                     <li class="page-item"><a class="page-link" th:href="${url}${pi.currentPage - 1}">이전 페이지</a></li>
-                 </th:block>
-             </th:choose>
+       
+<div align="center" class="paging-area">
+    <ul class="pagination">
+        <li th:if="${pi.currentPage > 0}" class="page-item">
+            <a class="page-link" th:href="@{${url}(__${pi.currentPage}__ - 1)}">이전 페이지</a>
+        </li>
+        
+        <li th:each="item : ${#numbers.sequence(pi.startPage, pi.endPage)}" class="page-item">
+            <a class="page-link" th:href="@{${url}(__${item}__)}" th:text="${item}"></a>
+        </li>
+        
+        <li th:if="${pi.currentPage < pi.maxPage}" class="page-item">
+            <a class="page-link" th:href="@{${url}(__${pi.currentPage}__ + 1)}">다음 페이지</a>
+        </li>
+    </ul>
+</div>
+</div>
 
-             <c:forEach var="item" begin="${pi.startPage}" end="${pi.endPage}">
-                 <li class="page-item">
-                     <a class="page-link" th:href="${url}${item}" th:text="${item}"></a>
-                 </li>
-             </c:forEach>
-
-             <th:block th:choose>
-                 <th:block th:when="${pi.currentPage eq pi.maxPage}">
-                     <li class="page-item disabled"><a class="page-link" th:href="@{}">다음 페이지</a></li>
-                 </th:block>
-                 <th:block th:otherwise>
-                     <li class="page-item"><a class="page-link" th:href="${url}${pi.currentPage + 1}">다음 페이지</a></li>
-                 </th:block>
-             </th:choose>
-        </div>
       </div>
     </div>
 

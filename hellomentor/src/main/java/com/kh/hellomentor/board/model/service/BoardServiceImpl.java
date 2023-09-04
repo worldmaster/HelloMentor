@@ -33,19 +33,33 @@ public class BoardServiceImpl implements BoardService {
     //이찬우 구역 시작
     //1. 공지사항 목록 select
     @Override
-    public List<Board> selectNoticeList(int currentPage, Map<String, Object> paramMap) {
-        return boardDao.selectNoticeList(currentPage, paramMap);
+    public List<Board> selectNoticeList(int currentPage) {
+        return boardDao.selectNoticeList(currentPage);
     }
 
     @Override
-    public int selectListCount(Map<String, Object> paramMap) {
-        return boardDao.selectListCount(paramMap);
+    public int selectNoticeListCount() {
+        return boardDao.selectNoticeListCount();
     }
 
     //2. 1:1문의 작성
     @Override
-    public int insertInquiry(Board board, List<Attachment> list, Inquiry inquiry, String severFolderPath, String webPath) throws Exception {
-        return 0;
+    public int insertInquiry(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception {
+    	int postNo = boardDao.insertInquiry(board);
+    	
+    	int result = 0;
+		if(postNo > 0 && !list.isEmpty()) {
+			for(Attachment attach    :   list) {
+				attach.setPostNo(postNo);
+				attach.setFilePath(webPath);
+			}
+			result = boardDao.insertInquiryAttachment(list);
+			
+			if(result != list.size()) {// 이미지 삽입 실패시 강제 예외 발생
+				throw new Exception("예외발생");
+			}
+		}
+		return result;
     }
     //이찬우 구역 끝
 }
