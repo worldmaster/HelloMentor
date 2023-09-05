@@ -1,5 +1,6 @@
 package com.kh.hellomentor.member.model.service;
 
+import com.kh.hellomentor.member.model.vo.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,7 +8,6 @@ import com.kh.hellomentor.member.model.dao.MemberDao;
 import com.kh.hellomentor.member.model.vo.Member;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -26,8 +26,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Map<String, Object>> getFollowList(int userNo) {
+    public List<Member> getFollowList(int userNo) {
         return memberDao.getFollowList(userNo);
     }
+
+    @Override
+    public List<Profile> getProfileList(int userNo) {
+        return memberDao.getProfileList(userNo);
+    }
+
+    @Override
+    public List<Member> getFollowerList(int userNo) {
+        return memberDao.getFollwerList(userNo);
+    }
+
 }
 

@@ -17,4 +17,6 @@ public class Payment {
     private int userNo;
     private Date paymentDate;
     private int price;
+    private String payContent;
+    private String payType;
 }

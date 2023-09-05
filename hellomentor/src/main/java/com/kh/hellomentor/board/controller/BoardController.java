@@ -48,8 +48,11 @@ public class BoardController {
 
     //    마이페이지 내가 쓴 글
     @RequestMapping("/profile_my_post")
-    public String profileMyPost(Model model) {
-        int userNo = 2;
+    public String profileMyPost(Model model, HttpSession session) {
+
+        Member loginUser = (Member) session.getAttribute("loginUser");
+
+        int userNo = loginUser.getUserNo();
 
         List<Board> myPosts = boardService.getPostsByUserNo(userNo);
 
@@ -75,8 +78,10 @@ public class BoardController {
 
     // 마이페이지 내가 쓴 댓글
     @RequestMapping("/profile_my_reply")
-    public String profileMyReply(Model model) {
-        int userNo = 2;
+    public String profileMyReply(Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+
+        int userNo = loginUser.getUserNo();
 
         List<Reply> myReplies = boardService.getReplyByUserNo(userNo);
 
@@ -127,92 +132,82 @@ public class BoardController {
 
     //이찬우 구역 시작
     //1. 공지사항 게시글 조회, 글 갯수 조회 (페이징바)
-    @GetMapping("/list/{boardType}")
-    public String selectList(@PathVariable("boardType") String boardType,
-                             @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-                             Model model,
-                             @RequestParam Map<String, Object> paramMap
+    @GetMapping("/noticelist")
+    public String selectNoticeList(
+         @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+         Model model
     ) {
 
-        paramMap.put("boardType", boardType);
-        List<Board> list = boardService.selectNoticeList(currentPage, paramMap);
+        List<Board> list = boardService.selectNoticeList(currentPage);
 
         // 총 게시글 갯수
-        int total = boardService.selectListCount(paramMap);
+        int total = boardService.selectNoticeListCount();
         int pageLimit = 10;
-        int boardLimit = 5;
+        int boardLimit = 10;
         PageInfo pi = Pagination.getPageInfo(total, currentPage, pageLimit, boardLimit);
-
-        model.addAttribute("param", paramMap);
         model.addAttribute("list", list);
         model.addAttribute("pi", pi);
 
         return "board/notice/notice-board";
     }
 
+    
+    
     //2. 문의 내역 insert
     @PostMapping("/insert.iq")
     public String insertBoard(
             Board board,
-            Inquiry inquiry,
             @RequestParam(value = "upfile", required = false) List<MultipartFile> upfiles,
-            HttpSession session,
-            Model model,
-            @ModelAttribute("loginUser") Member loginUser
+			HttpSession session, 
+			Model model
     ) {
 
-        // 이미지, 파일을 저장할 저장경로 얻어오기
-        // /resources/images/board/{boardCode}/
-        String webPath = "/resources/images/attachment/";
-        String severFolderPath = application.getRealPath(webPath);
+    	// 이미지, 파일을 저장할 저장경로 얻어오기
+		// /resources/images/board/{boardCode}/
+		String webPath = "/resources/images/board/" + "i" + "/";
+		String severFolderPath = application.getRealPath(webPath);
 
-        // Board 객체에 데이터 추가(boardCode , boardWriter)
-        board.setUserNo(loginUser.getUserNo());
+		board.setUserNo(2);
+		
+		// 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
+		File dir = new File(severFolderPath);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		
+		List<Attachment> attachList = new ArrayList();
+		
+		int level = -1;
+		for (MultipartFile upfile : upfiles) {
+			// input[name=upFile]로 만들어두면 비어있는 file이 넘어올수 있음.
+			level++;
+			if (upfile.isEmpty())
+				continue;
 
-        // 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
-        File dir = new File(severFolderPath);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-
-        // 첨부파일같은 경우 선택하고 안하고 상관없이 객체는 생성이 된다 단, 길이가 0일수가 있음.
-        // 전달된 파일이 있는경우 해당파일을 웹서버에 저장하고, Attachment테이블에 해당정보를 등록.
-        // 없는경우 위프로세스를 패스할것.
-
-        List<Attachment> attachList = new ArrayList();
-
-        int level = -1;
-        for (MultipartFile upfile : upfiles) {
-            // input[name=upFile]로 만들어두면 비어있는 file이 넘어올수 있음.
-            level++;
-            if (upfile.isEmpty())
-                continue;
-
-            // 1. 파일명 재정의 해주는 함수.
-            String changeName = Utils.saveFile(upfile, severFolderPath);
-            Attachment at = Attachment.
-                    builder().
-                    changeName(changeName).
-                    originName(upfile.getOriginalFilename()).
-                    build();
-            attachList.add(at);
-        }
-
-        int result = 0;
-
-        try {
-            result = boardService.insertInquiry(board, attachList, inquiry, severFolderPath, webPath);
-        } catch (Exception e) {
-            //log.error("error = {}", e.getMessage());
-            e.printStackTrace();
-        }
+			// 1. 파일명 재정의 해주는 함수.
+			String changeName = Utils.saveFile(upfile, severFolderPath);
+			Attachment at = Attachment.
+							builder().
+							changeName(changeName).
+							originName(upfile.getOriginalFilename()).
+							build();
+			attachList.add(at);
+		}
+		
+		int result = 0;
+		
+		try {
+			result = boardService.insertInquiry(board, attachList, severFolderPath, webPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
         if (result > 0) {
-            session.setAttribute("alertMsg", "게시글 작성에 성공하셨습니다.");
-            return "redirect:/board/list/";
+            //session.setAttribute("alertMsg", "게시글 작성에 성공하셨습니다.");
+            return "redirect:/";
         } else {
-            model.addAttribute("errorMsg", "게시글 작성 실패");
-            return "common/errorPage";
+           // model.addAttribute("errorMsg", "게시글 작성 실패");
+            return "redirect:/";
         }
     }
     //이찬우 구역 끝

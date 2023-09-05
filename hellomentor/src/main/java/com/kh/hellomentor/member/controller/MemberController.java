@@ -2,6 +2,7 @@ package com.kh.hellomentor.member.controller;
 
 import javax.servlet.http.HttpSession;
 
+import com.kh.hellomentor.member.model.vo.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,14 +16,21 @@ import com.kh.hellomentor.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @Slf4j
 public class MemberController {
+
+    private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
     @Autowired
     private MemberService mService;
@@ -70,16 +78,86 @@ public class MemberController {
         return url;
     }
 
+    @RequestMapping("/home_follow")
+        public String homeFollow(){
+        return "mypage/home_follow";
+    }
     @RequestMapping("/home_following_list")
     public String getFollowList(Model model) {
         int userNo = 2;
+        List<Member> followingList = mService.getFollowList(userNo);
+        List<Profile> profileList = mService.getProfileList(userNo);
 
-        List<Map<String, Object>> followingList = mService.getFollowList(userNo);
+        List<Map<String, Object>> combinedList = new ArrayList<>();
+        for (Member member : followingList) {
+            Map<String, Object> combinedInfo = new HashMap<>();
+            combinedInfo.put("member", member);
 
-        model.addAttribute("followingList", followingList);
+            Profile profile = null;
+            for (Profile p : profileList) {
+                if (p.getUserNo() == member.getUserNo()) {
+                    profile = p;
+                    break;
+                }
+            }
 
+            if (profile != null) {
+                combinedInfo.put("profile", profile);
+            } else {
+                Profile defaultProfile = new Profile();
+                defaultProfile.setFilePath("/img/");
+                defaultProfile.setChangeName("default-profile.jpg");
+                combinedInfo.put("profile", defaultProfile);
+            }
+
+            combinedList.add(combinedInfo);
+        }
+
+        model.addAttribute("combinedList", combinedList);
+        logger.info("Combined List: {}", combinedList);
         return "mypage/home_following_list";
     }
+
+
+    @RequestMapping("/home_follower_list")
+    public String getFollowerList(Model model) {
+        int userNo = 2;
+        List<Member> followerList = mService.getFollowerList(userNo); // 팔로워 목록을 가져오는 메소드를 호출해야 합니다.
+        List<Profile> profileList = mService.getProfileList(userNo); // 프로필 목록을 가져오는 메소드를 호출해야 합니다.
+
+        List<Map<String, Object>> combinedList = new ArrayList<>();
+        for (Member member : followerList) {
+            Map<String, Object> combinedInfo = new HashMap<>();
+            combinedInfo.put("member", member);
+
+            Profile profile = null;
+            for (Profile p : profileList) {
+                if (p.getUserNo() == member.getUserNo()) {
+                    profile = p;
+                    break;
+                }
+            }
+
+            if (profile != null) {
+                combinedInfo.put("profile", profile);
+            } else {
+                Profile defaultProfile = new Profile();
+                defaultProfile.setFilePath("/img/");
+                defaultProfile.setChangeName("default-profile.jpg");
+                combinedInfo.put("profile", defaultProfile);
+            }
+
+            combinedList.add(combinedInfo);
+        }
+
+        model.addAttribute("combinedList", combinedList);
+        logger.info("Combined List: {}", combinedList);
+        return "mypage/home_follower_list";
+    }
+
+
+
+
 }
 
 

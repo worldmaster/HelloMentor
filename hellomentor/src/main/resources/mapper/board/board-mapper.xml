@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="boardMapper">
+
+
+    <!-- resultMap 시작 -->
+    <resultMap id="boardResultMap" type="board">
+        <id column="POST_NO" property="postNo"/>
+        <result column="USER_WRITER_NO" property="userNo"/>
+        <result column="POST_TITLE" property="postTitle"/>
+        <result column="POST_CONTENT" property="postContent"/>
+        <result column="IS_DELETE" property="isDeleted"/>
+        <result column="VIEWS" property="views"/>
+        <result column="CREATE_DATE" property="createDate"/>
+        <result column="BOARD_TYPE" property="boardType"/>
+    </resultMap>
+
+    <resultMap id="categoryResultMap" type="category">
+        <id column="CATEGORY_ID" property="categoryId"/>
+        <result column="BOARD_TYPE" property="boardType"/>
+        <result column="CATEGORY" property="category"/>
+    </resultMap>
+
+    <resultMap id="inquiryResultMap" type="inquiry">
+        <id column="POST_NO" property="postNo"/>
+        <result column="CATEGORY_ID" property="categoryId"/>
+        <result column="IS_PROCESSED" property="isProcessed"/>
+        <result column="CATEGORY_ID" property="answer"/>
+    </resultMap>
+
+    <resultMap id="answerResultMap" type="answer">
+        <id column="POST_NO" property="postNo"/>
+        <result column="K_POST_NO" property="knowledgePostNo"/>
+        <result column="IS_ACCEPTED" property="isAccepted"/>
+    </resultMap>
+
+    <resultMap id="freeResultMap" type="free">
+        <id column="POST_NO" property="postNo"/>
+        <result column="UPVOTES" property="upVotes"/>
+    </resultMap>
+
+    <resultMap id="knowledgeResultMap" type="knowledge">
+        <id column="POST_NO" property="postNo"/>
+        <result column="CATEGORY_ID" property="categoryId"/>
+        <result column="UPVOTES" property="upVotes"/>
+    </resultMap>
+    
+    <resultMap id="boardTypeResultMap" type="boardtype">
+        <id column="BOARD_TYPE" property="boardtype"/>
+        <result column="BOARD_NAME" property="boardName"/>
+    </resultMap>
+
+    <resultMap id="memberResultMap" type="member">
+        <id column="USER_NO" property="postNo"/>
+        <result column="USER_ID" property="userId"/>
+        <result column="USER_PWD" property="userPwd"/>
+        <result column="USER_NAME" property="userName"/>
+        <result column="PHONE" property="phone"/>
+        <result column="EMAIL" property="email"/>
+        <result column="ENROLL_DATE" property="enrollDate"/>
+        <result column="STATUS" property="status"/>
+        <result column="INTRODUCTION" property="introduction"/>
+        <result column="MEMBER_TYPE" property="memberType"/>
+        <result column="TOKEN" property="token"/>
+        <result column="GRADE" property="grade"/>
+    </resultMap>
+
+    <resultMap id="replyResultMap" type="reply">
+        <id column="REPLY_ID" property="replyId"/>
+        <result column="POST_NO" property="postNo"/>
+        <result column="USER_NO" property="userNo"/>
+        <result column="REPLY_CONTENT" property="replyContent"/>
+        <result column="IS_DELETE" property="isDeleted"/>
+        <result column="CREATE_AT" property="createDate"/>
+        <association property="boardType" javaType="String">
+            <result column="BOARD_TYPE" property="boardType"/>
+        </association>
+    </resultMap>
+    
+     <resultMap id="attachmentResultMap" type="attachment">
+        <id column="ATTACHMENT_ID" property="attachmentId"/>
+        <result column="POST_NO" property="postNo"/>
+        <result column="FILE_CHANGE_NAME" property="changeName"/>
+        <result column="FILE_SIZE" property="fileSize"/>
+        <result column="FILE_PATH" property="filePath"/>
+        <result column="FILE_ORIGIN_NAME" property="originName"/>
+    </resultMap>
+
+
+    <!-- 이찬우 구역 시작 -->
+    <!-- 1. 공지사항 게시글 조회 -->
+
+    <select id="selectNoticeList" resultMap="boardResultMap">
+ 		SELECT
+       	 B.POST_NO,
+       	 B.POST_TITLE,
+      	 B.CREATE_DATE,
+       	 C.CATEGORY AS BOARD_TYPE
+        FROM BOARD B
+        JOIN INQUIRY_BOARD I ON B.POST_NO = I.POST_NO 
+        JOIN CATEGORY C ON I.CATEGORY_ID = C.CATEGORY_ID
+        WHERE IS_DELETE = FALSE
+         AND B.BOARD_TYPE = 'N'
+        ORDER BY B.POST_NO DESC
+    </select>
+
+    <!-- 1. 게시판 글 갯수 조회(페이징바) -->
+    
+	
+    <select id="selectNoticeListCount" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM BOARD B
+        WHERE IS_DELETE = FALSE
+        AND B.BOARD_TYPE = 'N'
+        ORDER BY B.CREATE_DATE DESC
+    </select>
+
+    <!-- 2. 1:1문의 insert -->
+    <insert id="insertInquiry" parameterType="board">
+        INSERT INTO BOARD
+        (USER_WRITER_NO,
+         POST_TITLE,
+         POST_CONTENT,
+         IS_DELETE,
+         VIEWS,
+         CREATE_DATE,
+         BOARD_TYPE)
+        VALUES (#{userNo}, #{postTitle}, #{postContent}, DEFAULT, 0, DEFAULT, 'A')
+    </insert>
+<!--     <insert id="insertInquiry" parameterType="boa">
+        INSERT INTO INQUIRY_BOARD
+        (POST_NO,
+         CATEGORY_ID,
+         IS_PROCESSED)
+        VALUES ((SELECT MAX(POST_NO) FROM BOARD), #{categoryId}, DEFAULT)
+    </insert> -->
+    <insert id="insertInquiryAttachment" parameterType="list">
+    	INSERT INTO ATTACHMENT(POST_NO,FILE_ORIGIN_NAME, FILE_CHANGE_NAME, FILE_PATH)
+	 	SELECT C.* FROM 
+	 	(
+	 		<foreach collection="list" item="attch" separator="UNION ALL">
+	 			SELECT
+	 				#{attch.originName} as FILE_ORIGIN_NAME,
+	 				#{attch.changeName} as FILE_CHANGE_NAME,
+	 				#{attch.postNo} as POST_NO,
+	 				#{attch.filePath} as FILE_PATH,
+	 			FROM DUAL
+	 		</foreach>
+	 	) C
+    </insert>
+
+    <!-- 이찬우 구역 끝 -->
+
+
+    <!--마이페이지 글 조회-->
+    <select id="getMyPost" resultMap="boardResultMap" parameterType="int">
+        SELECT POST_NO,
+               USER_WRITER_NO,
+               POST_TITLE,
+               BOARD_TYPE,
+               CREATE_DATE
+        FROM BOARD
+        WHERE USER_WRITER_NO = #{userNo}
+    </select>
+
+    <!--	마이페이지 댓글 조회-->
+    <select id="getMyReply" resultMap="replyResultMap" parameterType="int">
+        SELECT R.REPLY_ID,
+               R.POST_NO,
+               R.USER_NO,
+               R.REPLY_CONTENT,
+               R.CREATE_AT,
+               B.BOARD_TYPE
+        FROM REPLY R
+                 JOIN
+             BOARD B ON R.POST_NO = B.POST_NO
+        WHERE R.USER_NO = #{userNo}
+    </select>
+
+
+</mapper>

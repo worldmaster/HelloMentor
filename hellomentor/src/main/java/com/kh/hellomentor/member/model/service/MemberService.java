@@ -1,9 +1,9 @@
 package com.kh.hellomentor.member.model.service;
 
 import com.kh.hellomentor.member.model.vo.Member;
+import com.kh.hellomentor.member.model.vo.Profile;
 
 import java.util.List;
-import java.util.Map;
 
 public interface MemberService {
 
@@ -11,5 +11,9 @@ public interface MemberService {
 
     int insertMember(Member m);
 
-    List<Map<String, Object>> getFollowList(int userNo);
+    List<Member> getFollowList(int userNo);
+
+    List<Profile> getProfileList(int userNo);
+
+    List<Member> getFollowerList(int userNo);
 }
