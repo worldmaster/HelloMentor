@@ -41,6 +41,11 @@ public class MemberDao {
     }
 
     public List<Member> getFollwerList(int userNo) {
-        return sqlSession.selectList("memberMapper.getFollowerList",userNo);
+        return sqlSession.selectList("memberMapper.getFollowerList", userNo);
     }
+
+    public void updateMember(Member updatedMember) {
+        sqlSession.update("memberMapper.updateProfile", updatedMember);
+    }
+
 }

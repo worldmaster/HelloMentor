@@ -40,5 +40,10 @@ public class MemberServiceImpl implements MemberService {
         return memberDao.getFollwerList(userNo);
     }
 
+    @Override
+    public void updateMember(Member updatedMember) {
+        memberDao.updateMember(updatedMember);
+    }
+
 }
 

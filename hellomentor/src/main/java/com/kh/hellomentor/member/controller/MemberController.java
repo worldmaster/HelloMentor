@@ -2,27 +2,29 @@ package com.kh.hellomentor.member.controller;
 
 import javax.servlet.http.HttpSession;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.hellomentor.member.model.vo.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.kh.hellomentor.member.model.service.MemberService;
 import com.kh.hellomentor.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,12 +81,15 @@ public class MemberController {
     }
 
     @RequestMapping("/home_follow")
-        public String homeFollow(){
+    public String homeFollow() {
         return "mypage/home_follow";
     }
+
     @RequestMapping("/home_following_list")
-    public String getFollowList(Model model) {
-        int userNo = 2;
+    public String getFollowList(Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+
+        int userNo = loginUser.getUserNo();
         List<Member> followingList = mService.getFollowList(userNo);
         List<Profile> profileList = mService.getProfileList(userNo);
 
@@ -120,8 +125,9 @@ public class MemberController {
 
 
     @RequestMapping("/home_follower_list")
-    public String getFollowerList(Model model) {
-        int userNo = 2;
+    public String getFollowerList(Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        int userNo = loginUser.getUserNo();
         List<Member> followerList = mService.getFollowerList(userNo);
         List<Profile> profileList = mService.getProfileList(userNo);
 
@@ -157,15 +163,48 @@ public class MemberController {
 
 
     @RequestMapping("/profile_edit_info")
-    public String profileEdit(){
-
+    public String profileEdit(Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        if ("E".equals(loginUser.getMemberType())) {
+            loginUser.setMemberType("멘티");
+        } else if ("O".equals(loginUser.getMemberType())) {
+            loginUser.setMemberType("멘토");
+        }
+        model.addAttribute("loginUser", loginUser);
         return "mypage/profile_edit_info";
     }
 
 
+    @PostMapping("/updateProfile")
+    public ResponseEntity<String> updateProfile(@RequestBody Map<String, String> requestBody, HttpSession session) {
+        String originPwd = requestBody.get("originPwd");
+        String newPwd = requestBody.get("newPwd");
+        String intro = requestBody.get("intro");
+
+        Member loginUser = (Member) session.getAttribute("loginUser");
+
+        if (!originPwd.equals(loginUser.getUserPwd())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("현재 비밀번호가 일치하지 않습니다.");
+        }
+
+        loginUser.setUserPwd(newPwd);
+        loginUser.setIntroduction(intro);
+        mService.updateMember(loginUser);
+
+        return ResponseEntity.ok("프로필이 업데이트되었습니다.");
+    }
 
 
 }
+
+
+
+
+
+
+
+
+
 
 
 
