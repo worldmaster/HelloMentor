@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.hellomentor.board.model.service.BoardService;
 import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.board.model.vo.Board;
+import com.kh.hellomentor.board.model.vo.Free;
 import com.kh.hellomentor.board.model.vo.Inquiry;
 import com.kh.hellomentor.board.model.vo.Reply;
 import com.kh.hellomentor.common.Utils;
@@ -164,10 +165,10 @@ public class BoardController {
 
     	// 이미지, 파일을 저장할 저장경로 얻어오기
 		// /resources/images/board/{boardCode}/
-		String webPath = "/resources/images/board/" + "i" + "/";
+		String webPath = "/resources/static/img/attachment";
 		String severFolderPath = application.getRealPath(webPath);
 
-		board.setUserNo(2);
+		board.setUserNo("2");
 		
 		// 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
 		File dir = new File(severFolderPath);
@@ -204,11 +205,66 @@ public class BoardController {
 
         if (result > 0) {
             //session.setAttribute("alertMsg", "게시글 작성에 성공하셨습니다.");
-            return "redirect:/";
+            return "board/inquiry/inquiry-board";
         } else {
            // model.addAttribute("errorMsg", "게시글 작성 실패");
-            return "redirect:/";
+            return "board/inquiry/inquiry-board";
         }
+    }
+    //3. 문의 내역 조회
+    @GetMapping("/inquirylist")
+    public String selectInquiryList(
+         Model model
+    ) {
+        List<Board> list = boardService.selectInquiryList();
+        model.addAttribute("list", list);
+        List<Inquiry> list2 = boardService.selectInquiryList2();
+        model.addAttribute("list2", list2);
+        
+        List<Object[]> combinedList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            combinedList.add(new Object[] { list.get(i), list2.get(i) });
+        }
+        model.addAttribute("combinedList", combinedList);
+
+        return "board/inquiry/inquiry-board";
+    }
+    //3-1. 문의 내역 상세 조회
+    @GetMapping("/inquirydetail")
+    public String selectInquiryDetail(
+			Model model
+    ) {
+    	 List<Board> list = boardService.selectinquirydetail(2);
+         model.addAttribute("list", list);
+         List<Inquiry> list2 = boardService.selectinquirydetail2(2);
+         model.addAttribute("list2", list2);
+         
+         List<Object[]> combinedList = new ArrayList<>();
+         for (int i = 0; i < list.size(); i++) {
+             combinedList.add(new Object[] { list.get(i), list2.get(i) });
+         }
+         model.addAttribute("combinedList", combinedList);
+
+         return "board/inquiry/inquiry-detail";
+         
+    }
+    //4. 자유게시판 글 조회
+    @GetMapping("/freelist")
+    public String selectFreeList(
+         Model model
+    ) {
+        List<Board> list = boardService.selectFreeList();
+        model.addAttribute("list", list);
+        List<Free> list2 = boardService.selectFreeList2();
+        model.addAttribute("list2", list2);
+        
+        List<Object[]> combinedList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            combinedList.add(new Object[] { list.get(i), list2.get(i) });
+        }
+        model.addAttribute("combinedList", combinedList);
+
+        return "board/free/free-board";
     }
     //이찬우 구역 끝
 

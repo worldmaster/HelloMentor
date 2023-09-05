@@ -43,9 +43,9 @@ public class HomeController {
         return "board/faq/faq-board";
     }
 
-    @RequestMapping("/free")
+    @RequestMapping("/free-insert")
     public String free() {
-        return "board/free/free";
+        return "board/free/free-insert";
     }
 
     @RequestMapping("/free-board")
