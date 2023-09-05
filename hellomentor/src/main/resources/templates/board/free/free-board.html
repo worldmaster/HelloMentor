@@ -23,8 +23,8 @@
       <div class="section">
         <h1 class="title">자유게시판</h1>
 
-        <!-- 분류, 검색창 -->
-        <form th:action="@{}" method="get">
+ <!--    분류, 검색창 -->
+<!--         <form th:action="@{}" method="get">
           <div id="category-search">
             <select name="free-category" id="free-category">
               <option value="1">작성자</option>
@@ -48,8 +48,8 @@
               </svg>
             </button>
           </div>
-        </form>
-        <!-- 분류, 검색창 끝 -->
+        </form> -->
+  <!--  분류, 검색창 끝 -->
 
         <div id="button-container">
           <!-- 비동기식 list 조회 -->
@@ -58,7 +58,7 @@
           <button id="align-new">최신순</button>
         </div>
 
-        <!-- 핫 게시글 -->
+         <!-- 핫 게시글 -->
         <table align="center" id="hot-area">
           <thead>
             <tr>
@@ -82,11 +82,14 @@
         <!-- 일반 게시글 -->
         <table align="center" id="free-area">
           <tbody>
-            <tr onclick="location.href=''">
-              <td width="150">이찬우</td>
-              <td width="550">서버 점검 안내 [1]</td>
-              <td width="70">100</td>
-              <td width="70">10</td>
+        	<tr th:if="${#lists.isEmpty(list)}">
+				<td colspan="4">글이 존재하지 않습니다</td>
+			</tr>
+			<tr th:each="item : ${combinedList}"  class="movingDetailFree">
+              <td width="150" th:text="${item[0].userNo}">사용자 ID</td>
+              <td width="550" th:text="${item[0].postTitle}">글 제목</td>
+              <td width="70" th:text="${item[0].views}">조회수</td>
+              <td width="70" th:text="${item[1].upVotes}">추천수</td>
             </tr>
           </tbody>
         </table>
@@ -95,13 +98,13 @@
         <div id="move-to-insert"><button>글 작성</button></div>
 
         <!--페이징바-->
-        <div align="center" class="paging-area">
+<!--         <div align="center" class="paging-area">
           <button onclick="location.href= '#' ">이전 페이지</button>
           <button onclick="location.href='#'">1</button>
           <button onclick="location.href='#'">2</button>
           <button onclick="location.href='#'">3</button>
           <button onclick="location.href = '#'">다음 페이지</button>
-        </div>
+        </div> -->
       </div>
     </div>
 
