@@ -14,7 +14,7 @@ import java.sql.Date;
 @Builder
 public class Board {
     private int postNo;
-    private int userNo;
+    private String userNo;
     private String postTitle;
     private String postContent;
     private boolean isDeleted;

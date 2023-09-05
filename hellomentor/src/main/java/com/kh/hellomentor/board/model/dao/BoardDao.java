@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.board.model.vo.Board;
 import com.kh.hellomentor.board.model.vo.BoardType;
+import com.kh.hellomentor.board.model.vo.Free;
 import com.kh.hellomentor.board.model.vo.Inquiry;
 import com.kh.hellomentor.board.model.vo.Reply;
 import com.kh.hellomentor.member.controller.MemberController;
@@ -65,5 +66,32 @@ public class BoardDao {
     public int insertInquiryAttachment(List<Attachment> list) {
         return session.insert("boardMapper.insertInquiryAttachment", list);
     }
+    
+    // 3. 문의내역 조회
+	
+    public List<Board> selectInquiryList() {
+        return session.selectList("boardMapper.selectInquiryList");
+    }
+    public List<Inquiry> selectInquiryList2() {
+        return session.selectList("boardMapper.selectInquiryList2");
+    }
+    
+    // 4. 문의내역 상세 조회
+    public Board selectinquirydetail(int postNo) {
+        return session.selectOne("boardMapper.selectinquirydetail");
+    }
+    public Inquiry selectinquirydetail2(int postNo) {
+        return session.selectOne("boardMapper.selectinquirydetail");
+    }
+    
+    // 5. 자유게시판 조회
+	
+    public List<Board> selectFreeList() {
+        return session.selectList("boardMapper.selectFreeList");
+    }
+    public List<Free> selectFreeList2() {
+        return session.selectList("boardMapper.selectFreeList2");
+    }
+    //6. 지식인 조회
     //이찬우 구역 끝
 }

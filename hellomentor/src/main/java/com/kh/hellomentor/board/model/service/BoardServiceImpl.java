@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.hellomentor.board.model.dao.BoardDao;
 import com.kh.hellomentor.board.model.vo.Board;
+import com.kh.hellomentor.board.model.vo.Free;
 import com.kh.hellomentor.board.model.vo.Inquiry;
 import com.kh.hellomentor.board.model.vo.Reply;
 import com.kh.hellomentor.common.Utils;
@@ -61,6 +62,35 @@ public class BoardServiceImpl implements BoardService {
 		}
 		return result;
     }
+    
+    //3. 문의내역 조회
+    @Override
+    public List<Board> selectInquiryList(){
+    	 return boardDao.selectInquiryList();
+    }
+    @Override
+    public List<Inquiry> selectInquiryList2(){
+   	 return boardDao.selectInquiryList2();
+   }
+    //4.문의내역 상세조회
+    @Override
+    public List<Board> selectinquirydetail(int postNo){
+   	 return boardDao.selectInquiryList();
+   }
+    @Override
+   public List<Inquiry> selectinquirydetail2(int postNo){
+  	 return boardDao.selectInquiryList2();
+  }
+    
+    //5. 자유게시판 조회
+    @Override
+    public List<Board> selectFreeList(){
+    	 return boardDao.selectFreeList();
+    }
+    @Override
+    public List<Free> selectFreeList2(){
+    	return boardDao.selectFreeList2();
+   }
     //이찬우 구역 끝
 }
 
