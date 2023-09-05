@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <title>Insert title here</title>
 
+
     <script>
+        $(document).ready(function() {
+            loadPage('home_following_list');
+        });
         function loadPage(pageName) {
             $.get(pageName, function(data) {
                 $('.my_following').html(data);

@@ -122,8 +122,8 @@ public class MemberController {
     @RequestMapping("/home_follower_list")
     public String getFollowerList(Model model) {
         int userNo = 2;
-        List<Member> followerList = mService.getFollowerList(userNo); // 팔로워 목록을 가져오는 메소드를 호출해야 합니다.
-        List<Profile> profileList = mService.getProfileList(userNo); // 프로필 목록을 가져오는 메소드를 호출해야 합니다.
+        List<Member> followerList = mService.getFollowerList(userNo);
+        List<Profile> profileList = mService.getProfileList(userNo);
 
         List<Map<String, Object>> combinedList = new ArrayList<>();
         for (Member member : followerList) {
@@ -153,6 +153,13 @@ public class MemberController {
         model.addAttribute("combinedList", combinedList);
         logger.info("Combined List: {}", combinedList);
         return "mypage/home_follower_list";
+    }
+
+
+    @RequestMapping("/profile_edit_info")
+    public String profileEdit(){
+
+        return "mypage/profile_edit_info";
     }
 
 
