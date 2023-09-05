@@ -16,4 +16,7 @@ public interface MemberService {
     List<Profile> getProfileList(int userNo);
 
     List<Member> getFollowerList(int userNo);
+
+    void updateMember(Member loginUser);
+
 }

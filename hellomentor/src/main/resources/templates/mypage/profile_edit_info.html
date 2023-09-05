@@ -9,7 +9,7 @@
 <div class="my_editinfo_content1">
     <div class="my_editinfo_box_1">
         <div class="my_editinfo_profile_img">
-            <img th:src="@{img/profile-img.jpeg}" />
+            <img th:src="@{img/profile-img.jpeg}"/>
         </div>
         <span>프로필 사진 변경하기</span>
     </div>
@@ -17,46 +17,47 @@
     <div class="my_editinfo_box_2">
         <div class="my_editinfo_inputbox">
             <span>계정 ID</span>
-            <input type="text" id="edit_info_userId" value="가나다라마바사" />
+            <input type="text" id="edit_info_userId" th:value="${loginUser.userId}" disabled/>
         </div>
     </div>
 
     <div class="my_editinfo_box_2">
         <div class="my_editinfo_inputbox">
             <span>이름</span>
-            <input type="text" id="edit_info_userName" value="임재린"  />
+            <input type="text" id="edit_info_userName" th:value="${loginUser.userName}" disabled/>
         </div>
     </div>
 
     <div class="my_editinfo_box_2">
         <div class="my_editinfo_inputbox">
             <span>현재 비밀번호</span>
-            <input type="password" id="edit_info_userPwd" value="임재린" style="background-color: white">
+            <input type="password" id="edit_info_userPwd" value="" style="background-color: white">
         </div>
     </div>
 
     <div class="my_editinfo_box_3">
         <div class="my_inputbox_row">
             <span>변경할 비밀번호</span>
-            <input type="password" id="edit_info_useroriginPwd" value="임재린" style="background-color: white">
+            <input type="password" id="edit_info_useroriginPwd" value="" style="background-color: white">
         </div>
         <div class="my_inputbox_row" style="margin-left: 10%">
             <span>비밀번호 확인</span>
-            <input type="password" id="edit_info_usernewPwd" value="임재린" style="background-color: white">
+            <input type="password" id="edit_info_usernewPwd" value="" style="background-color: white">
         </div>
     </div>
 
     <div class="my_editinfo_box_2">
         <div class="my_editinfo_inputbox">
             <span>가입 상태</span>
-            <input type="text" id="edit_info_status" value="멘토">
+            <input type="text" id="edit_info_status" th:value="${loginUser.memberType}" disabled>
         </div>
     </div>
 
     <div class="my_editinfo_box_2">
         <div class="my_editinfo_inputbox">
             <span>한 줄 소개</span>
-            <input type="text" id="edit_info_intro" value="멘토" style="background-color: white">
+            <input type="text" id="edit_info_intro" th:value="${loginUser.introduction}"
+                   style="background-color: white">
         </div>
     </div>
 
@@ -81,29 +82,71 @@
 </div>
 
 
-
-
-
-
-
-
-
-
 </div>
 
 
+<script>
+    document.getElementById('my_editinfo_editBtn').addEventListener('click', function () {
+        var currentPassword = document.getElementById('edit_info_userPwd').value;
+        var newPwd = document.getElementById('edit_info_useroriginPwd').value;
+        var newPasswordConfirm = document.getElementById('edit_info_usernewPwd').value;
+        var introduction = document.getElementById('edit_info_intro').value;
+
+
+        if (currentPassword === "") {
+            alert("현재 비밀번호를 입력하세요.");
+            return;
+        }
+        // 변경할 비밀번호와 비밀번호 확인이 일치하지 않으면 alert 창 띄우기
+        if (newPwd !== newPasswordConfirm) {
+            alert("비밀번호 확인이 일치하지 않습니다.");
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "updateProfile", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        var data = JSON.stringify({
+            originPwd: currentPassword,
+            newPwd: newPwd,
+            intro: introduction
+        });
+
+        xhr.send(data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    alert("프로필이 업데이트되었습니다.");
+                    document.getElementById('edit_info_userPwd').value = "";
+                    document.getElementById('edit_info_useroriginPwd').value = "";
+                    document.getElementById('edit_info_usernewPwd').value = "";
+                } else {
+                    alert(xhr.responseText);
+                }
+            }
+        };
+    });
+</script>
+
 
 <script>
-    document.getElementById('my_editinfo_withdrawBtn').addEventListener('click', function() {
+
+</script>
+
+
+<script>
+
+    document.getElementById('my_editinfo_withdrawBtn').addEventListener('click', function () {
         document.getElementById('withdrawModal').style.display = 'block';
     });
 
-    document.getElementById('withdrawyesButton').addEventListener('click', function() {
+    document.getElementById('withdrawyesButton').addEventListener('click', function () {
         // 탈퇴 처리 코드
         document.getElementById('withdrawModal').style.display = 'none';
     });
 
-    document.getElementById('withdrawnoButton').addEventListener('click', function() {
+    document.getElementById('withdrawnoButton').addEventListener('click', function () {
         document.getElementById('withdrawModal').style.display = 'none';
     });
 
