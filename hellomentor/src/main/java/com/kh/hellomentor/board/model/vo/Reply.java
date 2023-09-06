@@ -15,7 +15,7 @@ import java.sql.Date;
 public class Reply {
     private int replyId;
     private int postNo;
-    private int userNo;
+    private String userNo;
     private String replyContent;
     private String isDeleted;
     private Date createDate;
