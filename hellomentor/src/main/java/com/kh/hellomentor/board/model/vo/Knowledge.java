@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Knowledge {
     private int postNo;
-    private int categoryId;
+    private String categoryId;
     private int upVotes;
 }

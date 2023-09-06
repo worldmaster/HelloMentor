@@ -69,11 +69,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr onclick="location.href=''">
-              <td>이찬우</td>
-              <td>서버 점검 안내 [1]</td>
-              <td>100</td>
-              <td>10</td>
+			<tr th:each="item2 : ${combinedList2}">
+              <td th:text="${item2[0].userNo}">사용자 ID</td>
+              <td th:text="${item2[0].postTitle}">글 제목</td>
+              <td th:text="${item2[0].views}">조회수</td>
+              <td th:text="${item2[1].upVotes}">추천수</td>
             </tr>
           </tbody>
         </table>

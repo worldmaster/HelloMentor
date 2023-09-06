@@ -1,18 +1,18 @@
 package com.kh.hellomentor.board.model.service;
 
 import java.util.List;
-import java.util.Map;
 
-import com.kh.hellomentor.board.model.vo.Attachment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.hellomentor.board.model.dao.BoardDao;
+import com.kh.hellomentor.board.model.vo.Answer;
+import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.board.model.vo.Board;
 import com.kh.hellomentor.board.model.vo.Free;
 import com.kh.hellomentor.board.model.vo.Inquiry;
+import com.kh.hellomentor.board.model.vo.Knowledge;
 import com.kh.hellomentor.board.model.vo.Reply;
-import com.kh.hellomentor.common.Utils;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -34,14 +34,11 @@ public class BoardServiceImpl implements BoardService {
     //이찬우 구역 시작
     //1. 공지사항 목록 select
     @Override
-    public List<Board> selectNoticeList(int currentPage) {
-        return boardDao.selectNoticeList(currentPage);
+    public List<Board> selectNoticeList() {
+        return boardDao.selectNoticeList();
     }
 
-    @Override
-    public int selectNoticeListCount() {
-        return boardDao.selectNoticeListCount();
-    }
+ 
 
     //2. 1:1문의 작성
     @Override
@@ -72,7 +69,7 @@ public class BoardServiceImpl implements BoardService {
     public List<Inquiry> selectInquiryList2(){
    	 return boardDao.selectInquiryList2();
    }
-    //4.문의내역 상세조회
+    //3-2.문의내역 상세조회
     @Override
     public List<Board> selectinquirydetail(int postNo){
    	 return boardDao.selectInquiryList();
@@ -82,7 +79,7 @@ public class BoardServiceImpl implements BoardService {
   	 return boardDao.selectInquiryList2();
   }
     
-    //5. 자유게시판 조회
+    //4. 자유게시판 조회
     @Override
     public List<Board> selectFreeList(){
     	 return boardDao.selectFreeList();
@@ -91,6 +88,34 @@ public class BoardServiceImpl implements BoardService {
     public List<Free> selectFreeList2(){
     	return boardDao.selectFreeList2();
    }
+    //4-1. 자유게시판 조회 (화제글 3개)
+    @Override
+    public List<Board> selectBestFreeList(){
+    	 return boardDao.selectBestFreeList();
+    }
+    @Override
+    public List<Free> selectBestFreeList2(){
+    	return boardDao.selectBestFreeList2();
+   }
+    //5. 지식인 조회 (메인)
+    @Override
+    public List<Board> selectKnowledgeList(){
+    	 return boardDao.selectKnowledgeList();
+    }
+    @Override
+    public List<Knowledge> selectKnowledgeList2(){
+    	return boardDao.selectKnowledgeList2();
+   }
+    @Override
+    public List<Answer> selectKnowledgeList3(){
+    	return boardDao.selectKnowledgeList3();
+   }
+    //6. FAQ 조회
+    @Override
+    public List<Board> selectFaqList() {
+        return boardDao.selectFaqList();
+    }
+    
     //이찬우 구역 끝
 }
 

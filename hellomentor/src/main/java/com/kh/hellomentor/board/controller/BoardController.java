@@ -3,7 +3,6 @@ package com.kh.hellomentor.board.controller;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,22 +15,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hellomentor.board.model.service.BoardService;
+import com.kh.hellomentor.board.model.vo.Answer;
 import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.board.model.vo.Board;
 import com.kh.hellomentor.board.model.vo.Free;
 import com.kh.hellomentor.board.model.vo.Inquiry;
+import com.kh.hellomentor.board.model.vo.Knowledge;
 import com.kh.hellomentor.board.model.vo.Reply;
 import com.kh.hellomentor.common.Utils;
-import com.kh.hellomentor.common.template.Pagination;
-import com.kh.hellomentor.common.vo.PageInfo;
 import com.kh.hellomentor.member.controller.MemberController;
 import com.kh.hellomentor.member.model.vo.Member;
 
@@ -132,23 +129,18 @@ public class BoardController {
 
 
     //이찬우 구역 시작
-    //1. 공지사항 게시글 조회, 글 갯수 조회 (페이징바)
+    //1. 공지사항 게시글 조회
     @GetMapping("/noticelist")
     public String selectNoticeList(
-         @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-         Model model
+         Model model,
+         HttpSession session
     ) {
-
-        List<Board> list = boardService.selectNoticeList(currentPage);
-
-        // 총 게시글 갯수
-        int total = boardService.selectNoticeListCount();
-        int pageLimit = 10;
-        int boardLimit = 10;
-        PageInfo pi = Pagination.getPageInfo(total, currentPage, pageLimit, boardLimit);
+    	 Member loginUser = (Member) session.getAttribute("loginUser");
+    	 model.addAttribute("loginUser", loginUser);
+    	 
+        List<Board> list = boardService.selectNoticeList();
         model.addAttribute("list", list);
-        model.addAttribute("pi", pi);
-
+        
         return "board/notice/notice-board";
     }
 
@@ -248,23 +240,73 @@ public class BoardController {
          return "board/inquiry/inquiry-detail";
          
     }
-    //4. 자유게시판 글 조회
+    //4. 자유게시판 글 조회 (화제 게시글 포함)
     @GetMapping("/freelist")
     public String selectFreeList(
          Model model
     ) {
+    	//일반 게시글
         List<Board> list = boardService.selectFreeList();
         model.addAttribute("list", list);
         List<Free> list2 = boardService.selectFreeList2();
         model.addAttribute("list2", list2);
         
+        //핫 게시글
+        List<Board> list3 = boardService.selectBestFreeList();
+        model.addAttribute("list3", list3);
+        List<Free> list4 = boardService.selectBestFreeList2();
+        model.addAttribute("list4", list4);
+        
+        // 일반 게시글 묶어주기
         List<Object[]> combinedList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            combinedList.add(new Object[] { list.get(i), list2.get(i) });
+            combinedList.add(new Object[] { list.get(i), list2.get(i)});
         }
         model.addAttribute("combinedList", combinedList);
-
+        
+        //핫게시글 묶어주기
+        List<Object[]> combinedList2 = new ArrayList<>();
+        for (int i = 0; i < list3.size(); i++) {
+            combinedList2.add(new Object[] { list3.get(i), list4.get(i)});
+        }
+        model.addAttribute("combinedList2", combinedList2);
+        
         return "board/free/free-board";
+    }
+    //5. 지식인 글 조회
+    @GetMapping("/knowledgelist")
+    public String selectKnowledgeList(
+         Model model
+    ) {
+
+    	 List<Board> list = boardService.selectKnowledgeList();
+         model.addAttribute("list", list);
+         List<Knowledge> list2 = boardService.selectKnowledgeList2();
+         model.addAttribute("list2", list2);
+         List<Answer> list3 = boardService.selectKnowledgeList3();
+         model.addAttribute("list3", list3);
+         
+         List<Object[]> combinedList = new ArrayList<>();
+         for (int i = 0; i < list.size(); i++) {
+             combinedList.add(new Object[] { list.get(i), list2.get(i), list3.get(i) });
+         }
+         model.addAttribute("combinedList", combinedList);
+
+         return "board/knowledge/knowledge-board";
+    }
+    
+    //6. FAQ 글 조회
+    @GetMapping("/faqlist")
+    public String selectFaqList(
+         Model model,
+         HttpSession session
+    ) {
+    	Member loginUser = (Member) session.getAttribute("loginUser");
+    	model.addAttribute("loginUser", loginUser);
+        List<Board> list = boardService.selectFaqList();
+        model.addAttribute("list", list);
+        
+        return "board/faq/faq-board";
     }
     //이찬우 구역 끝
 

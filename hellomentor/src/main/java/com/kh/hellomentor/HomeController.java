@@ -38,19 +38,11 @@ public class HomeController {
 
 
     //이찬우 페이지 시작
-    @RequestMapping("/faq-board")
-    public String faqBoard() {
-        return "board/faq/faq-board";
-    }
+
 
     @RequestMapping("/free-insert")
     public String free() {
         return "board/free/free-insert";
-    }
-
-    @RequestMapping("/free-board")
-    public String freeBoard() {
-        return "board/free/free-board";
     }
 
     @RequestMapping("/free-detail")
@@ -58,10 +50,6 @@ public class HomeController {
         return "board/free/free-detail";
     }
 
-    @RequestMapping("/inquiry-board")
-    public String inquiryBoard() {
-        return "board/inquiry/inquiry-board";
-    }
 
     @RequestMapping("/inquiry-detail")
     public String inquiryDetail() {
@@ -78,11 +66,6 @@ public class HomeController {
         return "board/knowledge/knowledge-answer";
     }
 
-    @RequestMapping("/knowledge-board")
-    public String knowledgeBoard() {
-        return "board/knowledge/knowledge-board";
-    }
-
     @RequestMapping("/knowledge-detail")
     public String knowledgeDetail() {
         return "board/knowledge/knowledge-detail";
@@ -93,15 +76,14 @@ public class HomeController {
         return "board/knowledge/knowledge-question";
     }
 
-    @RequestMapping("/notice-board")
-    public String noticeBoard() {
-        return "board/notice/notice-board";
-    }
-
     @RequestMapping("/notice-detail")
     public String noticeDetail() {
         return "board/notice/notice-detail";
     }
+    
+    
+    
+    
 
     @RequestMapping("/adminMain")
     public String adminMain() {

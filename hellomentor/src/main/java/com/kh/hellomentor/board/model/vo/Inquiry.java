@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Inquiry {
     private int postNo;
-    private int categoryId;
+    private String categoryId;
     private boolean isProcessed;
     private String answer;
 }

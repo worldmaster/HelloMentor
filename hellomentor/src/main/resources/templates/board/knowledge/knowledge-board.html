@@ -24,7 +24,7 @@
         <div class="title">지식인</div>
 
         <!-- 분류, 검색창 -->
-        <form th:action="@{}" method="get">
+      <!--   <form th:action="@{}" method="get"> -->
           <div id="category-search">
             <select name="knowledge-category" id="knowledge-category">
               <option value="1">작성자</option>
@@ -48,7 +48,7 @@
               </svg>
             </button>
           </div>
-        </form>
+      <!--   </form> -->
         <!-- 분류, 검색창 끝 -->
 
         <div id="button-container">
@@ -65,10 +65,10 @@
         <!-- 일반 게시글 -->
         <table align="center" id="knowledge-area">
           <tbody>
-            <tr>
-              <td width="100">#자바</td>
+            <tr th:each="item : ${combinedList}">
+              <td width="100" th:text="${item[1].categoryId}">카테고리</td>
               <td width="540" align="left">
-                <b>안녕하세요 자바 공부하고 있는데 이게 뭔가요 [1]</b>
+                <b th:text="${item[0].postTitle}">질문 제목</b>
                 <br />
                 <hr
                   color="gray"
@@ -79,12 +79,15 @@
                     opacity: 0.2;
                   "
                 />
-                자바 배우고 있는데 이해가 안되네요
+                <span th:text="${item[0].postContent}">질문 내용</span>
               </td>
               <td width="100">
-                <img th:src="@{/img/beforelove.png}" class="loveimg" />100
+                <img th:src="@{/img/beforelove.png}" class="loveimg" /><span th:text="${item[1].upVotes}">100</span>
               </td>
-              <td width="100">답변대기중</td>
+              <td width="100">
+              <span th:if="${item[2].isAccepted}">채택완료</span> 
+			<span th:if="${!item[2].isAccepted}">답변대기중</span>
+              </td>
             </tr>
 
           </tbody>

@@ -65,10 +65,10 @@
 
 /*게시판 글 시작*/
 #faq-area {
+	margin-top: 40px;
     border-collapse: separate;
-    border-spacing: 0 16px;
+    border-spacing: 0 12px;
     font-size: 17px;
-
 
 }
 
@@ -86,7 +86,11 @@
 
 .faq-item {
     background-color: #dff6ed;
-    height: 48px;
+    height: 44px;
+    transition: background-color 0.05s ease-in-out, box-shadow 0.2s ease-in-out;
+    /* 그림자 효과에 대한 트랜지션 추가 */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.07);
+    /* 그림자 효과 추가 */
     text-align: center;
 }
 

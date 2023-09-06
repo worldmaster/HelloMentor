@@ -90,7 +90,6 @@
 
     <!-- 이찬우 구역 시작 -->
     <!-- 1. 공지사항 게시글 조회 -->
-
     <select id="selectNoticeList" resultMap="boardResultMap">
  		SELECT
        	 B.POST_NO,
@@ -103,18 +102,6 @@
         WHERE IS_DELETE = FALSE
          AND B.BOARD_TYPE = 'N'
         ORDER BY B.POST_NO DESC
-    </select>
-
-    <!-- 1. 게시판 글 갯수 조회(페이징바) -->
-    
-	
-    <select id="selectNoticeListCount" resultType="int">
-        SELECT
-        COUNT(*)
-        FROM BOARD B
-        WHERE IS_DELETE = FALSE
-        AND B.BOARD_TYPE = 'N'
-        ORDER BY B.CREATE_DATE DESC
     </select>
 
     <!-- 2. 1:1문의 insert -->
@@ -152,7 +139,6 @@
     </insert>
 
 	  <!-- 3. 문의내역 조회 (메인)-->
-    
     <select id="selectInquiryList" resultMap="boardResultMap">
 		SELECT
        	 B.POST_NO,
@@ -165,7 +151,7 @@
         WHERE IS_DELETE = FALSE
          AND B.BOARD_TYPE = 'A'
          AND USER_WRITER_NO = "2"
-        ORDER BY B.POST_NO DESC;
+        ORDER BY B.POST_NO DESC
     </select>
      <select id="selectInquiryList2" resultMap="inquiryResultMap">
 		SELECT
@@ -176,10 +162,10 @@
         WHERE IS_DELETE = FALSE
          AND B.BOARD_TYPE = 'A'
          AND USER_WRITER_NO = "2"
-        ORDER BY B.POST_NO DESC;
+        ORDER BY B.POST_NO DESC
     </select>
-   	<!-- 4. 문의내역 조회 (상세)-->
     
+   	<!-- 3-2. 문의내역 조회 (상세)-->
     <select id="selectinquirydetail" resultMap="boardResultMap">
 		SELECT
        	 B.POST_NO,
@@ -201,7 +187,7 @@
         WHERE B.POST_NO = #{postNo}
     </select>
     
-       	<!-- 5. 자유게시판 조회 (메인)-->
+       	<!-- 4. 자유게시판 조회 (메인)-->
     <select id="selectFreeList" resultMap="boardResultMap">
 		SELECT
        	 B.POST_NO,
@@ -213,7 +199,7 @@
         JOIN MEMBER M ON USER_WRITER_NO = USER_NO
         WHERE IS_DELETE = FALSE
          AND B.BOARD_TYPE = 'F'
-        ORDER BY B.POST_NO DESC;
+        ORDER BY B.POST_NO DESC
     </select>
      <select id="selectFreeList2" resultMap="freeResultMap">
 		SELECT UPVOTES
@@ -221,10 +207,40 @@
         JOIN FREE_BOARD F ON B.POST_NO = F.POST_NO 
         WHERE IS_DELETE = FALSE
          AND B.BOARD_TYPE = 'F'
-        ORDER BY B.POST_NO DESC;
+        ORDER BY B.POST_NO DESC
+    </select>
+    <select id="selectBestFreeList" resultMap="boardResultMap">
+	SELECT 
+	    ROW_NUMBER() OVER (ORDER BY F.UPVOTES DESC) AS ROWNUM,
+	    B.POST_NO,
+	    M.USER_ID AS USER_WRITER_NO,
+	    POST_TITLE,
+	    CREATE_DATE,
+	    VIEWS
+	FROM BOARD B
+	JOIN MEMBER M ON B.USER_WRITER_NO = M.USER_NO
+	JOIN FREE_BOARD F ON B.POST_NO = F.POST_NO
+	WHERE IS_DELETE = FALSE
+	    AND B.BOARD_TYPE = 'F'
+	    AND ENROLL_DATE > DATE_SUB(NOW(), INTERVAL 10 DAY) 
+	ORDER BY F.UPVOTES DESC
+	LIMIT 3;
+    </select>
+    <select id="selectBestFreeList2" resultMap="freeResultMap">
+	SELECT 
+	    ROW_NUMBER() OVER (ORDER BY F.UPVOTES DESC) AS ROWNUM,
+	    UPVOTES
+	FROM BOARD B
+	JOIN MEMBER M ON B.USER_WRITER_NO = M.USER_NO
+	JOIN FREE_BOARD F ON B.POST_NO = F.POST_NO
+	WHERE IS_DELETE = FALSE
+	    AND B.BOARD_TYPE = 'F'
+	    AND ENROLL_DATE > DATE_SUB(NOW(), INTERVAL 10 DAY) 
+	ORDER BY F.UPVOTES DESC
+	LIMIT 3;
     </select>
     
-      	<!-- 6. 지식인 글 조회 (메인)-->
+      	<!-- 5. 지식인 글 조회 (메인)-->
     <select id="selectKnowledgeList" resultMap="boardResultMap">
 		SELECT
        	 B.POST_NO,
@@ -233,20 +249,73 @@
       	 CREATE_DATE,
       	 VIEWS
         FROM BOARD B
-        JOIN MEMBER M ON USER_WRITER_NO = USER_NO
+        JOIN MEMBER M ON B.USER_WRITER_NO = M.USER_NO
         WHERE IS_DELETE = FALSE
          AND B.BOARD_TYPE = 'K'
-        ORDER BY B.POST_NO DESC;
+        ORDER BY B.POST_NO DESC
     </select>
      <select id="selectKnowledgeList2" resultMap="knowledgeResultMap">
 		SELECT
-			CATEGORY_ID AD 
+			CATEGORY AS CATEGORY_ID,
 			UPVOTES
         FROM BOARD B
-        JOIN KNOWLEDGE_BOARD K ON B.POST_NO = F.POST_NO 
+        JOIN KNOWLEDGE_BOARD K ON B.POST_NO = K.POST_NO 
+        JOIN CATEGORY C ON K.CATEGORY_ID = C.CATEGORY_ID
         WHERE IS_DELETE = FALSE
          AND B.BOARD_TYPE = 'K'
-        ORDER BY B.POST_NO DESC;
+        ORDER BY B.POST_NO DESC
+    </select>
+         <select id="selectKnowledgeList3" resultMap="answerResultMap">
+		SELECT A.IS_ACCEPTED
+        FROM BOARD B
+        JOIN KNOWLEDGE_BOARD K ON B.POST_NO = K.POST_NO 
+        JOIN ANSWER_BOARD A ON K.POST_NO = A.K_POST_NO 
+        WHERE IS_DELETE = FALSE
+         AND B.BOARD_TYPE = 'K'
+        ORDER BY B.POST_NO DESC
+    </select>
+    
+          	<!-- 5-1. 지식인 글 조회 (베스트)-->
+    <select id="selectBestKnowledgeList" resultMap="boardResultMap">
+		SELECT
+       	 B.POST_NO,
+       	 M.USER_ID AS USER_WRITER_NO,
+       	 POST_TITLE,
+      	 CREATE_DATE,
+      	 VIEWS
+        FROM BOARD B
+        JOIN KNOWLEDGE_BOARD K ON B.POST_NO = K.POST_NO 
+        JOIN MEMBER M ON B.USER_WRITER_NO = M.USER_NO
+        WHERE IS_DELETE = FALSE
+         AND B.BOARD_TYPE = 'K'
+         AND K.UPVOTES >= 10
+        ORDER BY B.POST_NO DESC
+    </select>
+     <select id="selectBestKnowledgeList2" resultMap="knowledgeResultMap">
+		SELECT
+			CATEGORY_ID,
+			UPVOTES
+        FROM BOARD B
+        JOIN KNOWLEDGE_BOARD K ON B.POST_NO = K.POST_NO 
+        WHERE IS_DELETE = FALSE
+         AND B.BOARD_TYPE = 'K'
+         AND K.UPVOTES >= 10
+        ORDER BY B.POST_NO DESC
+    </select>
+    
+        <!-- 6. FAQ 게시글 조회 -->
+    <select id="selectFaqList" resultMap="boardResultMap">
+ 		SELECT
+       	 B.POST_NO,
+       	 B.POST_TITLE,
+       	 B.POST_CONTENT,
+       	 C.CATEGORY AS BOARD_TYPE
+        FROM BOARD B
+        JOIN INQUIRY_BOARD I ON B.POST_NO = I.POST_NO 
+        JOIN CATEGORY C ON I.CATEGORY_ID = C.CATEGORY_ID
+        WHERE IS_DELETE = FALSE
+         AND B.BOARD_TYPE = 'Q'
+        ORDER BY B.POST_NO DESC
     </select>
 
     <!-- 이찬우 구역 끝 -->
