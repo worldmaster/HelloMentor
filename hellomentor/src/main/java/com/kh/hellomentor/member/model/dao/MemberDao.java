@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.kh.hellomentor.member.model.vo.Member;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class MemberDao {
@@ -36,16 +35,34 @@ public class MemberDao {
     }
 
 
-    public List<Profile> getProfileList(int userNo) {
-        return sqlSession.selectList("memberMapper.getProfileList", userNo);
+    public List<Profile> getFollowingProfileList(int userNo) {
+        return sqlSession.selectList("memberMapper.getFollowingProfileList", userNo);
     }
 
     public List<Member> getFollwerList(int userNo) {
         return sqlSession.selectList("memberMapper.getFollowerList", userNo);
     }
 
+    public List<Profile> getFollowerProfileList(int userNo) {
+        return sqlSession.selectList("memberMapper.getFollowerProfileList", userNo);
+    }
+
     public void updateMember(Member updatedMember) {
         sqlSession.update("memberMapper.updateProfile", updatedMember);
+    }
+
+
+    public void updateProfileImg(Profile profile) {
+        sqlSession.update("memberMapper.updateProfileImg", profile);
+    }
+
+    public void insertProfileImg(Profile profile) {
+        sqlSession.insert("memberMapper.insertProfileImg", profile);
+    }
+
+    public Boolean isProfileImgExists(int userNo) {
+        Integer count = sqlSession.selectOne("memberMapper.isProfileImgExists", userNo);
+        return count != null && count > 0;
     }
 
 }

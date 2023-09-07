@@ -7,19 +7,19 @@
 <body>
 
 <div class="my_following_content1">
-        <div th:each="item : ${combinedList}" class="my_following_box">
-            <div class="my_following_box_1">
-                <div class="my_following_profile_img">
-                    <img th:src="@{${item.profile.filePath} + ${item.profile.changeName}}" />
-                </div>
-            </div>
-            <div class="my_following_box_2">
-                <div class="my_following_profile_name" th:text="${item.member.userName}">
-                </div>
-                <div class="my_following_profile_intro" th:text="${item.member.introduction}">
-                </div>
+    <div th:each="item : ${combinedList}" class="my_following_box">
+        <div class="my_following_box_1">
+            <div class="my_following_profile_img">
+                <img th:src="@{${item.profile.filePath} + ${item.profile.changeName}}"/>
             </div>
         </div>
+        <div class="my_following_box_2">
+            <div class="my_following_profile_name" th:text="${item.member.userName}">
+            </div>
+            <div class="my_following_profile_intro" th:text="${item.member.introduction}">
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="my_following_content2">
