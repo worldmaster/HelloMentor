@@ -268,4 +268,96 @@
     </select>
 
 
+
+
+
+
+    <!-- 정승훈 스터디 -->
+
+    <resultMap id="boardTypeResultSet" type="boardtype">
+        <id column="BOARD_TYPE" property="boardType" />
+        <result column="BOARD_NAME" property="boardName" />
+    </resultMap>
+
+    <resultMap id="studyPepleResultSet" type="studyapplicant">
+        <id column="APPLICANT_NO" property="applicantNo"/>
+        <result column="POST_NO" property="postNo"/>
+        <result column="USER_NO" property="userNo"/>
+        <result column="STATUS" property="status"/>
+    </resultMap>
+
+
+
+
+    <select id="selectStudyList" parameterType="hashmap" resultMap="boardResultMap">
+        SELECT POST_NO,POST_TITLE,POST_CONTENT,CREATE_DATE,USER_ID AS USER_WRITER_NO ,BOARD_TYPE
+        FROM BOARD B
+        JOIN MEMBER M
+        ON B.USER_WRITER_NO = M.USER_NO
+        WHERE BOARD_TYPE = 'S'
+    </select>
+
+
+
+
+    <select id="selectRecruitmentCount" parameterType="hashmap" resultType="java.util.Map">
+        SELECT POST_NO, COUNT(*) AS RECRUITMENT_COUNT
+        FROM STUDY_APPLICANT
+        WHERE POST_NO IN
+        <foreach collection="POST_NO_LIST" open="(" close=")" item="postNo" separator=",">
+            #{postNo}
+        </foreach>
+        GROUP BY POST_NO
+    </select>
+
+
+
+    <insert id="insertStudy" parameterType="board">
+        INSERT INTO BOARD (USER_WRITER_NO,POST_TITLE,POST_CONTENT,IS_DELETE,VIEWS,CREATE_DATE,BOARD_TYPE)
+        VALUES(
+        #{userNo},
+        #{postTitle},
+        #{postContent},
+        0,
+        0,
+        CURRENT_DATE,
+        'S'
+        )
+    </insert>
+
+
+    <select id="selectDetailStudy" parameterType="int" resultMap="boardResultMap">
+        SELECT POST_NO,USER_ID AS USER_WRITER_NO,POST_TITLE,POST_CONTENT,VIEWS,CREATE_DATE,BOARD_TYPE
+        FROM BOARD B
+        JOIN MEMBER M ON
+        B.USER_WRITER_NO = M.USER_NO
+        WHERE POST_NO = #{postNo} AND BOARD_TYPE = 'S'
+    </select>
+
+
+    <select id="studyDetailApplicant" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM STUDY_APPLICANT
+        WHERE POST_NO = ${postNo}
+    </select>
+
+    <resultMap id="replyResultMap1" type="reply">
+        <id column="REPLY_ID" property="replyId"/>
+        <result column="POST_NO" property="postNo"/>
+        <result column="USER_NO" property="userNo"/>
+        <result column="REPLY_CONTENT" property="replyContent"/>
+        <result column="IS_DELETE" property="isDeleted"/>
+        <result column="CREATE_AT" property="createDate"/>
+    </resultMap>
+
+
+    <select id="selectReplyList" resultMap="replyResultMap1" parameterType="int">
+        SELECT REPLY_ID,POST_NO,USER_ID USER_NO,REPLY_CONTENT,CREATE_AT
+        FROM REPLY R
+        JOIN MEMBER M ON R.USER_NO = M.USER_NO
+        WHERE POST_NO = ${postNo}
+    </select>
+
+
+
 </mapper>

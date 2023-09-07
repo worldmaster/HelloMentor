@@ -8,6 +8,7 @@ import com.kh.hellomentor.board.model.vo.Board;
 import com.kh.hellomentor.board.model.vo.Free;
 import com.kh.hellomentor.board.model.vo.Inquiry;
 import com.kh.hellomentor.board.model.vo.Reply;
+import com.kh.hellomentor.matching.model.vo.StudyApplicant;
 
 public interface BoardService {
     List<Board> getPostsByUserNo(int userNo);
@@ -37,4 +38,24 @@ public interface BoardService {
     public List<Free> selectFreeList2();
     
     //5. 지식인 조회
+
+
+
+
+    //------------------------------정승훈-----------------------------------------
+    List<Board> selectStudyList(int currentPage, Map<String, Object> paramMap);
+
+    List<StudyApplicant> selectPepleList(Map<String, Object> paramMap);
+
+    List<Map<String, Object>> selectRecruitmentCount(Map<String, Object> paramMap);
+
+    int insertStudy(Board b);
+
+    Board selectDetailStudy(int postNo);
+
+    int studyDetailApplicant(int postNo);
+
+    List<Reply> selectReplyList(int postNo);
+
+
 }

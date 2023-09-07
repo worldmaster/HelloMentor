@@ -1,26 +1,22 @@
 package com.kh.hellomentor.board.controller;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.kh.hellomentor.matching.model.vo.StudyApplicant;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hellomentor.board.model.service.BoardService;
@@ -34,8 +30,11 @@ import com.kh.hellomentor.common.template.Pagination;
 import com.kh.hellomentor.common.vo.PageInfo;
 import com.kh.hellomentor.member.controller.MemberController;
 import com.kh.hellomentor.member.model.vo.Member;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@Slf4j
+@SessionAttributes({"loginUser"})
 public class BoardController {
 
     private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
@@ -269,5 +268,162 @@ public class BoardController {
         return "board/free/free-board";
     }
     //이찬우 구역 끝
+
+
+
+    //------------------------------정승훈-----------------------------------------
+
+    //정승훈 스터디화면으로 이동 그리고 조회
+    @GetMapping("/study")
+    public String selectStudy(
+            @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+            Model model,
+            @RequestParam Map<String, Object> paramMap,
+            Board board,
+            HttpServletRequest request
+    ) {
+
+
+        List<Board> list = boardService.selectStudyList(currentPage, paramMap);
+
+
+        // 각 게시물의 POST_NO 목록을 가져옵니다.
+        List<Integer> postNoList = list.stream()
+                .map(Board::getPostNo)
+                .collect(Collectors.toList());
+
+        // POST_NO 목록을 paramMap에 추가합니다.
+        paramMap.put("POST_NO_LIST", postNoList);
+
+        log.info("paramMap {}" ,paramMap );
+        // POST_NO별 RECRUITMENT_COUNT 조회
+        List<Map<String, Object>> recruitmentCountList = boardService.selectRecruitmentCount(paramMap);
+
+        log.info("recruitmentCountList {}" ,recruitmentCountList);
+
+        // 각 POST_NO와 RECRUITMENT_COUNT를 매핑하여 Map에 저장
+        Map<Integer, Integer> postRecruitmentCountMap = new HashMap<>();
+        for (Map<String, Object> entry : recruitmentCountList) {
+            Integer postNo = (Integer) entry.get("POST_NO");
+            Integer recruitmentCount = ((Long) entry.get("RECRUITMENT_COUNT")).intValue(); // COUNT(*) 결과를 Integer로 변환
+            postRecruitmentCountMap.put(postNo, recruitmentCount);
+        }
+
+
+        log.info("postRecruitmentCountMap {}" ,postRecruitmentCountMap );
+        // 컨트롤러 모델에 POST_NO별 RECRUITMENT_COUNT를 추가
+        model.addAttribute("postRecruitmentCountMap", postRecruitmentCountMap);
+
+
+
+
+        log.info("list {}",list);
+
+
+        // 총 게시글 갯수
+
+
+        model.addAttribute("param", paramMap); //보드타입
+        model.addAttribute("list", list); //study에 대한 정보가 담김
+
+
+
+        return "/board/study/studyList";
+    }
+
+
+
+
+    //스터디등록페이지로 이동
+    @GetMapping("/study/insert")
+    public String EnrollStudy(
+            Model model
+    ) {
+        return "/board/study/insertStudy";
+    }
+
+    //스터디 등록
+    @PostMapping("/study/insert")
+    public String insertStudy(
+            HttpSession session,
+            Model model,
+            Board b,
+            RedirectAttributes redirectAttributes
+    ) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        b.setUserNo(loginUser.getUserNo()+""); //작성자의 번호도 넣어주기
+
+
+
+        int result = 0;
+
+
+        result = boardService.insertStudy(b);
+
+
+
+        log.info("POST_TITLE{}",b.getPostTitle());
+        log.info("POST_CONTENT{}",b.getPostContent());
+        log.info("result{}",result);
+
+        if(result > 0) {
+            redirectAttributes.addFlashAttribute("message", "스터디 등록이 완료되었습니다");
+            return "redirect:/study";
+        }else {
+            redirectAttributes.addFlashAttribute("message", "스터디 등록을 실패했습니다.");
+            return "common/main";
+        }
+
+    }
+
+
+    //스터디 상세 페이지
+    @GetMapping("/study/detail/{postNo}")
+    public String detailStudy(
+            @PathVariable("postNo") int postNo,
+            HttpSession session,
+            Model model,
+            Board board,
+            StudyApplicant studyApplicant,
+            HttpServletRequest req,
+            HttpServletResponse res
+    ) {
+
+        Member loginUser = (Member) session.getAttribute("loginUser");
+
+        //게시글에있는 정보들 조회 (제목,작성자,작성날짜,조회수)
+        Board dstudy = boardService.selectDetailStudy(postNo);
+
+        //신청자 인원수 조회
+        int studyDetailApplicant = boardService.studyDetailApplicant(postNo);
+
+
+        //댓글리스트 조회
+        List<Reply> replyList = boardService.selectReplyList(postNo);
+
+        String url = "";
+
+        log.info("postNo{}",postNo);
+        log.info("dstudy {}",dstudy);
+        log.info("loginUser {}",loginUser);
+        log.info("studyDetailApplicant {}",studyDetailApplicant);
+        log.info("replyList {}",replyList);
+
+
+        model.addAttribute("loginUser",loginUser);
+        model.addAttribute("dstudy",dstudy);
+        model.addAttribute("studyDetailApplicant",studyDetailApplicant);
+        model.addAttribute("replyList",replyList);
+
+        url="board/study/updateStudy";
+
+        //게시글에있는 현재참여인원 조회
+
+        return url;
+
+
+    }
+
+
 
 }
