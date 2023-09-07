@@ -33,11 +33,28 @@ public class MatchingController {
 
 
     @Autowired
-    private MatchingService  matchingService;
+    private MatchingService matchingService;
+
+    @RequestMapping("/mentoring_mentor_applications")
+    public String mentor_applications(HttpSession session){
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        return "mypage/mentoring_mentor_applications";
+    }
+
+
+    @RequestMapping("/mentoring_mentor_registdetail")
+    public String mentor_registdetail(HttpSession session){
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        return "mypage/mentoring_mentor_registdetail";
+    }
+
+
+
+
 
     @GetMapping("/mentoring")
     public String selectList(
-            @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+            @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
             HttpSession session,
             Model model,
             //검색요청이 들어오는경우 paramMap내부에는 keyword, condition
@@ -46,16 +63,16 @@ public class MatchingController {
 //
         Member loginUser = (Member) session.getAttribute("loginUser");
 
-        if(loginUser == null) {
+        if (loginUser == null) {
             log.info("로그인정보가 없어요유");
-        }else {
+        } else {
 //
             String memberType = loginUser.getMemberType();
             paramMap.put("memberType", memberType);
-            log.info("memberType {}",memberType);
+            log.info("memberType {}", memberType);
 
 
-            List<Mentoring> list = matchingService.selectList(currentPage,paramMap);
+            List<Mentoring> list = matchingService.selectList(currentPage, paramMap);
 
             //총 게시글 갯수
             int total = matchingService.selectListCount(paramMap);
@@ -65,17 +82,18 @@ public class MatchingController {
 
             model.addAttribute("list", list);
             model.addAttribute("param", paramMap);
-            model.addAttribute("pi",pi);
+            model.addAttribute("pi", pi);
 
-            log.info("list {}",list);
-            log.info("param {}",paramMap);
-            log.info("pi {}",pi);
+            log.info("list {}", list);
+            log.info("param {}", paramMap);
+            log.info("pi {}", pi);
 
 
         }
         return "matching/matching-list";
 
     }
+
 
     //멘토/멘티 등록페이지로 이동
     @GetMapping("/mentoring/insert")
@@ -100,26 +118,21 @@ public class MatchingController {
         try {
             result = matchingService.insertMentoring(mt);
         } catch (Exception e) {
-            log.error("error = {}" , e.getMessage());
+            log.error("error = {}", e.getMessage());
             //e.printStackTrace();
         }
 
-        if(result > 0 && loginUser.getMemberType().equals("E")) {
+        if (result > 0 && loginUser.getMemberType().equals("E")) {
 
             return "redirect:/mentoring";
-        }else if(result > 0 && loginUser.getMemberType().equals("O")) {
+        } else if (result > 0 && loginUser.getMemberType().equals("O")) {
 
             return "redirect:/mentoring";
-        }else {
+        } else {
             return "common/main";
         }
 
-
     }
-
-
-
-
 
 
 }

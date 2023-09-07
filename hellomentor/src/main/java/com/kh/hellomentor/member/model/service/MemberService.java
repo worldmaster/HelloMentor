@@ -13,10 +13,18 @@ public interface MemberService {
 
     List<Member> getFollowList(int userNo);
 
-    List<Profile> getProfileList(int userNo);
+    List<Profile> getFollowingProfileList(int userNo);
 
     List<Member> getFollowerList(int userNo);
 
     void updateMember(Member loginUser);
+
+    List<Profile> getFollowerProfileList(int userNo);
+
+    void updateProfileImg(Profile profile);
+
+    void insertProfileImg(Profile profile);
+
+    Boolean isProfileImgExists(int userNo);
 
 }
