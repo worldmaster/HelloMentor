@@ -27,9 +27,6 @@
     </resultMap>
 
 
-
-
-
     <select id="loginUser" parameterType="member" resultMap="memberResultSet">
         SELECT *
         FROM MEMBER
@@ -82,16 +79,12 @@
         WHERE F.FROM_USER = #{userNo}
     </select>
 
-        <update id="updateProfile" parameterType="member">
-            UPDATE MEMBER
-            SET USER_PWD     = #{userPwd},
-                INTRODUCTION = #{introduction}
-            WHERE USER_ID = #{userId}
-        </update>
-
-
-
-
+    <update id="updateProfile" parameterType="member">
+        UPDATE MEMBER
+        SET USER_PWD     = #{userPwd},
+            INTRODUCTION = #{introduction}
+        WHERE USER_ID = #{userId}
+    </update>
 
 
 </mapper>

@@ -135,8 +135,8 @@ public class BoardController {
     //1. 공지사항 게시글 조회, 글 갯수 조회 (페이징바)
     @GetMapping("/noticelist")
     public String selectNoticeList(
-         @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
-         Model model
+            @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+            Model model
     ) {
 
         List<Board> list = boardService.selectNoticeList(currentPage);
@@ -152,115 +152,117 @@ public class BoardController {
         return "board/notice/notice-board";
     }
 
-    
-    
+
     //2. 문의 내역 insert
     @PostMapping("/insert.iq")
     public String insertBoard(
             Board board,
             @RequestParam(value = "upfile", required = false) List<MultipartFile> upfiles,
-			HttpSession session, 
-			Model model
+            HttpSession session,
+            Model model
     ) {
 
-    	// 이미지, 파일을 저장할 저장경로 얻어오기
-		// /resources/images/board/{boardCode}/
-		String webPath = "/resources/static/img/attachment";
-		String severFolderPath = application.getRealPath(webPath);
+        // 이미지, 파일을 저장할 저장경로 얻어오기
+        // /resources/images/board/{boardCode}/
+        String webPath = "/resources/static/img/attachment";
+        String severFolderPath = application.getRealPath(webPath);
 
-		board.setUserNo("2");
-		
-		// 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
-		File dir = new File(severFolderPath);
-		if (!dir.exists()) {
-			dir.mkdirs();
-		}
-		
-		List<Attachment> attachList = new ArrayList();
-		
-		int level = -1;
-		for (MultipartFile upfile : upfiles) {
-			// input[name=upFile]로 만들어두면 비어있는 file이 넘어올수 있음.
-			level++;
-			if (upfile.isEmpty())
-				continue;
+        board.setUserNo("2");
 
-			// 1. 파일명 재정의 해주는 함수.
-			String changeName = Utils.saveFile(upfile, severFolderPath);
-			Attachment at = Attachment.
-							builder().
-							changeName(changeName).
-							originName(upfile.getOriginalFilename()).
-							build();
-			attachList.add(at);
-		}
-		
-		int result = 0;
-		
-		try {
-			result = boardService.insertInquiry(board, attachList, severFolderPath, webPath);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        // 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
+        File dir = new File(severFolderPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        List<Attachment> attachList = new ArrayList();
+
+        int level = -1;
+        for (MultipartFile upfile : upfiles) {
+            // input[name=upFile]로 만들어두면 비어있는 file이 넘어올수 있음.
+            level++;
+            if (upfile.isEmpty())
+                continue;
+
+            // 1. 파일명 재정의 해주는 함수.
+            String changeName = Utils.saveFile(upfile, severFolderPath);
+            Attachment at = Attachment.
+                    builder().
+                    changeName(changeName).
+                    originName(upfile.getOriginalFilename()).
+                    build();
+            attachList.add(at);
+        }
+
+        int result = 0;
+
+        try {
+            result = boardService.insertInquiry(board, attachList, severFolderPath, webPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (result > 0) {
             //session.setAttribute("alertMsg", "게시글 작성에 성공하셨습니다.");
             return "board/inquiry/inquiry-board";
         } else {
-           // model.addAttribute("errorMsg", "게시글 작성 실패");
+            // model.addAttribute("errorMsg", "게시글 작성 실패");
             return "board/inquiry/inquiry-board";
         }
     }
+
     //3. 문의 내역 조회
     @GetMapping("/inquirylist")
     public String selectInquiryList(
-         Model model
+            Model model
     ) {
         List<Board> list = boardService.selectInquiryList();
         model.addAttribute("list", list);
         List<Inquiry> list2 = boardService.selectInquiryList2();
         model.addAttribute("list2", list2);
-        
+
         List<Object[]> combinedList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            combinedList.add(new Object[] { list.get(i), list2.get(i) });
+            combinedList.add(new Object[]{list.get(i), list2.get(i)});
         }
         model.addAttribute("combinedList", combinedList);
 
         return "board/inquiry/inquiry-board";
     }
+
     //3-1. 문의 내역 상세 조회
     @GetMapping("/inquirydetail")
     public String selectInquiryDetail(
-			Model model
+            Model model
     ) {
-    	 List<Board> list = boardService.selectinquirydetail(2);
-         model.addAttribute("list", list);
-         List<Inquiry> list2 = boardService.selectinquirydetail2(2);
-         model.addAttribute("list2", list2);
-         
-         List<Object[]> combinedList = new ArrayList<>();
-         for (int i = 0; i < list.size(); i++) {
-             combinedList.add(new Object[] { list.get(i), list2.get(i) });
-         }
-         model.addAttribute("combinedList", combinedList);
+        List<Board> list = boardService.selectinquirydetail(2);
+        model.addAttribute("list", list);
+        List<Inquiry> list2 = boardService.selectinquirydetail2(2);
+        model.addAttribute("list2", list2);
 
-         return "board/inquiry/inquiry-detail";
-         
+        List<Object[]> combinedList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            combinedList.add(new Object[]{list.get(i), list2.get(i)});
+        }
+        model.addAttribute("combinedList", combinedList);
+
+        return "board/inquiry/inquiry-detail";
+
     }
+
     //4. 자유게시판 글 조회
     @GetMapping("/freelist")
     public String selectFreeList(
-         Model model
+            Model model
     ) {
         List<Board> list = boardService.selectFreeList();
         model.addAttribute("list", list);
         List<Free> list2 = boardService.selectFreeList2();
         model.addAttribute("list2", list2);
-        
+
         List<Object[]> combinedList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            combinedList.add(new Object[] { list.get(i), list2.get(i) });
+            combinedList.add(new Object[]{list.get(i), list2.get(i)});
         }
         model.addAttribute("combinedList", combinedList);
 
