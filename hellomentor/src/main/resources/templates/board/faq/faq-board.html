@@ -27,7 +27,7 @@
         <div align="center" class="cs-menu-bar">
           <div class="cs-menu"><a th:href="@{/noticelist}">공지사항</a></div>
           <div class="cs-menu" id="selected-menu"><a th:href="@{/faqlist}">FAQ</a></div>
-          <div class="cs-menu"><a th:href="@{/inquiry-insert}">1:1문의</a></div>
+          <div class="cs-menu"><a th:href="@{/inquiryinsert}">1:1문의</a></div>
           <div class="cs-menu"><a th:href="@{/inquirylist}">문의내역</a></div>
         </div>
         <!-- 메뉴바 끝 -->
@@ -125,6 +125,7 @@
               </td>
             </tr>
 
+        <!-- 클릭하면 상세 내용 보임-->
             <tr class="faq-content">
               <td colspan="3" class="faq-content-td">
                 <div class="faq-detail-content" th:text="${f.postContent}">내용</div>
@@ -133,13 +134,14 @@
           </tbody>
         </table>
 
-        <!-- 클릭하면 상세 내용 보이게-->
 
         <!-- 게시글 끝 -->
-        <div id="move-to-insert" th:if="${loginUser.userId == 'admin'}" >
-        	<button >글 작성</button>
         
+        <!-- 관리자만 글 작성 가능 -->
+        <div id="move-to-insert" th:if="${loginUser.userId == 'admin'}" >
+        	<button>글 작성</button>
         </div>
+        
         <!--페이징바-->
         <div align="center" class="paging-area">
           <button onclick="location.href= '#' ">이전 페이지</button>

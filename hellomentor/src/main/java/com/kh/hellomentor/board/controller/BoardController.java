@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +33,8 @@ import com.kh.hellomentor.common.Utils;
 import com.kh.hellomentor.member.controller.MemberController;
 import com.kh.hellomentor.member.model.vo.Member;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 public class BoardController {
 
@@ -143,24 +146,61 @@ public class BoardController {
         
         return "board/notice/notice-board";
     }
-
+    
+    //1-1. 공지사항 상세 조회
+    @GetMapping("/noticedetail")
+    public String selectNoticeDetail(
+			Model model,
+			 HttpSession session,
+			@RequestParam(value = "postNo") int postNo
+    ) {
+    	Member loginUser = (Member) session.getAttribute("loginUser");
+   	 model.addAttribute("loginUser", loginUser);
+   	 System.out.println(postNo);
+   	 
+    	 Board selectedPost = boardService.selectNoticeDetail(postNo);
+         model.addAttribute("selectedPost", selectedPost);
+         return "board/notice/notice-detail";
+         
+    }
     
     
-    //2. 문의 내역 insert
-    @PostMapping("/insert.iq")
-    public String insertBoard(
+    //2. FAQ 글 조회
+    @GetMapping("/faqlist")
+    public String selectFaqList(
+         Model model,
+         HttpSession session
+    ) {
+    	Member loginUser = (Member) session.getAttribute("loginUser");
+    	model.addAttribute("loginUser", loginUser);
+        List<Board> list = boardService.selectFaqList();
+        model.addAttribute("list", list);
+        
+        return "board/faq/faq-board";
+    }
+    
+    
+    //3. 문의 내역 insert
+    @GetMapping("/inquiryinsert")
+    public String moveInquiryInsert(Model model) {
+        return "board/inquiry/inquiry-insert"; 
+    }
+    @PostMapping("/inquiryinsert")
+    public String inquiryInsert(
             Board board,
+            Inquiry inquiry,
             @RequestParam(value = "upfile", required = false) List<MultipartFile> upfiles,
 			HttpSession session, 
 			Model model
-    ) {
 
+    ) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        int userNo = loginUser.getUserNo();
     	// 이미지, 파일을 저장할 저장경로 얻어오기
-		// /resources/images/board/{boardCode}/
-		String webPath = "/resources/static/img/attachment";
+		String webPath = "/resources/static/img/attachment/inquiry";
 		String severFolderPath = application.getRealPath(webPath);
 
-		board.setUserNo("2");
+		board.setUserNo(userNo + "");
 		
 		// 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
 		File dir = new File(severFolderPath);
@@ -177,7 +217,7 @@ public class BoardController {
 			if (upfile.isEmpty())
 				continue;
 
-			// 1. 파일명 재정의 해주는 함수.
+			//  파일명 재정의 해주는 함수.
 			String changeName = Utils.saveFile(upfile, severFolderPath);
 			Attachment at = Attachment.
 							builder().
@@ -187,30 +227,37 @@ public class BoardController {
 			attachList.add(at);
 		}
 		
+		int postNo = 0;
 		int result = 0;
 		
 		try {
-			result = boardService.insertInquiry(board, attachList, severFolderPath, webPath);
+			postNo = boardService.insertInquiry(board, attachList, severFolderPath, webPath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		inquiry.setPostNo(postNo);
+		result = boardService.insertInquiry2(inquiry);
         if (result > 0) {
             //session.setAttribute("alertMsg", "게시글 작성에 성공하셨습니다.");
-            return "board/inquiry/inquiry-board";
+            return "redirect:/inquirylist";
         } else {
            // model.addAttribute("errorMsg", "게시글 작성 실패");
-            return "board/inquiry/inquiry-board";
+            return "redirect:/inquiryinsert";
         }
     }
-    //3. 문의 내역 조회
+    
+    //4. 문의 내역 조회
     @GetMapping("/inquirylist")
     public String selectInquiryList(
-         Model model
+         Model model,
+     	HttpSession session
     ) {
-        List<Board> list = boardService.selectInquiryList();
+    	Member loginUser = (Member) session.getAttribute("loginUser");
+         int userNo = loginUser.getUserNo();
+         
+        List<Board> list = boardService.selectInquiryList(userNo);
         model.addAttribute("list", list);
-        List<Inquiry> list2 = boardService.selectInquiryList2();
+        List<Inquiry> list2 = boardService.selectInquiryList2(userNo);
         model.addAttribute("list2", list2);
         
         List<Object[]> combinedList = new ArrayList<>();
@@ -221,26 +268,25 @@ public class BoardController {
 
         return "board/inquiry/inquiry-board";
     }
-    //3-1. 문의 내역 상세 조회
+    //4-1. 문의 내역 상세 조회
     @GetMapping("/inquirydetail")
     public String selectInquiryDetail(
-			Model model
+			Model model,
+			@RequestParam(value = "postNo", defaultValue = "2") int postNo
     ) {
-    	 List<Board> list = boardService.selectinquirydetail(2);
-         model.addAttribute("list", list);
-         List<Inquiry> list2 = boardService.selectinquirydetail2(2);
-         model.addAttribute("list2", list2);
+    	 Board selectedPost = boardService.selectInquiryDetail(postNo);
+         model.addAttribute("selectedPost", selectedPost);
+         Inquiry selectedPost2 = boardService.selectInquiryDetail2(postNo);
+         model.addAttribute("selectedPost2", selectedPost2);
          
-         List<Object[]> combinedList = new ArrayList<>();
-         for (int i = 0; i < list.size(); i++) {
-             combinedList.add(new Object[] { list.get(i), list2.get(i) });
-         }
-         model.addAttribute("combinedList", combinedList);
 
          return "board/inquiry/inquiry-detail";
          
     }
-    //4. 자유게시판 글 조회 (화제 게시글 포함)
+    
+    
+    
+    //5. 자유게시판 글 조회 (화제 게시글 포함)
     @GetMapping("/freelist")
     public String selectFreeList(
          Model model
@@ -273,7 +319,100 @@ public class BoardController {
         
         return "board/free/free-board";
     }
-    //5. 지식인 글 조회
+    //5-2. 자유게시판 상세 조회
+    @GetMapping("/freedetail")
+    public String selectFreeDetail(
+			Model model,
+			 HttpSession session,
+			@RequestParam(value = "postNo", defaultValue = "1") int postNo
+    ) {
+    	Member loginUser = (Member) session.getAttribute("loginUser");
+   	 	model.addAttribute("loginUser", loginUser);
+   	 
+    	 Board selectedPost = boardService.selectFreeDetail(postNo);
+         model.addAttribute("selectedPost", selectedPost);
+         System.out.println(selectedPost);
+         
+    	 Free selectedPost2 = boardService.selectFreeDetail2(postNo);
+         model.addAttribute("selectedPost2", selectedPost2);
+         System.out.println(selectedPost2);
+         
+         List<Reply> list = boardService.selectFreeDetailReply(postNo);
+         model.addAttribute("list", list);
+         System.out.println(list);
+         
+         return "board/free/free-detail";
+         
+    }
+    //5-3. 자유게시판 글 등록
+    @GetMapping("/freeinsert")
+    public String moveFreeInsert() {
+        return "board/free/free-insert";
+    }
+    
+    @PostMapping("/freeinsert")
+    public String freeInsert(
+            Board board,
+            @RequestParam(value = "upfile", required = false) List<MultipartFile> upfiles,
+			HttpSession session, 
+			Model model,
+			Free free
+
+    ) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        int userNo = loginUser.getUserNo();
+    	// 이미지, 파일을 저장할 저장경로 얻어오기
+		String webPath = "/resources/static/img/attachment/free";
+		String severFolderPath = application.getRealPath(webPath);
+
+		board.setUserNo(userNo + "");
+		
+		// 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
+		File dir = new File(severFolderPath);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		
+		List<Attachment> attachList = new ArrayList();
+		
+		int level = -1;
+		for (MultipartFile upfile : upfiles) {
+			// input[name=upFile]로 만들어두면 비어있는 file이 넘어올수 있음.
+			level++;
+			if (upfile.isEmpty())
+				continue;
+
+			//  파일명 재정의 해주는 함수.
+			String changeName = Utils.saveFile(upfile, severFolderPath);
+			Attachment at = Attachment.
+							builder().
+							changeName(changeName).
+							originName(upfile.getOriginalFilename()).
+							build();
+			attachList.add(at);
+		}
+		
+		int postNo = 0;
+		int result = 0;
+		
+		try {
+			postNo = boardService.insertFree(board, attachList, severFolderPath, webPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result = boardService.insertFree2(postNo);
+        if (result > 0) {
+            //session.setAttribute("alertMsg", "게시글 작성에 성공하셨습니다.");
+            return "redirect:/freelist";
+        } else {
+           // model.addAttribute("errorMsg", "게시글 작성 실패");
+            return "redirect:/freeinsert";
+        }
+    }
+    
+    
+    
+    //6. 지식인 글 조회
     @GetMapping("/knowledgelist")
     public String selectKnowledgeList(
          Model model
@@ -294,20 +433,55 @@ public class BoardController {
 
          return "board/knowledge/knowledge-board";
     }
-    
-    //6. FAQ 글 조회
-    @GetMapping("/faqlist")
-    public String selectFaqList(
-         Model model,
-         HttpSession session
+    //6-2. 지식인 상세 조회
+    @GetMapping("/knowledgedetail")
+    public String selectKnowledgeDetail(
+			Model model,
+			 HttpSession session,
+			@RequestParam(value = "postNo", defaultValue = "1") int postNo
     ) {
     	Member loginUser = (Member) session.getAttribute("loginUser");
-    	model.addAttribute("loginUser", loginUser);
-        List<Board> list = boardService.selectFaqList();
-        model.addAttribute("list", list);
-        
-        return "board/faq/faq-board";
+   	 	model.addAttribute("loginUser", loginUser);
+   	 
+    	 Board selectedPost = boardService.selectKnowledgeDetail(postNo);
+         model.addAttribute("selectedPost", selectedPost);
+    
+         log.info("selectedPost {}",selectedPost);
+         
+    	 Knowledge selectedPost2 = boardService.selectKnowledgeDetail2(postNo);
+         model.addAttribute("selectedPost2", selectedPost2);
+         System.out.println(selectedPost2);
+         
+         List<Board> list = boardService.selectKnowledgeDetailAnswer(postNo);
+         model.addAttribute("list", list);
+         System.out.println(list);
+         
+         return "board/free/free-detail";
+         
     }
+    //6-3.지식인 글 등록
+    @GetMapping("/knowledgequestioninsert")
+    public String moveKnowledgeQuestionInsert() {
+        return "board/knowledge/knowledge-question";
+    }
+
+	/*
+	 * @PostMapping("/knowledgequestioninsert") public String knowledgeQuestionInsert() {
+	 * 
+	 * }
+	 */
+    //6-4.지식인 답변 등록
+    @GetMapping("/knowledgeanswerinsert")
+    public String moveKnowledgeAnswerInsert() {
+        return "board/knowledge/knowledge-answer";
+    }
+
+	/*
+	 * @PostMapping("/knowledgeanswerinsert") public String knowledgeAnswerInsert() {
+	 * 
+	 * }
+	 */
+
     //이찬우 구역 끝
 
 }

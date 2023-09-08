@@ -13,6 +13,7 @@ import com.kh.hellomentor.board.model.vo.Free;
 import com.kh.hellomentor.board.model.vo.Inquiry;
 import com.kh.hellomentor.board.model.vo.Knowledge;
 import com.kh.hellomentor.board.model.vo.Reply;
+import com.kh.hellomentor.common.Utils;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -37,49 +38,59 @@ public class BoardServiceImpl implements BoardService {
     public List<Board> selectNoticeList() {
         return boardDao.selectNoticeList();
     }
-
+    //1-1.공지사항 상세조회
+    @Override
+    public Board selectNoticeDetail(int postNo){
+   	 return boardDao.selectNoticeDetail(postNo);
+   }
  
+    //2. FAQ 조회
+    @Override
+    public List<Board> selectFaqList() {
+        return boardDao.selectFaqList();
+    }
 
-    //2. 1:1문의 작성
+    //3. 1:1문의 작성
     @Override
     public int insertInquiry(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception {
-    	int postNo = boardDao.insertInquiry(board);
     	
-    	int result = 0;
-		if(postNo > 0 && !list.isEmpty()) {
-			for(Attachment attach    :   list) {
-				attach.setPostNo(postNo);
-				attach.setFilePath(webPath);
-			}
-			result = boardDao.insertInquiryAttachment(list);
-			
-			if(result != list.size()) {// 이미지 삽입 실패시 강제 예외 발생
-				throw new Exception("예외발생");
-			}
-		}
+    	board.setPostTitle(Utils.XSSHandling(board.getPostTitle()));
+		board.setPostContent(Utils.XSSHandling(board.getPostContent()));
+		board.setPostContent(Utils.newLineHandling(board.getPostContent()));
+    	
+    	int postNo = boardDao.insertInquiry(board);
+    
+		return postNo;
+    }
+    @Override
+    public int insertInquiry2(Inquiry inquiry) {
+    	
+    	
+    	int result = boardDao.insertInquiry2(inquiry);
+    
 		return result;
     }
     
-    //3. 문의내역 조회
+    //4. 문의내역 조회
     @Override
-    public List<Board> selectInquiryList(){
-    	 return boardDao.selectInquiryList();
+    public List<Board> selectInquiryList(int userNo){
+    	 return boardDao.selectInquiryList(userNo);
     }
     @Override
-    public List<Inquiry> selectInquiryList2(){
-   	 return boardDao.selectInquiryList2();
+    public List<Inquiry> selectInquiryList2(int userNo){
+   	 return boardDao.selectInquiryList2(userNo);
    }
-    //3-2.문의내역 상세조회
+    //4-1.문의내역 상세조회
     @Override
-    public List<Board> selectinquirydetail(int postNo){
-   	 return boardDao.selectInquiryList();
+    public Board selectInquiryDetail(int postNo){
+   	 return boardDao.selectInquiryDetail(postNo);
    }
     @Override
-   public List<Inquiry> selectinquirydetail2(int postNo){
-  	 return boardDao.selectInquiryList2();
+   public Inquiry selectInquiryDetail2(int postNo){
+  	 return boardDao.selectInquiryDetail2(postNo);
   }
     
-    //4. 자유게시판 조회
+    //5. 자유게시판 조회
     @Override
     public List<Board> selectFreeList(){
     	 return boardDao.selectFreeList();
@@ -88,7 +99,7 @@ public class BoardServiceImpl implements BoardService {
     public List<Free> selectFreeList2(){
     	return boardDao.selectFreeList2();
    }
-    //4-1. 자유게시판 조회 (화제글 3개)
+    //5-1. 자유게시판 조회 (화제글 3개)
     @Override
     public List<Board> selectBestFreeList(){
     	 return boardDao.selectBestFreeList();
@@ -97,7 +108,42 @@ public class BoardServiceImpl implements BoardService {
     public List<Free> selectBestFreeList2(){
     	return boardDao.selectBestFreeList2();
    }
-    //5. 지식인 조회 (메인)
+    //5-2.공지사항 상세조회
+    @Override
+    public Board selectFreeDetail(int postNo){
+   	 return boardDao.selectFreeDetail(postNo);
+   }
+    @Override
+    public Free selectFreeDetail2(int postNo){
+   	 return boardDao.selectFreeDetail2(postNo);
+   }
+    @Override
+    public List<Reply> selectFreeDetailReply(int postNo){
+   	 return boardDao.selectFreeDetailReply(postNo);
+   }
+    //5-3. 자유게시판 글 작성
+    @Override
+    public int insertFree(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception {
+    	
+    	board.setPostTitle(Utils.XSSHandling(board.getPostTitle()));
+		board.setPostContent(Utils.XSSHandling(board.getPostContent()));
+		board.setPostContent(Utils.newLineHandling(board.getPostContent()));
+    	
+    	int postNo = boardDao.insertInquiry(board);
+    
+		return postNo;
+    }
+    @Override
+    public int insertFree2(int postNo) {
+    	
+    	
+    	int result = boardDao.insertFree2(postNo);
+    
+		return result;
+    }
+ 
+    
+    //6. 지식인 조회 (메인)
     @Override
     public List<Board> selectKnowledgeList(){
     	 return boardDao.selectKnowledgeList();
@@ -110,11 +156,18 @@ public class BoardServiceImpl implements BoardService {
     public List<Answer> selectKnowledgeList3(){
     	return boardDao.selectKnowledgeList3();
    }
-    //6. FAQ 조회
-    @Override
-    public List<Board> selectFaqList() {
-        return boardDao.selectFaqList();
-    }
+    //6-1. 지식인 상세 조회
+    public Board selectKnowledgeDetail(int postNo){
+      	 return boardDao.selectKnowledgeDetail(postNo);
+    };
+    public Knowledge selectKnowledgeDetail2(int postNo){
+      	 return boardDao.selectKnowledgeDetail2(postNo);
+    };
+    public List<Board> selectKnowledgeDetailAnswer(int postNo){
+      	 return boardDao.selectKnowledgeDetailAnswer(postNo);
+    };
+    
+
     
     //이찬우 구역 끝
 }

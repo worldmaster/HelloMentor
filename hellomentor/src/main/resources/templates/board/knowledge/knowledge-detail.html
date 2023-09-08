@@ -29,32 +29,32 @@
           <div id="question-language">Q.</div>
 
           <div class="knowledge-info">
-            <div class="knowledge-title">안녕하세요</div>
+            <div class="knowledge-title" th:text="${selectedPost.postTitle}">질문 제목</div>
             <div id="knowledge-info">
-              <div>작성자</div>
-              <div>2023-08-08</div>
+              <div th:text="${selectedPost.userNo}">작성자</div>
+              <div th:text="${selectedPost.createDate}">작성일자</div>
               <div id="knowledge-count">
                 <img th:src="@{/img/see.png}" class="seeimg1" />
-                <span>100</span>
+                <span th:text="${selectedPost.views}">조회수</span>
               </div>
               <div id="knowledge-chosen">채택완료</div>
             </div>
           </div>
         </div>
 
-        <div class="knowledge-content">안녕하세요</div>
+        <div class="knowledge-content" th:text="${selectedPost.postContent}">질문 내용</div>
 
         <!--지식인 정보 및 내용 끝-->
 
         <!--신고-->
 
-        <div id="move-to-report"><a th:href="@{}">신고하기</a></div>
+        <div id="move-to-report"><a th:href="">신고하기</a></div>
 
         <!--하단 버튼-->
         <!-- 아래 버튼은 작성자만 보여진다. -->
         <div class="knowledge-btns">
-          <button type="button" onclick="" id="move-to-change">수정</button>
-          <button type="button" onclick="" id="move-to-delete">삭제</button>
+          <button type="button" id="move-to-change">수정</button>
+          <button type="button" id="move-to-delete">삭제</button>
         </div>
         <!--하단 버튼 끝-->
 
@@ -75,11 +75,11 @@
             stroke-linejoin="round"
           />
         </svg>
-        <span id="count-love">10</span>
+        <span id="count-love" th:text="${selectedPost2.upVotes}">추천수</span>
 
         <!--답변 버튼-->
         <div class="knowledge-reply">
-          <button id="move-to-insert" onclick="location.href=''">
+          <button id="move-to-insert" th:onclick="|window.location.href='/hellomentor/knowledgeanswerinsert'|">
             답변하기
           </button>
         </div>
@@ -109,11 +109,11 @@
 
         <!--일반 답변 시작-->
         <!-- 채택된 답변이 존재할시 insert-correct 버튼은 눌릴수 없게 설정하기 -->
-        <div class="knowledge-reply-list">
+        <div class="knowledge-reply-list" th:each="a : ${list}">
           <div class="reply-section">
-            <div class="reply-info">
-              <div>작성자</div>
-              <div>2023-08-08</div>
+            <div class="reply-info" >
+              <div th:text="${a.userNo}" >작성자</div>
+              <div th:text="${a.createDate}" >작성일자</div>
               <button type="button" class="insert-correct">채택하기</button>
               <!-- 해당 작성자 로그인 시에만 delete-reply가 뜬다. -->
               <div class="delete-reply">
@@ -127,12 +127,12 @@
               </div>
             </div>
 
-            <div class="answer-content">안녕하세요</div>
+            <div class="answer-content" th:text="${a.postContent}" >안녕하세요</div>
             
             
             <!-- 해당 작성자 로그인 시에만 answer-edit이 보인다.-->
             <div class="answer-edit">
-              <a th:href="@{}">수정하기</a>
+              <a >수정하기</a>
             </div>
           </div>
         </div>

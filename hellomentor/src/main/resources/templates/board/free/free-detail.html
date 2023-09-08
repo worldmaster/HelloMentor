@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>자유게시판_상세페이지</title>
-<link  th:href="@{/css/normal-frame.css}" rel="stylesheet" />
-<link  th:href="@{/css/free-detail.css}" rel="stylesheet" />
+<link th:href="@{/css/normal-frame.css}" rel="stylesheet" />
+<link th:href="@{/css/free-detail.css}" rel="stylesheet" />
 
 
 <link
@@ -13,12 +13,13 @@
 	rel="stylesheet" />
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 
 </head>
 <body>
 
-<div th:insert="common/header :: header"></div>
+	<div th:insert="common/header :: header"></div>
 
 
 	<div class="content">
@@ -27,31 +28,31 @@
 
 			<!--게시판 정보 및 내용 시작-->
 			<div class="free-info">
-				<div class="free-title">안녕하세요</div>
+				<div class="free-title" th:text="${selectedPost.postTitle}">제목</div>
 				<div id="free-info">
-					<div>작성자</div>
-					<div>2023-08-08</div>
+					<div th:text="${selectedPost.userNo}">작성자</div>
+					<div th:text="${selectedPost.createDate}">작성일자</div>
 					<div id="free-count">
-						<img th:src="@{/img/see.png}" class="seeimg1" /> <span>100</span>
+						<img th:src="@{/img/see.png}" class="seeimg1" /> <span th:text="${selectedPost.views}">조회수</span>
 					</div>
 				</div>
 			</div>
 
-			<div class="free-content">안녕하세요</div>
+			<div class="free-content" th:text="${selectedPost.postContent}">안녕하세요</div>
 
 			<!--게시판 정보 및 내용 끝-->
 
 			<!--신고-->
 			<!-- 신고하기는 글의 작성자는 볼 수 없다. -->
-			<div id="move-to-report">
+		<!-- 	<div id="move-to-report">
 				<a th:href="@{}">신고하기</a>
-			</div>
+			</div> -->
 
 			<!--하단 버튼-->
 			<!-- 아래 버튼은 작성자만 보여진다. -->
 			<div class="free-btns">
-				<button type="button" onclick="" id="move-to-change">수정</button>
-				<button type="button" onclick="" id="move-to-delete">삭제</button>
+				<button type="button" id="move-to-change">수정</button>
+				<button type="button" id="move-to-delete">삭제</button>
 			</div>
 			<!--하단 버튼 끝-->
 
@@ -63,25 +64,28 @@
 					stroke="black" stroke-width="2" stroke-linecap="round"
 					stroke-linejoin="round" />
         </svg>
-			<span id="count-love">10</span>
+			<span id="count-love" th:text="${selectedPost2.upVotes}">추천수</span>
 
 			<!--댓글 등록-->
 			<div class="reply-count">댓글 | 3</div>
-			<form th:action="@{}" method="post">
+			<!-- <form th:action="@{}" method="post"> -->
 				<div class="reply-write-section">
 					<textarea class="reply-write"></textarea>
 					<button id="reply-send">등록</button>
 				</div>
-			</form>
+			<!-- </form> -->
 
 			<!-- 댓글 목록 -->
 			<table id="reply-list">
-				<tbody>
+				<tbody th:each="r  : ${list}">
+				    <tr th:if="${#lists.isEmpty(list)}">
+           				 <td colspan="5">댓글이 존재하지 않습니다</td>
+        			</tr>
 					<tr>
-						<td width="550px">내용내용</td>
-						<td width="80px">mentee01</td>
-						<td width="5px">|</td>
-						<td width="100px">2023-08-08</td>
+						<td width="550px" th:text="${r.replyContent}">댓글내용</td>
+						<td width="80px" th:text="${r.userNo}">댓글작성자ID</td>
+						<td width="5px" >|</td>
+						<td width="100px" th:text="${r.createDate}">댓글작성일자</td>
 						<td width="50px">
 							<!-- 댓글 작성자만 깡통이 보인다.--> <svg class="trash-logo"
 								xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -101,52 +105,6 @@
 									stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
 						</td>
-					</tr>
-					<tr>
-						<td>내용내용</td>
-						<td>mentee01</td>
-						<td>|</td>
-						<td>2023-08-08</td>
-						<td><svg class="trash-logo"
-								xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-								viewBox="0 0 24 24" fill="none">
-                  <path d="M3 6H21" stroke="black" stroke-width="2"
-									stroke-linecap="round" stroke-linejoin="round" />
-                  <path
-									d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
-									stroke="black" stroke-width="2" stroke-linecap="round"
-									stroke-linejoin="round" />
-                  <path d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
-									stroke="black" stroke-width="2" stroke-linecap="round"
-									stroke-linejoin="round" />
-                  <path d="M10 11V17" stroke="black" stroke-width="2"
-									stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M14 11V17" stroke="black" stroke-width="2"
-									stroke-linecap="round" stroke-linejoin="round" />
-                </svg></td>
-					</tr>
-					<tr>
-						<td>내용내용</td>
-						<td>mentee01</td>
-						<td>|</td>
-						<td>2023-08-08</td>
-						<td><svg class="trash-logo"
-								xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-								viewBox="0 0 24 24" fill="none">
-                  <path d="M3 6H21" stroke="black" stroke-width="2"
-									stroke-linecap="round" stroke-linejoin="round" />
-                  <path
-									d="M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6"
-									stroke="black" stroke-width="2" stroke-linecap="round"
-									stroke-linejoin="round" />
-                  <path d="M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6"
-									stroke="black" stroke-width="2" stroke-linecap="round"
-									stroke-linejoin="round" />
-                  <path d="M10 11V17" stroke="black" stroke-width="2"
-									stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M14 11V17" stroke="black" stroke-width="2"
-									stroke-linecap="round" stroke-linejoin="round" />
-                </svg></td>
 					</tr>
 				</tbody>
 			</table>
@@ -177,9 +135,9 @@
         });
       });
     </script>
-    
-    <div th:insert="common/footer :: footer"></div>
-    
-    
+
+	<div th:insert="common/footer :: footer"></div>
+
+
 </body>
 </html>

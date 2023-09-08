@@ -28,7 +28,7 @@
         <div align="center" class="cs-menu-bar">
           <div class="cs-menu" id="selected-menu"><a th:href="@{/noticelist}">공지사항</a></div>
           <div class="cs-menu"><a th:href="@{/faqlist}">FAQ</a></div>
-          <div class="cs-menu"><a th:href="@{/inquiry-insert}">1:1문의</a></div>
+          <div class="cs-menu"><a th:href="@{/inquiryinsert}">1:1문의</a></div>
           <div class="cs-menu"><a th:href="@{/inquirylist}">문의내역</a></div>
         </div>
         <!-- 메뉴바 끝 -->
@@ -64,6 +64,7 @@
        <!--  </form> -->
         <!-- 분류, 검색창 끝 -->
 
+		
         <!-- 게시글 -->
         <table align="center" id="notice-area">
           <thead>
@@ -77,9 +78,11 @@
           <tr th:if="${#lists.isEmpty(list)}">
             <td colspan="3">공지사항이 존재하지 않습니다</td>
         </tr>
-		 	 <tr th:each="n : ${list}">
+		 	 <tr th:each="n : ${list}"  >
 		         <td th:text="${n.boardType}">분류</td>
-		         <td th:text="${n.postTitle}">제목</td>
+		         <td >
+		         	<a th:text="${n.postTitle}" th:href="'/hellomentor/noticedetail?nno=' + ${n.postNo}">제목</a>
+		         </td>
 		         <td th:text="${n.createDate}">작성일자</td>
       		</tr>
           </tbody>
