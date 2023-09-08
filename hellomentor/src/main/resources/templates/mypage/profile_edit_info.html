@@ -9,9 +9,10 @@
 <div class="my_editinfo_content1">
     <div class="my_editinfo_box_1">
         <div class="my_editinfo_profile_img">
-            <img th:src="@{img/profile-img.jpeg}"/>
+            <img id="profileImage" th:src=" @{${session.loginUser.profile}}" onclick="document.getElementById('fileInput').click();"/>
         </div>
-        <span>프로필 사진 변경하기</span>
+        <label for="fileInput" id="my_profileInput">프로필 사진 변경하기</label>
+        <input type="file" id="fileInput" style="display: none;" accept="image/*" />
     </div>
 
     <div class="my_editinfo_box_2">
@@ -92,28 +93,38 @@
         var newPasswordConfirm = document.getElementById('edit_info_usernewPwd').value;
         var introduction = document.getElementById('edit_info_intro').value;
 
-
         if (currentPassword === "") {
             alert("현재 비밀번호를 입력하세요.");
             return;
         }
+
         // 변경할 비밀번호와 비밀번호 확인이 일치하지 않으면 alert 창 띄우기
         if (newPwd !== newPasswordConfirm) {
             alert("비밀번호 확인이 일치하지 않습니다.");
             return;
         }
 
+        // 프로필 이미지 변경 여부 확인
+        var fileInput = document.getElementById('fileInput');
+        var file = fileInput.files[0];
+        var profileImageChanged = file !== undefined;
+
+        var formData = new FormData();
+        formData.append('originPwd', currentPassword);
+        formData.append('newPwd', newPwd);
+        formData.append('intro', introduction);
+        formData.append('profileImageChanged', profileImageChanged);
+
+        if (profileImageChanged) {
+            formData.append('file', file);
+        }
+        console.log(formData);
+
+
+        // 프로필 업데이트 요청
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "updateProfile", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
 
-        var data = JSON.stringify({
-            originPwd: currentPassword,
-            newPwd: newPwd,
-            intro: introduction
-        });
-
-        xhr.send(data);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
@@ -126,15 +137,34 @@
                 }
             }
         };
+
+        xhr.send(formData);
+    });
+
+</script>
+
+
+
+<!--프로필사진 미리보기 -->
+<script>
+    document.getElementById('fileInput').addEventListener('change', function () {
+        var fileInput = document.getElementById('fileInput');
+        var profileImage = document.getElementById('profileImage');
+
+        var file = fileInput.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                profileImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
     });
 </script>
 
 
-<script>
 
-</script>
-
-
+<!--탈퇴모달-->
 <script>
 
     document.getElementById('my_editinfo_withdrawBtn').addEventListener('click', function () {

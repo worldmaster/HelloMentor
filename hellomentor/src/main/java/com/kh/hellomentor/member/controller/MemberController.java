@@ -2,8 +2,6 @@ package com.kh.hellomentor.member.controller;
 
 import javax.servlet.http.HttpSession;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.hellomentor.member.model.vo.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +16,11 @@ import com.kh.hellomentor.member.model.service.MemberService;
 import com.kh.hellomentor.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,7 +92,8 @@ public class MemberController {
 
         int userNo = loginUser.getUserNo();
         List<Member> followingList = mService.getFollowList(userNo);
-        List<Profile> profileList = mService.getProfileList(userNo);
+        List<Profile> profileList = mService.getFollowingProfileList(userNo);
+
 
         List<Map<String, Object>> combinedList = new ArrayList<>();
         for (Member member : followingList) {
@@ -119,7 +121,6 @@ public class MemberController {
         }
 
         model.addAttribute("combinedList", combinedList);
-        logger.info("Combined List: {}", combinedList);
         return "mypage/home_following_list";
     }
 
@@ -129,7 +130,8 @@ public class MemberController {
         Member loginUser = (Member) session.getAttribute("loginUser");
         int userNo = loginUser.getUserNo();
         List<Member> followerList = mService.getFollowerList(userNo);
-        List<Profile> profileList = mService.getProfileList(userNo);
+        List<Profile> profileList = mService.getFollowerProfileList(userNo);
+
 
         List<Map<String, Object>> combinedList = new ArrayList<>();
         for (Member member : followerList) {
@@ -157,12 +159,12 @@ public class MemberController {
         }
 
         model.addAttribute("combinedList", combinedList);
-        logger.info("Combined List: {}", combinedList);
         return "mypage/home_follower_list";
     }
 
 
     @RequestMapping("/profile_edit_info")
+
     public String profileEdit(Model model, HttpSession session) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         if ("E".equals(loginUser.getMemberType())) {
@@ -174,27 +176,72 @@ public class MemberController {
         return "mypage/profile_edit_info";
     }
 
+    public String uploadProfileImg(MultipartFile file, int userNo) throws IOException {
+        String currentDirectory = System.getProperty("user.dir");
+
+        String uploadDir = currentDirectory + "/hellomentor/src/main/resources/static/img/profile/";
+
+        String fileName = "profile_" + userNo + ".jpg";
+
+        File uploadPath = new File(uploadDir);
+
+        if (!uploadPath.exists()) {
+            uploadPath.mkdirs();
+        }
+
+        File destFile = new File(uploadPath, fileName);
+        file.transferTo(destFile);
+        logger.info("Saved file path: {}", destFile.getAbsolutePath());
+        return fileName;
+    }
+
+
 
     @PostMapping("/updateProfile")
-    public ResponseEntity<String> updateProfile(@RequestBody Map<String, String> requestBody, HttpSession session) {
-        String originPwd = requestBody.get("originPwd");
-        String newPwd = requestBody.get("newPwd");
-        String intro = requestBody.get("intro");
-
+    public ResponseEntity<String> updateProfile(@RequestParam("file") MultipartFile file,
+                                                @RequestParam("originPwd") String originPwd,
+                                                @RequestParam("newPwd") String newPwd,
+                                                @RequestParam("intro") String intro,
+                                                HttpSession session) {
         Member loginUser = (Member) session.getAttribute("loginUser");
 
         if (!originPwd.equals(loginUser.getUserPwd())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("현재 비밀번호가 일치하지 않습니다.");
         }
 
-        loginUser.setUserPwd(newPwd);
-        loginUser.setIntroduction(intro);
-        mService.updateMember(loginUser);
+        try {
+            String fileName = uploadProfileImg(file, loginUser.getUserNo());
 
-        return ResponseEntity.ok("프로필이 업데이트되었습니다.");
+            Profile profile = new Profile();
+            profile.setUserNo(loginUser.getUserNo());
+            profile.setOriginName(file.getOriginalFilename());
+            profile.setChangeName(fileName);
+            profile.setFilePath("img/profile/");
+            profile.setFileSize(file.getSize());
+
+            if (newPwd.isEmpty()) {
+                loginUser.setUserPwd(originPwd);
+            } else {
+                loginUser.setUserPwd(newPwd);
+            }
+
+            if(mService.isProfileImgExists(loginUser.getUserNo())){
+                mService.updateProfileImg(profile);
+            }
+            else{
+                mService.insertProfileImg(profile);
+            }
+
+
+            loginUser.setIntroduction(intro);
+            mService.updateMember(loginUser);
+
+            return ResponseEntity.ok("프로필이 업데이트되었습니다.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("프로필 업데이트 중 오류가 발생했습니다. 다시 시도해주세요");
+        }
     }
-
-
 }
 
 

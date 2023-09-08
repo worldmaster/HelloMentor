@@ -31,8 +31,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Profile> getProfileList(int userNo) {
-        return memberDao.getProfileList(userNo);
+    public List<Profile> getFollowingProfileList(int userNo) {
+        return memberDao.getFollowingProfileList(userNo);
     }
 
     @Override
@@ -43,6 +43,26 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void updateMember(Member updatedMember) {
         memberDao.updateMember(updatedMember);
+    }
+
+    @Override
+    public List<Profile> getFollowerProfileList(int userNo) {
+        return memberDao.getFollowerProfileList(userNo);
+    }
+
+    @Override
+    public void updateProfileImg(Profile profile) {
+        memberDao.updateProfileImg(profile);
+    }
+
+    @Override
+    public void insertProfileImg(Profile profile) {
+        memberDao.insertProfileImg(profile);
+    }
+
+    @Override
+    public Boolean isProfileImgExists(int userNo) {
+       return memberDao.isProfileImgExists(userNo);
     }
 
 }

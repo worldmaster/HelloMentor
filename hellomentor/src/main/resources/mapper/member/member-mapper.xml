@@ -29,7 +29,6 @@
 
 
 
-
     <select id="loginUser" parameterType="member" resultMap="memberResultSet">
         SELECT *
         FROM MEMBER
@@ -66,33 +65,69 @@
         FROM FOLLOW AS F
                  INNER JOIN MEMBER AS M ON F.FROM_USER = M.USER_NO
         WHERE F.TO_USER = #{userNo}
+        ORDER BY M.USER_ID ASC
     </select>
 
-    <select id="getProfileList" parameterType="int" resultMap="profileResultSet">
+    <select id="getFollowingProfileList" parameterType="int" resultMap="profileResultSet">
         SELECT M.*, P.*
         FROM MEMBER AS M
+                 INNER JOIN FOLLOW AS F ON M.USER_NO = F.TO_USER
                  LEFT JOIN PROFILE_IMG AS P ON M.USER_NO = P.USER_NO
-        WHERE M.USER_NO = #{userNo}
+        WHERE F.FROM_USER = #{userNo}
+        ORDER BY M.USER_ID ASC
     </select>
 
     <select id="getFollowerList" parameterType="int" resultMap="memberResultSet">
         SELECT M.*
         FROM FOLLOW AS F
-                 INNER JOIN MEMBER AS M ON F.FROM_USER = M.USER_NO
+                 INNER JOIN MEMBER AS M ON F.TO_USER = M.USER_NO
         WHERE F.FROM_USER = #{userNo}
+        ORDER BY M.USER_ID ASC
     </select>
 
-        <update id="updateProfile" parameterType="member">
-            UPDATE MEMBER
-            SET USER_PWD     = #{userPwd},
-                INTRODUCTION = #{introduction}
-            WHERE USER_ID = #{userId}
-        </update>
+    <select id="getFollowerProfileList" parameterType="int" resultMap="profileResultSet">
+        SELECT M.*, P.*
+        FROM MEMBER AS M
+                 INNER JOIN FOLLOW AS F ON M.USER_NO = F.FROM_USER
+                 LEFT JOIN PROFILE_IMG AS P ON M.USER_NO = P.USER_NO
+        WHERE F.TO_USER = #{userNo}
+        ORDER BY M.USER_ID ASC
+    </select>
+
+    <update id="updateProfile" parameterType="member">
+        UPDATE MEMBER
+        SET USER_PWD     = #{userPwd},
+            INTRODUCTION = #{introduction}
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <update id="updateProfileImg" parameterType="profile">
+        UPDATE PROFILE_IMG
+        SET
+            FILE_CHANGE_NAME = #{changeName},
+            FILE_SIZE = #{fileSize},
+            FILE_PATH = #{filePath},
+            FILE_ORIGIN_NAME = #{originName}
+        WHERE
+            USER_NO = #{userNo}
+    </update>
+
+    <!-- MemberMapper.xml -->
+
+    <insert id="insertProfileImg" parameterType="profile">
+        INSERT INTO PROFILE_IMG (USER_NO, FILE_ORIGIN_NAME, FILE_CHANGE_NAME, FILE_PATH, FILE_SIZE)
+        VALUES (#{userNo},
+                #{originName},
+                #{changeName},
+                #{filePath},
+                #{fileSize})
+    </insert>
 
 
-
-
-
+    <select id="isProfileImgExists" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM PROFILE_IMG
+        WHERE USER_NO = #{userNo}
+    </select>
 
 </mapper>
 

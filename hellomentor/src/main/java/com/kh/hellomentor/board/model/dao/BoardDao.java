@@ -2,6 +2,11 @@ package com.kh.hellomentor.board.model.dao;
 
 import java.util.List;
 
+<<<<<<< HEAD
+=======
+import com.kh.hellomentor.matching.model.vo.StudyApplicant;
+import org.apache.ibatis.session.RowBounds;
+>>>>>>> 42b6222ba4db5b70f7496f560ed53eacff73f8bf
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -160,4 +165,51 @@ public class BoardDao {
     
  
     //이찬우 구역 끝
+
+
+
+    //정승훈 구역
+    public List<Board> selectStudyList(int currentPage, Map<String, Object> paramMap) {
+        int offset = (currentPage - 1) * 5; //몇개의 페이지를 나타낼건지를 나타냄
+        int limit = 5; //총 몇개의 게시글을 가지고 올것인지 나타냄
+
+        RowBounds rowBounds = new RowBounds(offset, limit);
+
+        return session.selectList("boardMapper.selectStudyList", paramMap, rowBounds);
+    }
+
+
+
+
+    public List<StudyApplicant> selectPepleList(Map<String, Object> paramMap) {
+        return session.selectList("boardMapper.selectPepleList", paramMap);
+    }
+
+    public List<Map<String, Object>> selectRecruitmentCount(Map<String, Object> paramMap) {
+        return session.selectList("boardMapper.selectRecruitmentCount", paramMap);
+    }
+
+    public int insertStudy(Board b) {
+        return session.insert("boardMapper.insertStudy",b);
+    }
+
+    public Board selectDetailStudy(int postNo) {
+        return session.selectOne("boardMapper.selectDetailStudy",postNo);
+    }
+
+    public int studyDetailApplicant(int postNo) {
+        return session.selectOne("boardMapper.studyDetailApplicant",postNo);
+    }
+
+    public List<Reply> selectReplyList(int postNo) {
+        return session.selectList("boardMapper.selectReplyList",postNo);
+    }
+
+
+
+
+    //------------------------------정승훈-----------------------------------------
+
+
+
 }

@@ -2,6 +2,11 @@ package com.kh.hellomentor.board.model.service;
 
 import java.util.List;
 
+<<<<<<< HEAD
+=======
+import com.kh.hellomentor.board.model.vo.Attachment;
+import com.kh.hellomentor.matching.model.vo.StudyApplicant;
+>>>>>>> 42b6222ba4db5b70f7496f560ed53eacff73f8bf
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -170,5 +175,56 @@ public class BoardServiceImpl implements BoardService {
 
     
     //이찬우 구역 끝
+
+
+
+
+
+
+
+
+    //----------------------------------정승훈----------------------------------
+    @Override
+    public List<Board> selectStudyList(int currentPage, Map<String, Object> paramMap) {
+        return boardDao.selectStudyList(currentPage, paramMap);
+    }
+
+
+    @Override
+    public List<StudyApplicant> selectPepleList(Map<String, Object> paramMap) {
+        return boardDao.selectPepleList(paramMap);
+    }
+
+
+    //스터디 인원수
+    @Override
+    public List<Map<String, Object>> selectRecruitmentCount(Map<String, Object> paramMap) {
+
+        return boardDao.selectRecruitmentCount(paramMap);
+    }
+
+
+    //스터디 게시글 등록
+    @Override
+    public int insertStudy(Board b) {
+        return boardDao.insertStudy(b);
+    }
+
+    @Override
+    public Board selectDetailStudy(int postNo) {
+        return boardDao.selectDetailStudy(postNo);
+    }
+
+    @Override
+    public int studyDetailApplicant(int postNo) {
+        return boardDao.studyDetailApplicant(postNo);
+    }
+
+    @Override
+    public List<Reply> selectReplyList(int postNo) {
+        return boardDao.selectReplyList(postNo);
+    }
+
+
 }
 
