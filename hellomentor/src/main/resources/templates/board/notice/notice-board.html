@@ -26,15 +26,15 @@
 
         <!-- 메뉴바 -->
         <div align="center" class="cs-menu-bar">
-          <div class="cs-menu" id="selected-menu"><a th:href="@{/notice-board}">공지사항</a></div>
-          <div class="cs-menu"><a th:href="@{/faq-board}">FAQ</a></div>
-          <div class="cs-menu"><a th:href="@{/inquiry-insert}">1:1문의</a></div>
+          <div class="cs-menu" id="selected-menu"><a th:href="@{/noticelist}">공지사항</a></div>
+          <div class="cs-menu"><a th:href="@{/faqlist}">FAQ</a></div>
+          <div class="cs-menu"><a th:href="@{/inquiryinsert}">1:1문의</a></div>
           <div class="cs-menu"><a th:href="@{/inquirylist}">문의내역</a></div>
         </div>
         <!-- 메뉴바 끝 -->
 
         <!-- 분류, 검색창 -->
-        <!-- <form th:action="@{}" method="get">
+        <!-- <form th:action="@{}" method="get"> -->
           <div id="kind-search">
             <select name="noticekind" id="noticekind">
               <option value="6">안내</option>
@@ -61,25 +61,28 @@
               </svg>
             </button>
           </div>
-        </form> -->
+       <!--  </form> -->
         <!-- 분류, 검색창 끝 -->
 
+		
         <!-- 게시글 -->
         <table align="center" id="notice-area">
           <thead>
             <tr>
               <th width="100">분류</th>
-              <th width="640">제목</th>
-              <th width="100">작성일자</th>
+              <th width="600">제목</th>
+              <th width="140">작성일자</th>
             </tr>
           </thead>
           <tbody>
           <tr th:if="${#lists.isEmpty(list)}">
             <td colspan="3">공지사항이 존재하지 않습니다</td>
         </tr>
-		 	 <tr th:each="n : ${list}">
+		 	 <tr th:each="n : ${list}"  >
 		         <td th:text="${n.boardType}">분류</td>
-		         <td th:text="${n.postTitle}">제목</td>
+		         <td >
+		         	<a th:text="${n.postTitle}" th:href="'/hellomentor/noticedetail?nno=' + ${n.postNo}">제목</a>
+		         </td>
 		         <td th:text="${n.createDate}">작성일자</td>
       		</tr>
           </tbody>
@@ -90,30 +93,21 @@
         
         
         <!-- 관리자만 글 작성 가능 -->
-		<!--   <th:block th:if="${loginUser.userId == 'admin'}">
-              <div id="move-to-insert"><a th:href="">글 작성</a></div>
-          </th:block>
-		 -->
+		 <div id="move-to-insert" th:if="${loginUser.userId == 'admin'}" >
+        	<button >글 작성</button>
+        </div>
 		
 		
 
         <!--페이징바-->
        
-<div align="center" class="paging-area">
-    <ul class="pagination">
-        <li th:if="${pi.currentPage > 0}" class="page-item">
-            <a class="page-link" th:href="@{${url}(__${pi.currentPage}__ - 1)}">이전 페이지</a>
-        </li>
-        
-        <li th:each="item : ${#numbers.sequence(pi.startPage, pi.endPage)}" class="page-item">
-            <a class="page-link" th:href="@{${url}(__${item}__)}" th:text="${item}"></a>
-        </li>
-        
-        <li th:if="${pi.currentPage < pi.maxPage}" class="page-item">
-            <a class="page-link" th:href="@{${url}(__${pi.currentPage}__ + 1)}">다음 페이지</a>
-        </li>
-    </ul>
-</div>
+ <div align="center" class="paging-area">
+          <button onclick="location.href= '#' ">이전 페이지</button>
+          <button onclick="location.href='#'">1</button>
+          <button onclick="location.href='#'">2</button>
+          <button onclick="location.href='#'">3</button>
+          <button onclick="location.href = '#'">다음 페이지</button>
+        </div>
 </div>
 
       </div>

@@ -22,7 +22,7 @@
       <div class="section">
         <div class="title">자유게시판</div>
 
-        <form th:action="@{}" method="post">
+         <form th:action="@{/freeinsert}" method="post"> 
           <!-- 회원가입form안에.txt -->
           <table id="free-table">
             <tr>
@@ -61,13 +61,13 @@
             </tr>
           </table>
           <div align="center">
-            <button type="button" id="free-back">취소</button>
+            <button type="reset" id="free-back">취소</button>
             <!-- 최초 작성시 -->
             <button type="submit" id="free-enroll">작성</button>
             <!-- 수정시 -->
             <!-- <button type="submit" id="free-change">수정</button> -->
           </div>
-        </form>
+         </form> 
       </div>
     </div>
     

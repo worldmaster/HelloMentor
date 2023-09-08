@@ -27,14 +27,14 @@
 
         <!-- 메뉴바 -->
         <div align="center" class="cs-menu-bar">
-          <div class="cs-menu"><a th:href="@{/notice-board}">공지사항</a></div>
-          <div class="cs-menu"><a th:href="@{/faq-board}">FAQ</a></div>
-          <div class="cs-menu" id="selected-menu"><a th:href="@{/inquiry-insert}">1:1문의</a></div>
+          <div class="cs-menu"><a th:href="@{/noticelist}">공지사항</a></div>
+          <div class="cs-menu"><a th:href="@{/faqlist}">FAQ</a></div>
+          <div class="cs-menu" id="selected-menu"><a th:href="@{/inquiryinsert}">1:1문의</a></div>
           <div class="cs-menu"><a th:href="@{/inquirylist}">문의내역</a></div>
         </div>
         <!-- 메뉴바 끝 -->
 
-        <form th:action="@{/insert.iq}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/inquiryinsert}" method="post" enctype="multipart/form-data">
           <!-- 회원가입form안에.txt -->
           <table id="inquiry-table">
             <tr>
@@ -46,7 +46,7 @@
                   <option value="3">서비스</option>
                   <option value="4">오류</option>
                   <option value="5">기타</option>
-                </select>
+                </select> 
               </td>
             </tr>
 
