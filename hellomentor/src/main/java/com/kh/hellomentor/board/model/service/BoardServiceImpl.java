@@ -1,12 +1,11 @@
 package com.kh.hellomentor.board.model.service;
 
 import java.util.List;
+import java.util.Map;
 
-<<<<<<< HEAD
-=======
+
 import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.matching.model.vo.StudyApplicant;
->>>>>>> 42b6222ba4db5b70f7496f560ed53eacff73f8bf
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

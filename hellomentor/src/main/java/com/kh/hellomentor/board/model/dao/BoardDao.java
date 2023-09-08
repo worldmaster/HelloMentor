@@ -1,12 +1,10 @@
 package com.kh.hellomentor.board.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
-<<<<<<< HEAD
-=======
 import com.kh.hellomentor.matching.model.vo.StudyApplicant;
 import org.apache.ibatis.session.RowBounds;
->>>>>>> 42b6222ba4db5b70f7496f560ed53eacff73f8bf
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
