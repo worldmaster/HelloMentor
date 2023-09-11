@@ -1,30 +1,25 @@
 package com.kh.hellomentor.matching.controller;
 
 
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-
+import com.kh.hellomentor.common.template.Pagination;
+import com.kh.hellomentor.common.vo.PageInfo;
 import com.kh.hellomentor.matching.model.service.MatchingService;
 import com.kh.hellomentor.matching.model.vo.Matching;
 import com.kh.hellomentor.matching.model.vo.Mentoring;
 import com.kh.hellomentor.member.model.vo.Member;
-import com.kh.hellomentor.common.template.Pagination;
-import com.kh.hellomentor.common.vo.PageInfo;
-
+import com.kh.hellomentor.member.model.vo.Profile;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -35,21 +30,132 @@ public class MatchingController {
     @Autowired
     private MatchingService matchingService;
 
+
+//   보낸 제안내역
     @RequestMapping("/mentoring_mentor_applications")
-    public String mentor_applications(HttpSession session){
+    public String mentor_applications(HttpSession session, Model model) {
         Member loginUser = (Member) session.getAttribute("loginUser");
+        int userNo = loginUser.getUserNo();
+
+        List<Member> mentorList = matchingService.getMentorList(userNo);
+
+        List<Profile> mentorProfileList = matchingService.getMentorProfileList(userNo);
+
+        List<Mentoring> mentoringList = matchingService.getMentoringList(userNo);
+
+        List<Matching> matchingList = matchingService.getMatchingList(userNo);
+
+        List<Map<String, Object>> combinedList = new ArrayList<>();
+
+        for (Member mentor : mentorList) {
+            Map<String, Object> combinedInfo = new HashMap<>();
+            combinedInfo.put("member", mentor);
+
+            Profile profile = null;
+            for (Profile p : mentorProfileList) {
+                if (p.getUserNo() == mentor.getUserNo()) {
+                    profile = p;
+                    break;
+                }
+            }
+
+            if (profile != null) {
+                combinedInfo.put("profile", profile);
+            } else {
+                Profile defaultProfile = new Profile();
+                defaultProfile.setFilePath("/img/");
+                defaultProfile.setChangeName("default-profile.jpg");
+                combinedInfo.put("profile", defaultProfile);
+            }
+
+            for (Matching matching : matchingList) {
+
+                if (matching.getMenteeNo() == mentor.getUserNo()) {
+                    for (Mentoring mentoring : mentoringList) {
+                        if (matching.getMatchingRegisNo() == mentoring.getRegisNo()) {
+                            combinedInfo.put("mentoring", mentoring);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+
+            combinedList.add(combinedInfo);
+        }
+
+        model.addAttribute("combinedList", combinedList);
+
         return "mypage/mentoring_mentor_applications";
     }
 
 
+// 받은 제안내역
+//    @RequestMapping("/mentoring_mentor_applications2")
+//    public String mentor_applications2(HttpSession session, Model model) {
+//        Member loginUser = (Member) session.getAttribute("loginUser");
+//        int userNo = loginUser.getUserNo();
+//
+//        List<Member> mentorList = matchingService.getMentorList(userNo);
+//
+//        List<Profile> mentorProfileList = matchingService.getMentorProfileList(userNo);
+//
+//        List<Mentoring> mentoringList = matchingService.getMentoringList(userNo);
+//
+//        List<Matching> matchingList = matchingService.getMatchingList(userNo);
+//
+//        List<Map<String, Object>> combinedList = new ArrayList<>();
+//
+//        for (Member mentor : mentorList) {
+//            Map<String, Object> combinedInfo = new HashMap<>();
+//            combinedInfo.put("member", mentor);
+//
+//            Profile profile = null;
+//            for (Profile p : mentorProfileList) {
+//                if (p.getUserNo() == mentor.getUserNo()) {
+//                    profile = p;
+//                    break;
+//                }
+//            }
+//
+//            if (profile != null) {
+//                combinedInfo.put("profile", profile);
+//            } else {
+//                Profile defaultProfile = new Profile();
+//                defaultProfile.setFilePath("/img/");
+//                defaultProfile.setChangeName("default-profile.jpg");
+//                combinedInfo.put("profile", defaultProfile);
+//            }
+//
+//            for (Matching matching : matchingList) {
+//
+//                if (matching.getMenteeNo() == mentor.getUserNo()) {
+//                    for (Mentoring mentoring : mentoringList) {
+//                        if (matching.getMatchingRegisNo() == mentoring.getRegisNo()) {
+//                            combinedInfo.put("mentoring", mentoring);
+//                            break;
+//                        }
+//                    }
+//                    break;
+//                }
+//            }
+//
+//            combinedList.add(combinedInfo);
+//        }
+//
+//        model.addAttribute("combinedList", combinedList);
+//
+//        return "mypage/mentoring_mentor_applications";
+//    }
+
+
+
+
     @RequestMapping("/mentoring_mentor_registdetail")
-    public String mentor_registdetail(HttpSession session){
+    public String mentor_registdetail(HttpSession session) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         return "mypage/mentoring_mentor_registdetail";
     }
-
-
-
 
 
     @GetMapping("/mentoring")
