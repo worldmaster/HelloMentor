@@ -77,12 +77,25 @@
         </svg>
         <span id="count-love" th:text="${selectedPost2.upVotes}">추천수</span>
 
-        <!--답변 버튼-->
-        <div class="knowledge-reply">
-          <button id="move-to-insert" th:onclick="|window.location.href='/hellomentor/knowledgeanswerinsert'|">
-            답변하기
-          </button>
-        </div>
+<input type="hidden" id="postNo" th:value="${selectedPost.postNo}" />
+
+<!-- 답변 버튼 -->
+<div class="knowledge-reply">
+    <button id="move-to-insert">답변하기</button>
+</div>
+
+<script>
+    // "move-to-insert" 버튼 클릭 시 이벤트 핸들러
+    document.getElementById("move-to-insert").addEventListener("click", function () {
+        // postNo 값을 읽어오기
+        var postNo = document.getElementById("postNo").value;
+
+        // 새 URL 생성 및 이동
+        var newURL = "/hellomentor/knowledgeanswerinsert?postNo=" + postNo;
+        window.location.href = newURL;
+    });
+</script>
+
 
         <div id="answer-language">
           <span id="answer-logo">A.</span>
