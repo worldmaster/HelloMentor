@@ -153,7 +153,7 @@ public class BoardController {
     public String selectNoticeDetail(
             Model model,
             HttpSession session,
-            @RequestParam(value = "postNo") int postNo
+            @RequestParam(name = "nno") int postNo
     ) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
@@ -275,7 +275,7 @@ public class BoardController {
     @GetMapping("/inquirydetail")
     public String selectInquiryDetail(
             Model model,
-            @RequestParam(value = "postNo", defaultValue = "2") int postNo
+            @RequestParam(name = "ino") int postNo
     ) {
         Board selectedPost = boardService.selectInquiryDetail(postNo);
         model.addAttribute("selectedPost", selectedPost);
@@ -325,7 +325,7 @@ public class BoardController {
     public String selectFreeDetail(
             Model model,
             HttpSession session,
-            @RequestParam(value = "postNo", defaultValue = "1") int postNo
+            @RequestParam(name = "fno") int postNo
     ) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
@@ -357,8 +357,7 @@ public class BoardController {
             Board board,
             @RequestParam(value = "upfile", required = false) List<MultipartFile> upfiles,
             HttpSession session,
-            Model model,
-            Free free
+            Model model
 
     ) {
         Member loginUser = (Member) session.getAttribute("loginUser");
@@ -440,7 +439,7 @@ public class BoardController {
     public String selectKnowledgeDetail(
             Model model,
             HttpSession session,
-            @RequestParam(value = "postNo", defaultValue = "1") int postNo
+            @RequestParam(name = "kno") int postNo
     ) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
@@ -468,11 +467,67 @@ public class BoardController {
         return "board/knowledge/knowledge-question";
     }
 
-    /*
-     * @PostMapping("/knowledgequestioninsert") public String knowledgeQuestionInsert() {
-     *
-     * }
-     */
+    @PostMapping("/knowledgequestioninsert")
+    public String knowledgeQuestionInsert(
+            Board board,
+            Knowledge knowledge,
+            @RequestParam(value = "upfile", required = false) List<MultipartFile> upfiles,
+            HttpSession session,
+            Model model
+
+    ) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        int userNo = loginUser.getUserNo();
+        // 이미지, 파일을 저장할 저장경로 얻어오기
+        String webPath = "/resources/static/img/attachment/knowledge";
+        String severFolderPath = application.getRealPath(webPath);
+
+        board.setUserNo(userNo + "");
+
+        // 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
+        File dir = new File(severFolderPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        List<Attachment> attachList = new ArrayList();
+
+        int level = -1;
+        for (MultipartFile upfile : upfiles) {
+            // input[name=upFile]로 만들어두면 비어있는 file이 넘어올수 있음.
+            level++;
+            if (upfile.isEmpty())
+                continue;
+
+            //  파일명 재정의 해주는 함수.
+            String changeName = Utils.saveFile(upfile, severFolderPath);
+            Attachment at = Attachment.
+                    builder().
+                    changeName(changeName).
+                    originName(upfile.getOriginalFilename()).
+                    build();
+            attachList.add(at);
+        }
+
+        int postNo = 0;
+        int result = 0;
+
+        try {
+            postNo = boardService.insertKnowledgeQuestion(board, attachList, severFolderPath, webPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        knowledge.setPostNo(postNo);
+        result = boardService.insertKnowledgeQuestion2(knowledge);
+        if (result > 0) {
+            //session.setAttribute("alertMsg", "게시글 작성에 성공하셨습니다.");
+            return "redirect:/knowledgelist";
+        } else {
+            // model.addAttribute("errorMsg", "게시글 작성 실패");
+            return "redirect:/knowledgequestioninsert";
+        }
+    }
+
     //6-4.지식인 답변 등록
     @GetMapping("/knowledgeanswerinsert")
     public String moveKnowledgeAnswerInsert() {
@@ -484,6 +539,39 @@ public class BoardController {
      *
      * }
      */
+    @PostMapping("/knowledgeanswerinsert")
+    public String knowledgeAnswerInsert(
+            Board board,
+            Answer answer,
+            HttpSession session,
+            Model model,
+            @RequestParam(value = "postNo", defaultValue = "81") int knowledgePostNo
+
+    ) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        int userNo = loginUser.getUserNo();
+
+        board.setUserNo(userNo + "");
+        answer.setKnowledgePostNo(knowledgePostNo);
+
+        int postNo = 0;
+        int result = 0;
+
+        try {
+            postNo = boardService.insertKnowledgeAnswer(board);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        answer.setPostNo(postNo);
+        result = boardService.insertKnowledgeAnswer2(answer);
+        if (result > 0) {
+            //session.setAttribute("alertMsg", "게시글 작성에 성공하셨습니다.");
+            return "redirect:/knowledgelist";
+        } else {
+            // model.addAttribute("errorMsg", "게시글 작성 실패");
+            return "redirect:/knowledgeanswerinsert";
+        }
+    }
 
     //이찬우 구역 끝
 

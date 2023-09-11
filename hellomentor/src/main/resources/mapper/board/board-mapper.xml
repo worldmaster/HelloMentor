@@ -85,7 +85,8 @@
         <result column="FILE_PATH" property="filePath"/>
         <result column="FILE_ORIGIN_NAME" property="originName"/>
     </resultMap>
- 
+
+
 
 
     <!-- 이찬우 구역 시작 -->
@@ -287,7 +288,7 @@
         JOIN FREE_BOARD F ON B.POST_NO = F.POST_NO 
         WHERE B.POST_NO = #{postNo}
     </select>
-    <select id="selectFreeDetailReply" parameterType="int" resultMap="replyResultMap">
+    <select id="selectFreeDetailReply" parameterType="int" resultMap="replyResultMap1">
 		SELECT M.USER_ID AS USER_NO,
 		       R.REPLY_CONTENT,
 		       R.CREATE_AT
@@ -298,6 +299,7 @@
 		WHERE B.POST_NO = #{postNo}
 		AND R.IS_DELETE = FALSE
 		ORDER BY R.REPLY_ID DESC
+		
     </select>
         <!-- 5-3. 자유게시판 insert -->
     <insert id="insertFree" parameterType="board">
@@ -402,6 +404,59 @@
          AND B.IS_DELETE = FALSE
         ORDER BY B.POST_NO DESC
     </select>
+    
+    <!-- 6-2.지식인 질문 등록 -->
+      <insert id="insertKnowledgeQuestion" parameterType="board">
+        INSERT INTO BOARD
+        (USER_WRITER_NO,
+         POST_TITLE,
+         POST_CONTENT,
+         IS_DELETE,
+         VIEWS,
+         CREATE_DATE,
+         BOARD_TYPE)
+        VALUES (#{userNo}, #{postTitle}, #{postContent}, DEFAULT, 0, DEFAULT, 'K')
+    </insert>
+     <insert id="insertKnowledgeQuestion2" parameterType="knowledge">
+        INSERT INTO KNOWLEDGE_BOARD
+        (POST_NO,
+         CATEGORY_ID,
+         UPVOTES)
+        VALUES (#{postNo}, #{categoryId}, 0)
+    </insert>
+    <insert id="insertKnowledgeAttachment" parameterType="list">
+    	INSERT INTO ATTACHMENT(POST_NO,FILE_ORIGIN_NAME, FILE_CHANGE_NAME, FILE_PATH)
+	 	SELECT C.* FROM 
+	 	(
+	 		<foreach collection="list" item="attch" separator="UNION ALL">
+	 			SELECT
+	 				#{attch.originName} as FILE_ORIGIN_NAME,
+	 				#{attch.changeName} as FILE_CHANGE_NAME,
+	 				#{attch.postNo} as POST_NO,
+	 				#{attch.filePath} as FILE_PATH,
+	 			FROM DUAL
+	 		</foreach>
+	 	) C
+    </insert>
+    
+        <!-- 6-2.지식인 답변 등록 -->
+      <insert id="insertKnowledgeAnswer" parameterType="board">
+        INSERT INTO BOARD
+        (USER_WRITER_NO,
+         POST_CONTENT,
+         IS_DELETE,
+         VIEWS,
+         CREATE_DATE,
+         BOARD_TYPE)
+        VALUES (#{userNo}, #{postContent}, DEFAULT, 0, DEFAULT, 'KA')
+    </insert>
+     <insert id="insertKnowledgeAnswer2" parameterType="answer">
+        INSERT INTO KNOWLEDGE_BOARD
+        (POST_NO,
+         K_POST_NO,
+         IS_ACCEPTED)
+        VALUES (#{postNo}, #{knowledgePostNo}, 0)
+    </insert>
 
     
 
