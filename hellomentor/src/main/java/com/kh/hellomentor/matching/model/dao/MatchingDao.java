@@ -3,6 +3,9 @@ package com.kh.hellomentor.matching.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.hellomentor.matching.model.vo.Matching;
+import com.kh.hellomentor.member.model.vo.Member;
+import com.kh.hellomentor.member.model.vo.Profile;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ public class MatchingDao {
 
     @Autowired
     private SqlSessionTemplate sqlSession;
+
+
 
     public List<Mentoring> selectList(int currentPage, Map<String, Object> paramMap) {
         int offset = (currentPage -1) * 9;
@@ -37,6 +42,20 @@ public class MatchingDao {
 
     }
 
+    public List<Member> getMentorList(int userNo) {
+        return sqlSession.selectList("matchingMapper.getMentorList",userNo);
+    }
 
 
+    public List<Profile> getMentorProfileList(int userNo) {
+        return sqlSession.selectList("matchingMapper.getMentorProfileList",userNo);
+    }
+
+    public List<Mentoring> getMentoringList(int userNo) {
+        return sqlSession.selectList("matchingMapper.getMentoringList",userNo);
+    }
+
+    public List<Matching> getMatchingList(int userNo) {
+        return sqlSession.selectList("matchingMapper.getMatchingList",userNo);
+    }
 }

@@ -424,6 +424,7 @@
                CREATE_DATE
         FROM BOARD
         WHERE USER_WRITER_NO = #{userNo}
+        ORDER BY CREATE_DATE DESC
     </select>
 
     <!--	마이페이지 댓글 조회-->
@@ -438,6 +439,7 @@
                  JOIN
              BOARD B ON R.POST_NO = B.POST_NO
         WHERE R.USER_NO = #{userNo}
+        ORDER BY CREATE_AT DESC
     </select>
 
     <!-- 정승훈 스터디 -->
