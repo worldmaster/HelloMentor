@@ -67,6 +67,13 @@ public interface BoardService {
     public Knowledge selectKnowledgeDetail2(int postNo);
     public List<Board> selectKnowledgeDetailAnswer(int postNo);
     
+    //6-2. 지식인 질문 등록
+    public int insertKnowledgeQuestion(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception;
+    public int insertKnowledgeQuestion2(Knowledge knowledge);
+    
+    //6-3. 지식인 답변 등록
+    public int insertKnowledgeAnswer(Board board) throws Exception;
+    public int insertKnowledgeAnswer2(Answer answer);
 
     
     

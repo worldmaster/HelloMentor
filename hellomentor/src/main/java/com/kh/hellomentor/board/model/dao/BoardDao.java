@@ -117,7 +117,6 @@ public class BoardDao {
         return session.selectList("boardMapper.selectFreeDetailReply",postNo);
     }
     //5-3. 자유게시판 글 작성
-    //3. 1:1문의 등록
     public int insertFree(Board board) {
     	int result = 0;
     	int postNo = 0;
@@ -150,7 +149,7 @@ public class BoardDao {
         return session.selectList("boardMapper.selectKnowledgeList3");
     }
     
-    // 6-2. 자유게시판 상세 조회
+    // 6-1. 지식인 상세 조회
     public Board selectKnowledgeDetail(int postNo) {
         return session.selectOne("boardMapper.selectKnowledgeDetail",postNo);
     }
@@ -160,8 +159,44 @@ public class BoardDao {
     public List<Board> selectKnowledgeDetailAnswer(int postNo) {
         return session.selectList("boardMapper.selectKnowledgeDetailAnswer",postNo);
     }
-    
- 
+    //6-2. 지식인 질문 등록
+    public int insertKnowledgeQuestion(Board board) {
+    	int result = 0;
+    	int postNo = 0;
+    	result = session.insert("boardMapper.insertKnowledgeQuestion" , board);
+		
+		if(result > 0) {
+			postNo = board.getPostNo();
+			// 게시글 삽입 성공시 selectKey태그를 사용하여 셋팅한 boardNo값을 b에 담아줌.
+			System.out.println(postNo);
+		}
+		
+		return postNo;
+    }
+    public int insertKnowledgeQuestion2(Knowledge knowledge) {
+    	return session.insert("boardMapper.insertKnowledgeQuestion2" , knowledge);
+    }
+
+    public int insertKnowledgeAttachment(List<Attachment> list) {
+        return session.insert("boardMapper.insertKnowledgeAttachment", list);
+    }
+    //6-3. 지식인 답변 등록
+    public int insertKnowledgeAnswer(Board board) {
+    	int result = 0;
+    	int postNo = 0;
+    	result = session.insert("boardMapper.insertKnowledgeAnswer" , board);
+		
+		if(result > 0) {
+			postNo = board.getPostNo();
+			// 게시글 삽입 성공시 selectKey태그를 사용하여 셋팅한 boardNo값을 b에 담아줌.
+			System.out.println(postNo);
+		}
+		
+		return postNo;
+    }
+    public int insertKnowledgeAnswer2(Answer answer) {
+    	return session.insert("boardMapper.insertKnowledgeAnswer2" , answer);
+    }
     //이찬우 구역 끝
 
 
