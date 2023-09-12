@@ -48,7 +48,7 @@
 
         <!--신고-->
 
-        <div id="move-to-report"><a th:href="">신고하기</a></div>
+        <div id="move-to-report"><a  th:onclick="|window.location.href='/hellomentor/common/report'|">신고하기</a></div>
 
         <!--하단 버튼-->
         <!-- 아래 버튼은 작성자만 보여진다. -->
@@ -91,7 +91,7 @@
         var postNo = document.getElementById("postNo").value;
 
         // 새 URL 생성 및 이동
-        var newURL = "/hellomentor/knowledgeanswerinsert?postNo=" + postNo;
+        var newURL = "/hellomentor/knowledgeanswerinsert?ano=" + postNo;
         window.location.href = newURL;
     });
 </script>
@@ -99,7 +99,7 @@
 
         <div id="answer-language">
           <span id="answer-logo">A.</span>
-          <span id="answer-quantity">2개</span>
+          <span id="answer-quantity" th:text="${total} + '개'">답변갯수</span>
         </div>
 
 
@@ -107,13 +107,13 @@
 
         <!--채택된 답변 시작-->
         <!-- 채택된 답변 존재시에만 뜬다. -->
-        <div class="chosen-reply-section">
+        <div class="chosen-reply-section" th:each="a : ${list}"  th:if="${a.boardType == '1'}">
           <div class="chosen-reply-info">
-            <div>작성자</div>
-            <div>2023-08-08</div>
+            <div th:text="${a.userNo}">작성자</div>
+            <div th:text="${a.createDate}">작성일자</div>
             <div id="knowledge-chosen">채택된 답변</div>
           </div>
-          <div class="correct-content">안녕하세요</div>
+          <div class="correct-content" th:text="${a.postContent}">답변 내용</div>
         </div>
 
         <!--채택된 답변끝-->
@@ -122,7 +122,7 @@
 
         <!--일반 답변 시작-->
         <!-- 채택된 답변이 존재할시 insert-correct 버튼은 눌릴수 없게 설정하기 -->
-        <div class="knowledge-reply-list" th:each="a : ${list}">
+        <div class="knowledge-reply-list" th:each="a : ${list}"  th:if="${a.boardType == '0'}">
           <div class="reply-section">
             <div class="reply-info" >
               <div th:text="${a.userNo}" >작성자</div>
@@ -140,7 +140,7 @@
               </div>
             </div>
 
-            <div class="answer-content" th:text="${a.postContent}" >안녕하세요</div>
+            <div class="answer-content" th:text="${a.postContent}">답변 내용</div>
             
             
             <!-- 해당 작성자 로그인 시에만 answer-edit이 보인다.-->

@@ -45,7 +45,7 @@
                 <div id="question-create-date" th:text="${selectedPost.createDate}">작성일자</div>
                 <div id="question-status">
                 	<span th:if="${selectedPost2.isProcessed}">처리 완료</span> 
-              	  <span th:if="${selectedPost2.isProcessed}">처리중</span>
+              	  <span th:if="${!selectedPost2.isProcessed}">처리중</span>
 				</div>
               </div>
             </div>
@@ -58,10 +58,12 @@
         <div class="line line2"></div>
 
         <!-- 답변 미등록시 -->
-        <div class="no-answer"  th:if="${selectedPost2.answer == null}">등록된 답변이 없습니다</div> 
-
+        <div class="answer-section"  th:if="${!selectedPost2.isProcessed}">
+      		  <div id="a-logo">A.</div>
+        	<div class="no-answer" >등록된 답변이 없습니다</div> 
+		</div>
         <!-- 답변 등록시 -->
-        <div class="answer-section" th:if="${selectedPost2.answer != null}">
+        <div class="answer-section" th:if="${selectedPost2.isProcessed}">
           <div id="a-logo">A.</div>
           <div class="answer" th:text="${selectedPost2.answer}">답변</div>
         </div>
