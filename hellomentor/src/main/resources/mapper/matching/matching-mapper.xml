@@ -14,6 +14,16 @@
         <association property="member" resultMap="memberResultMap"/>
     </resultMap>
 
+    <resultMap id="mentoringResult2" type="mentoring">
+        <id column="MENTOR_REGIS_NO" property="regisNo"/>
+        <result column="USER_NO" property="userNo"/>
+        <result column="TITLE" property="title"/>
+        <result column="CONTENT_1" property="content1"/>
+        <result column="CONTENT_2" property="content2"/>
+        <result column="CONTENT_3" property="content3"/>
+        <result column="CODE_LANG" property="codeLang"/>
+    </resultMap>
+
 
     <resultMap id="memberResultMap" type="Member">
         <id column="USER_NO" property="userNo"/>
@@ -92,7 +102,7 @@
 
     <insert id="insertMentoring" parameterType="member">
         INSERT INTO MENTOR
-        (USER_NO, TITLE, CONTENT_1, CONTENT_2, CONTENT_3, CODE_LANG)
+            (USER_NO, TITLE, CONTENT_1, CONTENT_2, CONTENT_3, CODE_LANG)
         VALUES (#{userNo},
                 #{title},
                 #{content1},
@@ -102,17 +112,16 @@
     </insert>
 
 
-
-
-
     <select id="getMentorList" parameterType="int" resultType="member" resultMap="memberResultMap">
         SELECT DISTINCT MB.USER_ID, MB.INTRODUCTION, MB.MEMBER_TYPE, MB.USER_NO
         FROM MENTOR MT
                  LEFT JOIN MATCHING MAT ON MT.MENTOR_REGIS_NO = MAT.MATCHING_REGIS_NO
                  LEFT JOIN MEMBER MB ON MAT.MENTEE_REGIS_NO = MB.USER_NO
                  LEFT JOIN PROFILE_IMG PI ON MB.USER_NO = PI.USER_NO
-        WHERE MT.USER_NO = #{userNo}
+        WHERE MT.USER_NO = #{userId}
+          AND MB.USER_NO != #{userId}
           AND MB.USER_ID IS NOT NULL;
+
     </select>
 
     <select id="getMentorProfileList" parameterType="int" resultType="profile" resultMap="profileResultMap">
@@ -125,12 +134,11 @@
           AND PI.FILE_PATH IS NOT NULL;
     </select>
 
-    <select id="getMentoringList" parameterType="int" resultType="mentoring" resultMap="mentoringResult">
-        SELECT MT.*
+    <select id="getMentoringList" parameterType="int" resultType="mentoring" resultMap="mentoringResult2">
+        SELECT DISTINCT MT.*
         FROM MATCHING MAT
-                 JOIN MENTOR MT ON MAT.MENTEE_REGIS_NO = USER_NO
-        WHERE MAT.MENTOR_REGIS_NO = 2
-          AND MT.TITLE IS NOT NULL;
+                 JOIN MENTOR MT ON MAT.MENTOR_REGIS_NO = USER_NO
+        WHERE MAT.MENTOR_REGIS_NO = #{userNo}
     </select>
 
     <select id="getMatchingList" parameterType="int" resultType="matching" resultMap="matchingResult">
@@ -139,10 +147,10 @@
         WHERE MATCHING.MENTOR_REGIS_NO = #{userNo}
     </select>
 
-<!--    여기서부터는 받은 요청 -->
+    <!--    여기서부터는 받은 요청 -->
 
     <select id="getMentorList2" parameterType="int" resultType="member" resultMap="memberResultMap">
-        SELECT DISTINCT MB.*
+        SELECT DISTINCT MB.USER_ID, MB.INTRODUCTION, MB.MEMBER_TYPE, MB.USER_NO
         FROM MATCHING MAT
                  JOIN MEMBER MB ON MAT.MENTOR_REGIS_NO = MB.USER_NO
         WHERE MAT.MENTEE_REGIS_NO = #{userNo}
@@ -154,12 +162,14 @@
                  JOIN MEMBER MB ON MAT.MENTOR_REGIS_NO = MB.USER_NO
                  LEFT JOIN PROFILE_IMG PI ON MB.USER_NO = PI.USER_NO
         WHERE MAT.MENTEE_REGIS_NO = #{userNo}
+          AND PI.FILE_CHANGE_NAME IS NOT NULL
+          AND PI.FILE_PATH IS NOT NULL;
     </select>
 
-    <select id="getMentoringList2" parameterType="int" resultType="mentoring" resultMap="mentoringResult">
-        SELECT MTR.*
-        FROM MENTOR MTR
-        WHERE MTR.USER_NO = #{userNo};
+    <select id="getMentoringList2" parameterType="int" resultType="mentoring" resultMap="mentoringResult2">
+        SELECT MT.*
+        FROM MENTOR MT
+        WHERE MT.USER_NO = #{userNo};
     </select>
 
     <select id="getMatchingList2" parameterType="int" resultType="matching" resultMap="matchingResult">
@@ -167,6 +177,19 @@
         FROM MATCHING
         WHERE MATCHING.MENTEE_REGIS_NO = #{userNo}
     </select>
+
+    <delete id="mentoringCancel">
+        DELETE
+        FROM MATCHING
+        WHERE MENTEE_REGIS_NO = #{userNo}
+          AND MATCHING_REGIS_NO = #{regisNo}
+    </delete>
+
+    <update id="mentoringAccept">
+        UPDATE MATCHING
+        SET STATUS = 'C'
+        WHERE MENTOR_REGIS_NO = #{userNo} AND MATCHING_REGIS_NO = #{regisNo} AND MENTEE_REGIS_NO = #{loginNo};
+    </update>
 
 
 </mapper>

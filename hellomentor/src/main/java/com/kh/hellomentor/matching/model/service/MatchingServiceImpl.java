@@ -15,24 +15,21 @@ import com.kh.hellomentor.matching.model.vo.Matching;
 import com.kh.hellomentor.matching.model.vo.Mentoring;
 
 @Service
-public class MatchingServiceImpl implements MatchingService{
+public class MatchingServiceImpl implements MatchingService {
 
     @Autowired
     private MatchingDao matchingDao;
 
 
-
     @Override
-    public List<Mentoring> selectList(int currentPage,Map<String, Object> paramMap) {
-        return matchingDao.selectList(currentPage,paramMap);
+    public List<Mentoring> selectList(int currentPage, Map<String, Object> paramMap) {
+        return matchingDao.selectList(currentPage, paramMap);
     }
 
     @Override
     public int selectListCount(Map<String, Object> paramMap) {
         return matchingDao.selectListCount(paramMap);
     }
-
-
 
 
     @Override
@@ -59,6 +56,33 @@ public class MatchingServiceImpl implements MatchingService{
     public List<Matching> getMatchingList(int userNo) {
         return matchingDao.getMatchingList(userNo);
     }
+
+    @Override
+    public List<Member> getMentorList2(int userNo) {
+        return matchingDao.getMentorList2(userNo);
+    }
+
+    @Override
+    public List<Profile> getMentorProfileList2(int userNo) {return matchingDao.getMentorProfileList2(userNo); }
+
+
+    @Override
+    public List<Mentoring> getMentoringList2(int userNo) {
+        return matchingDao.getMentoringList2(userNo);
+    }
+
+    @Override
+    public List<Matching> getMatchingList2(int userNo) {
+        return matchingDao.getMatchingList2(userNo);
+    }
+
+    @Override
+    public void mentoring_cancel(int userNo, int regisNo) {
+        matchingDao.mentoring_cancel(userNo, regisNo);
+    }
+
+    @Override
+    public void mentoring_accept(int userNo, int regisNo, int loginuserNo) { matchingDao.mentoring_accept(userNo, regisNo, loginuserNo); }
 
 
 }

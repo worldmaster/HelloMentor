@@ -12,25 +12,30 @@
     <div th:each="item : ${combinedList}" class="my_mentorapp_box">
         <div class="my_mentorapp_box_1">
             <div class="my_following_profile_img2">
-                <img th:src="@{${item.profile.filePath} + ${item.profile.changeName}}"/>
+                <img th:src="@{${item.filePath} + ${item.changeName}}"/>
             </div>
         </div>
         <div class="my_mentorapp_box_2">
-            <div class="my_mentorapp_name" th:text="${item.member.userId}">
+            <div class="my_mentorapp_name" th:text="${item.userId}">
 
                 <div class="my_mentorapp_favorite" th:onclick="'toggleColor(this)'">
                     ★
                 </div>
             </div>
-            <div class="my_mentorapp_title" th:text="${item.mentoring.title}">
-            <br>
+            <!--            <div class="my_mentorapp_title" th:text="${item..title}">-->
+            <div class="my_mentorapp_title">
+                임시값
+                <br>
             </div>
-            <div class="my_mentorapp_intro" th:text="${item.member.introduction}">
+            <div class="my_mentorapp_intro" th:text="${item.introduction}">
                 <br>
             </div>
             <br>
             <div class="my_mentorapp_btnbox">
-                <button type="submit" class="my_mentorapp_btn">제안 수락</button>
+                <button type="button" class="my_mentorapp_btn"
+                        th:onclick="'Mentoringaccept(' + ${item.userNo} + ', ' + ${item.regisNo} + ')'">제안 수락
+                </button>
+
             </div>
         </div>
     </div>
@@ -45,11 +50,35 @@
 </div>
 
 <script>
+    function Mentoringaccept(userNo, regisNo) {
+        var confirmation = confirm("정말로 제안을 수락하시겠습니까?");
+        if (confirmation) {
+            $.ajax({
+                url: 'mentoring_accept',
+                type: 'POST',
+                data: {userNo: userNo, regisNo: regisNo},
+                success: function (response) {
+                    if (response.success) {
+                        alert("제안이 수락되었습니다.");
+                        loadPage('mentoring_mentor_applications2');
+                    } else {
+                        alert("제안 수락에 실패했습니다.");
+                    }
+                },
+                error: function () {
+                    alert("서버 오류로 인해 제안 수락에 실패했습니다.");
+                }
+            });
+        }
+    }
+</script>
+
+<script>
 
 
     var favoriteElements = document.querySelectorAll('.my_mentorapp_favorite');
-    favoriteElements.forEach(function(favoriteElement) {
-        favoriteElement.addEventListener('click', function() {
+    favoriteElements.forEach(function (favoriteElement) {
+        favoriteElement.addEventListener('click', function () {
             if (favoriteElement.classList.contains('clicked')) {
                 favoriteElement.classList.remove('clicked');
             } else {
@@ -57,7 +86,7 @@
             }
 
             favoriteElement.classList.add('scale');
-            setTimeout(function() {
+            setTimeout(function () {
                 favoriteElement.classList.remove('scale');
             }, 200);
         });
