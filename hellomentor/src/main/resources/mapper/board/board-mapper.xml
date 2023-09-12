@@ -85,7 +85,8 @@
         <result column="FILE_PATH" property="filePath"/>
         <result column="FILE_ORIGIN_NAME" property="originName"/>
     </resultMap>
- 
+
+
 
 
     <!-- 이찬우 구역 시작 -->
@@ -287,7 +288,7 @@
         JOIN FREE_BOARD F ON B.POST_NO = F.POST_NO 
         WHERE B.POST_NO = #{postNo}
     </select>
-    <select id="selectFreeDetailReply" parameterType="int" resultMap="replyResultMap">
+    <select id="selectFreeDetailReply" parameterType="int" resultMap="replyResultMap1">
 		SELECT M.USER_ID AS USER_NO,
 		       R.REPLY_CONTENT,
 		       R.CREATE_AT
@@ -298,6 +299,7 @@
 		WHERE B.POST_NO = #{postNo}
 		AND R.IS_DELETE = FALSE
 		ORDER BY R.REPLY_ID DESC
+		
     </select>
         <!-- 5-3. 자유게시판 insert -->
     <insert id="insertFree" parameterType="board">
@@ -402,6 +404,59 @@
          AND B.IS_DELETE = FALSE
         ORDER BY B.POST_NO DESC
     </select>
+    
+    <!-- 6-2.지식인 질문 등록 -->
+      <insert id="insertKnowledgeQuestion" parameterType="board">
+        INSERT INTO BOARD
+        (USER_WRITER_NO,
+         POST_TITLE,
+         POST_CONTENT,
+         IS_DELETE,
+         VIEWS,
+         CREATE_DATE,
+         BOARD_TYPE)
+        VALUES (#{userNo}, #{postTitle}, #{postContent}, DEFAULT, 0, DEFAULT, 'K')
+    </insert>
+     <insert id="insertKnowledgeQuestion2" parameterType="knowledge">
+        INSERT INTO KNOWLEDGE_BOARD
+        (POST_NO,
+         CATEGORY_ID,
+         UPVOTES)
+        VALUES (#{postNo}, #{categoryId}, 0)
+    </insert>
+    <insert id="insertKnowledgeAttachment" parameterType="list">
+    	INSERT INTO ATTACHMENT(POST_NO,FILE_ORIGIN_NAME, FILE_CHANGE_NAME, FILE_PATH)
+	 	SELECT C.* FROM 
+	 	(
+	 		<foreach collection="list" item="attch" separator="UNION ALL">
+	 			SELECT
+	 				#{attch.originName} as FILE_ORIGIN_NAME,
+	 				#{attch.changeName} as FILE_CHANGE_NAME,
+	 				#{attch.postNo} as POST_NO,
+	 				#{attch.filePath} as FILE_PATH,
+	 			FROM DUAL
+	 		</foreach>
+	 	) C
+    </insert>
+    
+        <!-- 6-2.지식인 답변 등록 -->
+      <insert id="insertKnowledgeAnswer" parameterType="board">
+        INSERT INTO BOARD
+        (USER_WRITER_NO,
+         POST_CONTENT,
+         IS_DELETE,
+         VIEWS,
+         CREATE_DATE,
+         BOARD_TYPE)
+        VALUES (#{userNo}, #{postContent}, DEFAULT, 0, DEFAULT, 'KA')
+    </insert>
+     <insert id="insertKnowledgeAnswer2" parameterType="answer">
+        INSERT INTO KNOWLEDGE_BOARD
+        (POST_NO,
+         K_POST_NO,
+         IS_ACCEPTED)
+        VALUES (#{postNo}, #{knowledgePostNo}, 0)
+    </insert>
 
     
 
@@ -424,6 +479,7 @@
                CREATE_DATE
         FROM BOARD
         WHERE USER_WRITER_NO = #{userNo}
+        ORDER BY CREATE_DATE DESC
     </select>
 
     <!--	마이페이지 댓글 조회-->
@@ -438,6 +494,93 @@
                  JOIN
              BOARD B ON R.POST_NO = B.POST_NO
         WHERE R.USER_NO = #{userNo}
+        ORDER BY CREATE_AT DESC
+    </select>
+
+    <!-- 정승훈 스터디 -->
+
+    <resultMap id="boardTypeResultSet" type="boardtype">
+        <id column="BOARD_TYPE" property="boardType" />
+        <result column="BOARD_NAME" property="boardName" />
+    </resultMap>
+
+    <resultMap id="studyPepleResultSet" type="studyapplicant">
+        <id column="APPLICANT_NO" property="applicantNo"/>
+        <result column="POST_NO" property="postNo"/>
+        <result column="USER_NO" property="userNo"/>
+        <result column="STATUS" property="status"/>
+    </resultMap>
+
+
+
+
+    <select id="selectStudyList" parameterType="hashmap" resultMap="boardResultMap">
+        SELECT POST_NO,POST_TITLE,POST_CONTENT,CREATE_DATE,USER_ID AS USER_WRITER_NO ,BOARD_TYPE
+        FROM BOARD B
+                 JOIN MEMBER M
+                      ON B.USER_WRITER_NO = M.USER_NO
+        WHERE BOARD_TYPE = 'S'
+    </select>
+
+
+
+
+    <select id="selectRecruitmentCount" parameterType="hashmap" resultType="java.util.Map">
+        SELECT POST_NO, COUNT(*) AS RECRUITMENT_COUNT
+        FROM STUDY_APPLICANT
+        WHERE POST_NO IN
+        <foreach collection="POST_NO_LIST" open="(" close=")" item="postNo" separator=",">
+            #{postNo}
+        </foreach>
+        GROUP BY POST_NO
+    </select>
+
+
+
+    <insert id="insertStudy" parameterType="board">
+        INSERT INTO BOARD (USER_WRITER_NO,POST_TITLE,POST_CONTENT,IS_DELETE,VIEWS,CREATE_DATE,BOARD_TYPE)
+        VALUES(
+                  #{userNo},
+                  #{postTitle},
+                  #{postContent},
+                  0,
+                  0,
+                  CURRENT_DATE,
+                  'S'
+              )
+    </insert>
+
+
+    <select id="selectDetailStudy" parameterType="int" resultMap="boardResultMap">
+        SELECT POST_NO,USER_ID AS USER_WRITER_NO,POST_TITLE,POST_CONTENT,VIEWS,CREATE_DATE,BOARD_TYPE
+        FROM BOARD B
+                 JOIN MEMBER M ON
+            B.USER_WRITER_NO = M.USER_NO
+        WHERE POST_NO = #{postNo} AND BOARD_TYPE = 'S'
+    </select>
+
+
+    <select id="studyDetailApplicant" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM STUDY_APPLICANT
+        WHERE POST_NO = ${postNo}
+    </select>
+
+    <resultMap id="replyResultMap1" type="reply">
+        <id column="REPLY_ID" property="replyId"/>
+        <result column="POST_NO" property="postNo"/>
+        <result column="USER_NO" property="userNo"/>
+        <result column="REPLY_CONTENT" property="replyContent"/>
+        <result column="IS_DELETE" property="isDeleted"/>
+        <result column="CREATE_AT" property="createDate"/>
+    </resultMap>
+
+
+    <select id="selectReplyList" resultMap="replyResultMap1" parameterType="int">
+        SELECT REPLY_ID,POST_NO,USER_ID USER_NO,REPLY_CONTENT,CREATE_AT
+        FROM REPLY R
+                 JOIN MEMBER M ON R.USER_NO = M.USER_NO
+        WHERE POST_NO = ${postNo}
     </select>
 
 

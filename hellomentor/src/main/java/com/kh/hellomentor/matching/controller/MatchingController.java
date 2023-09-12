@@ -1,30 +1,25 @@
 package com.kh.hellomentor.matching.controller;
 
 
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-
+import com.kh.hellomentor.common.template.Pagination;
+import com.kh.hellomentor.common.vo.PageInfo;
 import com.kh.hellomentor.matching.model.service.MatchingService;
 import com.kh.hellomentor.matching.model.vo.Matching;
 import com.kh.hellomentor.matching.model.vo.Mentoring;
 import com.kh.hellomentor.member.model.vo.Member;
-import com.kh.hellomentor.common.template.Pagination;
-import com.kh.hellomentor.common.vo.PageInfo;
-
+import com.kh.hellomentor.member.model.vo.Profile;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -35,21 +30,202 @@ public class MatchingController {
     @Autowired
     private MatchingService matchingService;
 
-    @RequestMapping("/mentoring_mentor_applications")
-    public String mentor_applications(HttpSession session){
-        Member loginUser = (Member) session.getAttribute("loginUser");
-        return "mypage/mentoring_mentor_applications";
+
+//   보낸 제안내역
+@RequestMapping("/mentoring_mentor_applications")
+public String mentor_applications(HttpSession session, Model model) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    int userNo = loginUser.getUserNo();
+
+
+    List<Member> mentorList = matchingService.getMentorList(userNo);
+    List<Profile> mentorProfileList = matchingService.getMentorProfileList(userNo);
+    List<Mentoring> mentoringList = matchingService.getMentoringList(userNo);
+    List<Matching> matchingList = matchingService.getMatchingList(userNo);
+
+
+    List<Map<String, Object>> combinedList = new ArrayList<>();
+
+    for (Member mentor : mentorList) {
+        Map<String, Object> combinedInfo = new HashMap<>();
+        combinedInfo.put("userNo", mentor.getUserNo());
+        combinedInfo.put("userId", mentor.getUserId());
+        combinedInfo.put("introduction", mentor.getIntroduction());
+        combinedInfo.put("memberType", mentor.getMemberType());
+
+        Profile profile = null;
+        for (Profile p : mentorProfileList) {
+            if (p.getUserNo() == mentor.getUserNo()) {
+                profile = p;
+                break;
+            }
+        }
+
+        if (profile != null) {
+            combinedInfo.put("filePath", profile.getFilePath());
+            combinedInfo.put("changeName", profile.getChangeName());
+
+        } else {
+            Profile defaultProfile = new Profile();
+            defaultProfile.setFilePath("/img/");
+            defaultProfile.setChangeName("default-profile.jpg");
+            combinedInfo.put("filePath", defaultProfile.getFilePath());
+            combinedInfo.put("changeName", defaultProfile.getChangeName());
+
+        }
+
+        for (Matching matching : matchingList) {
+            if (matching.getMenteeNo() == mentor.getUserNo()) {
+                for (Mentoring mentoring : mentoringList) {
+                    if (matching.getMatchingRegisNo() == mentoring.getRegisNo()) {
+                        if (mentoring.getTitle() == null) {
+                            mentoring.setTitle("타이틀없음");
+                        }
+                        combinedInfo.put("title", mentoring.getTitle());
+                        combinedInfo.put("regisNo", mentoring.getRegisNo());
+
+
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        combinedList.add(combinedInfo);
+
     }
+
+    combinedList.removeIf(combinedInfo -> {
+        Matching matching = (Matching) combinedInfo.get("matching");
+        return matching != null && "C".equals(matching.getStatus());
+    });
+    model.addAttribute("combinedList", combinedList);
+    log.info("combinedList: " + combinedList);
+    return "mypage/mentoring_mentor_applications";
+}
+
+
+
+    // 받은 제안내역
+@RequestMapping("/mentoring_mentor_applications2")
+public String mentor_applications2(HttpSession session, Model model) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    int userNo = loginUser.getUserNo();
+    List<Member> mentorList = matchingService.getMentorList2(userNo);
+    List<Profile> mentorProfileList = matchingService.getMentorProfileList2(userNo);
+    List<Mentoring> mentoringList = matchingService.getMentoringList2(userNo);
+    List<Matching> matchingList = matchingService.getMatchingList2(userNo);
+
+    List<Map<String, Object>> combinedList = new ArrayList<>();
+
+    for (Member mentor : mentorList) {
+        Map<String, Object> combinedInfo = new HashMap<>();
+        combinedInfo.put("userNo", mentor.getUserNo());
+        combinedInfo.put("userId", mentor.getUserId());
+        combinedInfo.put("introduction", mentor.getIntroduction());
+        combinedInfo.put("memberType", mentor.getMemberType());
+
+        Profile profile = null;
+        for (Profile p : mentorProfileList) {
+            if (p.getUserNo() == mentor.getUserNo()) {
+                profile = p;
+                break;
+            }
+        }
+
+        if (profile != null) {
+            combinedInfo.put("filePath", profile.getFilePath());
+            combinedInfo.put("changeName", profile.getChangeName());
+        } else {
+            Profile defaultProfile = new Profile();
+            defaultProfile.setFilePath("/img/");
+            defaultProfile.setChangeName("default-profile.jpg");
+            combinedInfo.put("filePath", defaultProfile.getFilePath());
+            combinedInfo.put("changeName", defaultProfile.getChangeName());
+        }
+
+        for (Matching matching : matchingList) {
+            if (matching.getMentorNo() == mentor.getUserNo()) {
+                for (Mentoring mentoring : mentoringList) {
+                    if (matching.getMatchingRegisNo() == mentoring.getRegisNo()) {
+                        if (mentoring.getTitle() == null) {
+                            mentoring.setTitle("타이틀없음");
+                        }
+                        combinedInfo.put("title", mentoring.getTitle());
+                        combinedInfo.put("regisNo", mentoring.getRegisNo());
+
+
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        combinedList.add(combinedInfo);
+    }
+
+    combinedList.removeIf(combinedInfo -> {
+        Matching matching = (Matching) combinedInfo.get("matching");
+        return matching != null && "C".equals(matching.getStatus());
+    });
+
+    model.addAttribute("combinedList", combinedList);
+    log.info("combinedList: " + combinedList);
+    return "mypage/mentoring_mentor_applications2";
+}
+
+
+    @DeleteMapping("/mentoring_cancel")
+    @ResponseBody
+    public Map<String, Object> mentoring_cancel(@RequestParam("userNo") int userNo, @RequestParam("regisNo") int regisNo) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            matchingService.mentoring_cancel(userNo, regisNo);
+            response.put("success", true);
+            response.put("message", "제안이 취소되었습니다.");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "제안 취소에 실패했습니다.");
+        }
+
+        return response;
+    }
+
+    @PostMapping("/mentoring_accept")
+    @ResponseBody
+    public Map<String, Object> mentoring_accept(@RequestParam("userNo") int userNo, @RequestParam("regisNo") int regisNo, HttpSession session ) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        int loginuserNo = loginUser.getUserNo();
+        System.out.println(regisNo);
+        System.out.println(userNo);
+        Map<String, Object> response = new HashMap<>();
+
+
+        try {
+            matchingService.mentoring_accept(userNo, regisNo, loginuserNo);
+            response.put("success", true);
+            response.put("message", "제안이 수락되었습니다.");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "제안 수락에 실패했습니다.");
+        }
+
+        return response;
+    }
+
+
+
+
 
 
     @RequestMapping("/mentoring_mentor_registdetail")
-    public String mentor_registdetail(HttpSession session){
+    public String mentor_registdetail(HttpSession session) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         return "mypage/mentoring_mentor_registdetail";
     }
-
-
-
 
 
     @GetMapping("/mentoring")

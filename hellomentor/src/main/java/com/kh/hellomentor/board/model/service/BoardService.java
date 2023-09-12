@@ -1,6 +1,7 @@
 package com.kh.hellomentor.board.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.kh.hellomentor.board.model.vo.Answer;
 import com.kh.hellomentor.board.model.vo.Attachment;
@@ -43,7 +44,6 @@ public interface BoardService {
     public List<Board> selectFreeList();
     public List<Free> selectFreeList2();
     
-<<<<<<< HEAD
     //5-1. 자유게시판 조회 (화제글 3개)
     public List<Board> selectBestFreeList();
     public List<Free> selectBestFreeList2();
@@ -67,11 +67,17 @@ public interface BoardService {
     public Knowledge selectKnowledgeDetail2(int postNo);
     public List<Board> selectKnowledgeDetailAnswer(int postNo);
     
+    //6-2. 지식인 질문 등록
+    public int insertKnowledgeQuestion(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception;
+    public int insertKnowledgeQuestion2(Knowledge knowledge);
+    
+    //6-3. 지식인 답변 등록
+    public int insertKnowledgeAnswer(Board board) throws Exception;
+    public int insertKnowledgeAnswer2(Answer answer);
 
     
     
-=======
-    //5. 지식인 조회
+
 
 
 
@@ -92,5 +98,4 @@ public interface BoardService {
     List<Reply> selectReplyList(int postNo);
 
 
->>>>>>> 42b6222ba4db5b70f7496f560ed53eacff73f8bf
 }

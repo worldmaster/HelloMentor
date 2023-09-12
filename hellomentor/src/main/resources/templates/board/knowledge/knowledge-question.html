@@ -23,13 +23,13 @@
       <div class="section">
         <div class="title">지식인</div>
 
-        <form th:action="@{}" method="post" id="knowledge-write-form">
+        <form th:action="@{knowledgequestioninsert}" method="post" id="knowledge-write-form" enctype="multipart/form-data">
           <!-- 지식인form안에.txt -->
           <table id="knowledge-table">
             <tr>
               <th>분야</th>
               <td>
-                <select name="knowledge-kind" id="knowledge-kind">
+                <select name="categoryId" id="knowledge-kind">
                   <option value="14">자바</option>
                   <option value="15">스프링</option>
                   <option value="16">HTML</option>
@@ -48,7 +48,7 @@
                 <input
                   type="text"
                   id="knowledge-title"
-                  name="title"
+                  name="postTitle"
                   placeholder="제목을 입력하세요"
                   required
                 />
@@ -60,7 +60,7 @@
               <td>
                 <textarea
                   id="knowledge-content"
-                  name="knowledge-content"
+                  name="postContent"
                   required
                   placeholder="내용을 입력하세요"
                 ></textarea>

@@ -1,12 +1,11 @@
 package com.kh.hellomentor.board.model.service;
 
 import java.util.List;
+import java.util.Map;
 
-<<<<<<< HEAD
-=======
+
 import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.matching.model.vo.StudyApplicant;
->>>>>>> 42b6222ba4db5b70f7496f560ed53eacff73f8bf
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -113,7 +112,7 @@ public class BoardServiceImpl implements BoardService {
     public List<Free> selectBestFreeList2(){
     	return boardDao.selectBestFreeList2();
    }
-    //5-2.공지사항 상세조회
+    //5-2.자유게시판 상세조회
     @Override
     public Board selectFreeDetail(int postNo){
    	 return boardDao.selectFreeDetail(postNo);
@@ -134,7 +133,7 @@ public class BoardServiceImpl implements BoardService {
 		board.setPostContent(Utils.XSSHandling(board.getPostContent()));
 		board.setPostContent(Utils.newLineHandling(board.getPostContent()));
     	
-    	int postNo = boardDao.insertInquiry(board);
+    	int postNo = boardDao.insertFree(board);
     
 		return postNo;
     }
@@ -172,6 +171,46 @@ public class BoardServiceImpl implements BoardService {
       	 return boardDao.selectKnowledgeDetailAnswer(postNo);
     };
     
+    //6-2. 지식인 질문 등록
+    @Override
+    public int insertKnowledgeQuestion(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception {
+    	
+    	board.setPostTitle(Utils.XSSHandling(board.getPostTitle()));
+		board.setPostContent(Utils.XSSHandling(board.getPostContent()));
+		board.setPostContent(Utils.newLineHandling(board.getPostContent()));
+    	
+    	int postNo = boardDao.insertKnowledgeQuestion(board);
+    
+		return postNo;
+    }
+    @Override
+    public int insertKnowledgeQuestion2(Knowledge knowledge) {
+    	
+    	
+    	int result = boardDao.insertKnowledgeQuestion2(knowledge);
+    
+		return result;
+    }
+    //6-2. 지식인 답변 등록
+    @Override
+    public int insertKnowledgeAnswer(Board board) throws Exception {
+    	
+    	board.setPostTitle(Utils.XSSHandling(board.getPostTitle()));
+		board.setPostContent(Utils.XSSHandling(board.getPostContent()));
+		board.setPostContent(Utils.newLineHandling(board.getPostContent()));
+    	
+    	int postNo = boardDao.insertKnowledgeQuestion(board);
+    
+		return postNo;
+    }
+    @Override
+    public int insertKnowledgeAnswer2(Answer answer) {
+    	
+    	
+    	int result = boardDao.insertKnowledgeAnswer2(answer);
+    
+		return result;
+    }
 
     
     //이찬우 구역 끝
