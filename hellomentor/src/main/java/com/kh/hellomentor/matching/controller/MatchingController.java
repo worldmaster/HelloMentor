@@ -32,121 +32,171 @@ public class MatchingController {
 
 
 //   보낸 제안내역
-    @RequestMapping("/mentoring_mentor_applications")
-    public String mentor_applications(HttpSession session, Model model) {
-        Member loginUser = (Member) session.getAttribute("loginUser");
-        int userNo = loginUser.getUserNo();
+@RequestMapping("/mentoring_mentor_applications")
+public String mentor_applications(HttpSession session, Model model) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    int userNo = loginUser.getUserNo();
 
-        List<Member> mentorList = matchingService.getMentorList(userNo);
 
-        List<Profile> mentorProfileList = matchingService.getMentorProfileList(userNo);
+    List<Member> mentorList = matchingService.getMentorList(userNo);
+    List<Profile> mentorProfileList = matchingService.getMentorProfileList(userNo);
+    List<Mentoring> mentoringList = matchingService.getMentoringList(userNo);
+    List<Matching> matchingList = matchingService.getMatchingList(userNo);
 
-        List<Mentoring> mentoringList = matchingService.getMentoringList(userNo);
 
-        List<Matching> matchingList = matchingService.getMatchingList(userNo);
+    List<Map<String, Object>> combinedList = new ArrayList<>();
 
-        List<Map<String, Object>> combinedList = new ArrayList<>();
+    for (Member mentor : mentorList) {
+        Map<String, Object> combinedInfo = new HashMap<>();
+        combinedInfo.put("userNo", mentor.getUserNo());
+        combinedInfo.put("userId", mentor.getUserId());
+        combinedInfo.put("introduction", mentor.getIntroduction());
+        combinedInfo.put("memberType", mentor.getMemberType());
 
-        for (Member mentor : mentorList) {
-            Map<String, Object> combinedInfo = new HashMap<>();
-            combinedInfo.put("member", mentor);
-
-            Profile profile = null;
-            for (Profile p : mentorProfileList) {
-                if (p.getUserNo() == mentor.getUserNo()) {
-                    profile = p;
-                    break;
-                }
+        Profile profile = null;
+        for (Profile p : mentorProfileList) {
+            if (p.getUserNo() == mentor.getUserNo()) {
+                profile = p;
+                break;
             }
-
-            if (profile != null) {
-                combinedInfo.put("profile", profile);
-            } else {
-                Profile defaultProfile = new Profile();
-                defaultProfile.setFilePath("/img/");
-                defaultProfile.setChangeName("default-profile.jpg");
-                combinedInfo.put("profile", defaultProfile);
-            }
-
-            for (Matching matching : matchingList) {
-
-                if (matching.getMenteeNo() == mentor.getUserNo()) {
-                    for (Mentoring mentoring : mentoringList) {
-                        if (matching.getMatchingRegisNo() == mentoring.getRegisNo()) {
-                            combinedInfo.put("mentoring", mentoring);
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-
-            combinedList.add(combinedInfo);
         }
 
-        model.addAttribute("combinedList", combinedList);
+        if (profile != null) {
+            combinedInfo.put("filePath", profile.getFilePath());
+            combinedInfo.put("changeName", profile.getChangeName());
 
-        return "mypage/mentoring_mentor_applications";
+        } else {
+            Profile defaultProfile = new Profile();
+            defaultProfile.setFilePath("/img/");
+            defaultProfile.setChangeName("default-profile.jpg");
+            combinedInfo.put("filePath", profile.getFilePath());
+            combinedInfo.put("changeName", profile.getChangeName());
+
+        }
+
+        for (Matching matching : matchingList) {
+            if (matching.getMenteeNo() == mentor.getUserNo()) {
+                for (Mentoring mentoring : mentoringList) {
+                    if (matching.getMatchingRegisNo() == mentoring.getRegisNo()) {
+                        if (mentoring.getTitle() == null) {
+                            mentoring.setTitle("타이틀없음");
+                        }
+                        combinedInfo.put("title", mentoring.getTitle());
+                        combinedInfo.put("regisNo", mentoring.getRegisNo());
+
+
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        combinedList.add(combinedInfo);
+
     }
 
+    combinedList.removeIf(combinedInfo -> {
+        Matching matching = (Matching) combinedInfo.get("matching");
+        return matching != null && "C".equals(matching.getStatus());
+    });
 
-// 받은 제안내역
-//    @RequestMapping("/mentoring_mentor_applications2")
-//    public String mentor_applications2(HttpSession session, Model model) {
-//        Member loginUser = (Member) session.getAttribute("loginUser");
-//        int userNo = loginUser.getUserNo();
-//
-//        List<Member> mentorList = matchingService.getMentorList(userNo);
-//
-//        List<Profile> mentorProfileList = matchingService.getMentorProfileList(userNo);
-//
-//        List<Mentoring> mentoringList = matchingService.getMentoringList(userNo);
-//
-//        List<Matching> matchingList = matchingService.getMatchingList(userNo);
-//
-//        List<Map<String, Object>> combinedList = new ArrayList<>();
-//
-//        for (Member mentor : mentorList) {
-//            Map<String, Object> combinedInfo = new HashMap<>();
-//            combinedInfo.put("member", mentor);
-//
-//            Profile profile = null;
-//            for (Profile p : mentorProfileList) {
-//                if (p.getUserNo() == mentor.getUserNo()) {
-//                    profile = p;
-//                    break;
-//                }
-//            }
-//
-//            if (profile != null) {
-//                combinedInfo.put("profile", profile);
-//            } else {
-//                Profile defaultProfile = new Profile();
-//                defaultProfile.setFilePath("/img/");
-//                defaultProfile.setChangeName("default-profile.jpg");
-//                combinedInfo.put("profile", defaultProfile);
-//            }
-//
-//            for (Matching matching : matchingList) {
-//
-//                if (matching.getMenteeNo() == mentor.getUserNo()) {
-//                    for (Mentoring mentoring : mentoringList) {
-//                        if (matching.getMatchingRegisNo() == mentoring.getRegisNo()) {
-//                            combinedInfo.put("mentoring", mentoring);
-//                            break;
-//                        }
-//                    }
-//                    break;
-//                }
-//            }
-//
-//            combinedList.add(combinedInfo);
-//        }
-//
-//        model.addAttribute("combinedList", combinedList);
-//
-//        return "mypage/mentoring_mentor_applications";
-//    }
+
+    model.addAttribute("combinedList", combinedList);
+
+
+
+
+    return "mypage/mentoring_mentor_applications";
+}
+
+
+
+    // 받은 제안내역
+@RequestMapping("/mentoring_mentor_applications2")
+public String mentor_applications2(HttpSession session, Model model) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    int userNo = loginUser.getUserNo();
+
+    List<Member> mentorList = matchingService.getMentorList2(userNo);
+    List<Profile> mentorProfileList = matchingService.getMentorProfileList2(userNo);
+    List<Mentoring> mentoringList = matchingService.getMentoringList2(userNo);
+    List<Matching> matchingList = matchingService.getMatchingList2(userNo);
+    log.info("Member : "+mentorList);
+    log.info("Profile : "+mentorProfileList);
+    log.info("Mentoring : "+mentoringList);
+    log.info("Matching : "+matchingList);
+
+    List<Map<String, Object>> combinedList = new ArrayList<>();
+
+    for (Member mentor : mentorList) {
+        Map<String, Object> combinedInfo = new HashMap<>();
+        combinedInfo.put("member", mentor);
+        System.out.println("mentor :"+mentor.getUserNo());
+
+        Profile profile = null;
+        for (Profile p : mentorProfileList) {
+            System.out.println("profile :"+p.getUserNo());
+            if (p.getUserNo() == mentor.getUserNo()) {
+                profile = p;
+                break;
+            }
+        }
+
+        if (profile != null) {
+            combinedInfo.put("profile", profile);
+        } else {
+            Profile defaultProfile = new Profile();
+            defaultProfile.setFilePath("/img/");
+            defaultProfile.setChangeName("default-profile.jpg");
+            combinedInfo.put("profile", defaultProfile);
+        }
+
+        for (Matching matching : matchingList) {
+
+            if (matching.getMenteeNo() == mentor.getUserNo()) {
+                combinedInfo.put("matching", matching);
+                for (Mentoring mentoring : mentoringList) {
+                    if (matching.getMatchingRegisNo() == mentoring.getRegisNo()) {
+                        combinedInfo.put("mentoring", mentoring);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        combinedList.add(combinedInfo);
+    }
+
+    combinedList.removeIf(combinedInfo -> {
+        Matching matching = (Matching) combinedInfo.get("matching");
+        return matching != null && "C".equals(matching.getStatus());
+    });
+
+    model.addAttribute("combinedList", combinedList);
+
+    return "mypage/mentoring_mentor_applications2";
+}
+
+
+    @DeleteMapping("/mentoring_cancel")
+    @ResponseBody
+    public Map<String, Object> mentoring_cancel(@RequestParam("userNo") int userNo, @RequestParam("regisNo") int regisNo) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            matchingService.mentoring_cancel(userNo, regisNo);
+            response.put("success", true);
+            response.put("message", "제안이 취소되었습니다.");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "제안 취소에 실패했습니다.");
+        }
+
+        return response;
+    }
+
 
 
 

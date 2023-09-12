@@ -22,8 +22,10 @@
                     ★
                 </div>
             </div>
-            <div class="my_mentorapp_title" th:text="${item.mentoring.title}">
-            <br>
+            <!--            <div class="my_mentorapp_title" th:text="${item.mentoring.title}">-->
+            <div class="my_mentorapp_title">
+            임시값
+                <br>
             </div>
             <div class="my_mentorapp_intro" th:text="${item.member.introduction}">
                 <br>
@@ -48,8 +50,8 @@
 
 
     var favoriteElements = document.querySelectorAll('.my_mentorapp_favorite');
-    favoriteElements.forEach(function(favoriteElement) {
-        favoriteElement.addEventListener('click', function() {
+    favoriteElements.forEach(function (favoriteElement) {
+        favoriteElement.addEventListener('click', function () {
             if (favoriteElement.classList.contains('clicked')) {
                 favoriteElement.classList.remove('clicked');
             } else {
@@ -57,7 +59,7 @@
             }
 
             favoriteElement.classList.add('scale');
-            setTimeout(function() {
+            setTimeout(function () {
                 favoriteElement.classList.remove('scale');
             }, 200);
         });
