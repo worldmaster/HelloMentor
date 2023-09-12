@@ -59,7 +59,11 @@
         <div class="notice-btns">
           <button type="button" id="list-btn" th:onclick="window.location.href='/hellomentor/noticelist'">목록</button>
           <!-- 관리자만 삭제가 보인다. -->
-          <button type="button"  id="delete-btn" th:if="${loginUser.userId == 'admin'}" >삭제</button>
+          <a th:href="'/hellomentor/deletenotice?nno=' + ${selectedPost.postNo}">
+          <button type="button" id="delete-btn" th:if="${loginUser.userId == 'admin'}"  >
+          삭제
+          </button>
+          </a>
         </div>
 
         <!--하단 버튼 끝-->

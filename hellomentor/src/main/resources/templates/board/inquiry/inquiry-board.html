@@ -59,9 +59,11 @@
 					</tr>
 					<tr th:each="item : ${combinedList}"  class="movingDetailInquiry">
 						<td th:text="${item[0].boardType}">분류</td>
-						<td >
-						  <a th:text="${item[0].postTitle}" th:href="'/hellomentor/inquirydetail?ino=' + ${item[0].postNo}">제목</a>
+						<td>
+						    <a th:if="${loginUser.userId == 'admin'}" th:text="${item[0].postTitle}" th:href="'/hellomentor/admin-question-answer?ino=' + ${item[0].postNo}">제목</a>
+						    <a th:unless="${loginUser.userId == 'admin'}" th:text="${item[0].postTitle}" th:href="'/hellomentor/inquirydetail?ino=' + ${item[0].postNo}">제목</a>
 						</td>
+
 						<td th:text="${item[0].createDate}">작성일자</td>
 						<td><span th:if="${item[1].isProcessed}">처리 완료</span> 
 							<span th:if="${!item[1].isProcessed}">처리중</span></td>
