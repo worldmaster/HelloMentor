@@ -19,6 +19,12 @@ public interface BoardService {
 
 
     //이찬우 구역 시작
+    //0. 조회수 증가
+    public int increaseCount(int postNo);
+    
+    //0-1. FAQ 삭제
+    public int deletePost(int postNo);
+    
     //1. 공지사항 목록 select
     public List<Board> selectNoticeList();
     
@@ -27,6 +33,7 @@ public interface BoardService {
 
     //2. FAQ 조회
     public List<Board> selectFaqList();
+    
 
     //3. 1:1문의 작성
     public int insertInquiry(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception;
@@ -67,14 +74,16 @@ public interface BoardService {
     public Knowledge selectKnowledgeDetail2(int postNo);
     public List<Board> selectKnowledgeDetailAnswer(int postNo);
     
-    //6-2. 지식인 질문 등록
+    //6-2. 지식인 답변 갯수
+    public int selectKnowledgeAnswerCount(int postNo);
+    
+    //6-3. 지식인 질문 등록
     public int insertKnowledgeQuestion(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception;
     public int insertKnowledgeQuestion2(Knowledge knowledge);
     
-    //6-3. 지식인 답변 등록
+    //6-4. 지식인 답변 등록
     public int insertKnowledgeAnswer(Board board) throws Exception;
     public int insertKnowledgeAnswer2(Answer answer);
-
     
     
 

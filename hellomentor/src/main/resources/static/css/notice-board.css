@@ -51,6 +51,19 @@
 
 
 
+.trashbtn {
+    background-color: white;
+    width: 40px;
+}
+
+.trash-logo:hover {
+    cursor: pointer;
+}
+
+.trash-logo:hover path {
+    stroke: red;
+}
+
 
 
 

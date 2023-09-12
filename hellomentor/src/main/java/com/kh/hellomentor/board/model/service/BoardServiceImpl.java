@@ -37,6 +37,17 @@ public class BoardServiceImpl implements BoardService {
 
 
     //이찬우 구역 시작
+    //0. 조회수 증가
+    @Override
+    public int increaseCount(int postNo) {
+    	 return boardDao.increaseCount(postNo);
+    };
+    //0-1. FAQ 삭제
+    @Override
+    public int deletePost(int postNo) {
+    	 return boardDao.deletePost(postNo);
+    }
+
     //1. 공지사항 목록 select
     @Override
     public List<Board> selectNoticeList() {
@@ -161,17 +172,24 @@ public class BoardServiceImpl implements BoardService {
     	return boardDao.selectKnowledgeList3();
    }
     //6-1. 지식인 상세 조회
+    @Override
     public Board selectKnowledgeDetail(int postNo){
       	 return boardDao.selectKnowledgeDetail(postNo);
     };
+    @Override
     public Knowledge selectKnowledgeDetail2(int postNo){
       	 return boardDao.selectKnowledgeDetail2(postNo);
     };
+    @Override
     public List<Board> selectKnowledgeDetailAnswer(int postNo){
       	 return boardDao.selectKnowledgeDetailAnswer(postNo);
     };
-    
-    //6-2. 지식인 질문 등록
+    //6-2. 지식인 답변 갯수 조회
+    @Override
+    public int selectKnowledgeAnswerCount(int postNo) {
+		return boardDao.selectKnowledgeAnswerCount(postNo);
+	}
+    //6-3. 지식인 질문 등록
     @Override
     public int insertKnowledgeQuestion(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception {
     	
@@ -191,7 +209,7 @@ public class BoardServiceImpl implements BoardService {
     
 		return result;
     }
-    //6-2. 지식인 답변 등록
+    //6-4. 지식인 답변 등록
     @Override
     public int insertKnowledgeAnswer(Board board) throws Exception {
     	
@@ -214,6 +232,7 @@ public class BoardServiceImpl implements BoardService {
 
     
     //이찬우 구역 끝
+
 
 
 

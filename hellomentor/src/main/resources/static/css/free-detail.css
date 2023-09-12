@@ -67,6 +67,7 @@
     display: flex;
     justify-content: right;
     margin-top: 20px;
+    cursor: pointer;
 }
 
 #move-to-report a {
@@ -180,6 +181,7 @@
     background-color: #40E0D0;
     font-size: 20px;
     font-family: "bd";
+     cursor: pointer;
 }
 
 #reply-send:hover {

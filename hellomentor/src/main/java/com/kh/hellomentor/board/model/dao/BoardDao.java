@@ -37,11 +37,19 @@ public class BoardDao {
 
 
     // 이찬우 구역 시작
+    // 0. 조회수 증가
+    public int increaseCount(int postNo) {
+    	return session.update("boardMapper.increaseCount",postNo);
+    }
+    //0-1. 게시글 삭제
+    public int deletePost(int postNo) {
+        return session.update("boardMapper.deletePost",postNo);
+    }
     // 1. 공지사항 게시글 조회
-	
     public List<Board> selectNoticeList() {
         return session.selectList("boardMapper.selectNoticeList");
     }  
+    
     // 1-2. 공지사항 상세 조회
     public Board selectNoticeDetail(int postNo) {
         return session.selectOne("boardMapper.selectNoticeDetail",postNo);
@@ -51,6 +59,7 @@ public class BoardDao {
     public List<Board> selectFaqList() {
         return session.selectList("boardMapper.selectFaqList");
     }
+
 
     //3. 1:1문의 등록
     public int insertInquiry(Board board) {
@@ -85,10 +94,10 @@ public class BoardDao {
     
     //4-1. 문의내역 상세 조회
     public Board selectInquiryDetail(int postNo) {
-        return session.selectOne("boardMapper.selectInquiryDetail");
+        return session.selectOne("boardMapper.selectInquiryDetail",postNo);
     }
     public Inquiry selectInquiryDetail2(int postNo) {
-        return session.selectOne("boardMapper.selectInquiryDetail2");
+        return session.selectOne("boardMapper.selectInquiryDetail2",postNo);
     }
     
     //5. 자유게시판 조회
@@ -159,7 +168,13 @@ public class BoardDao {
     public List<Board> selectKnowledgeDetailAnswer(int postNo) {
         return session.selectList("boardMapper.selectKnowledgeDetailAnswer",postNo);
     }
-    //6-2. 지식인 질문 등록
+    
+    // 6-2. 지식인 답변 갯수
+    public int selectKnowledgeAnswerCount(int postNo) {
+		return session.selectOne("boardMapper.selectKnowledgeAnswerCount", postNo);
+	}
+    
+    //6-3. 지식인 질문 등록
     public int insertKnowledgeQuestion(Board board) {
     	int result = 0;
     	int postNo = 0;
@@ -180,7 +195,7 @@ public class BoardDao {
     public int insertKnowledgeAttachment(List<Attachment> list) {
         return session.insert("boardMapper.insertKnowledgeAttachment", list);
     }
-    //6-3. 지식인 답변 등록
+    //6-4. 지식인 답변 등록
     public int insertKnowledgeAnswer(Board board) {
     	int result = 0;
     	int postNo = 0;
@@ -198,7 +213,6 @@ public class BoardDao {
     	return session.insert("boardMapper.insertKnowledgeAnswer2" , answer);
     }
     //이찬우 구역 끝
-
 
 
     //정승훈 구역
