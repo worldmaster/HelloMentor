@@ -662,5 +662,30 @@
 		WHERE POST_NO = ${postNo}
 	</select>
 
+	<select id="selectBoard" resultMap="boardResultMap" parameterType="int">
+		SELECT *
+		FROM BOARD
+		WHERE POST_NO = #{postNo}
+	</select>
+
+	<insert id="insertReport1" parameterType="map">
+		INSERT INTO BOARD (USER_WRITER_NO, POST_CONTENT, BOARD_TYPE)
+		VALUES (#{writerNo}, #{postContent}, 'R')
+
+		<selectKey resultType="int" keyProperty="postNo" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+
+	<insert id="insertReport2" parameterType="map">
+		INSERT INTO REPORT_BOARD(POST_NO, CATEGORY_ID, USER_NO, POST_ID)
+			VALUES (#{postNo}, #{categoryId}, #{targetUser}, #{targetPost})
+	</insert>
+
+	<insert id="insertReportAttach" parameterType="map">
+		INSERT INTO ATTACHMENT(POST_NO, FILE_ORIGIN_NAME, FILE_CHANGE_NAME, FILE_PATH, FILE_SIZE)
+		VALUES (#{postNo}, #{originName}, #{changeName}, #{webPath}, #{fileSize})
+	</insert>
+
 
 </mapper>
