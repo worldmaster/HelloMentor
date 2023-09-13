@@ -132,10 +132,7 @@ public class BoardServiceImpl implements BoardService {
     public Free selectFreeDetail2(int postNo){
    	 return boardDao.selectFreeDetail2(postNo);
    }
-    @Override
-    public List<Reply> selectFreeDetailReply(int postNo){
-   	 return boardDao.selectFreeDetailReply(postNo);
-   }
+ 
     //5-3. 자유게시판 글 작성
     @Override
     public int insertFree(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception {
@@ -156,7 +153,26 @@ public class BoardServiceImpl implements BoardService {
     
 		return result;
     }
- 
+    //5-4. 자유게시판 댓글 삽입
+    @Override
+    public int insertFreeReply(Reply reply) {
+    	return boardDao.insertFreeReply(reply);
+	}
+	//5-5. 자유게시판 댓글 조회
+    @Override
+	public List<Reply> selectFreeReplyList(int postNo){
+		return boardDao.selectFreeReplyList(postNo);
+	}
+    //5-6. 자유게시판 댓글 삭제
+    @Override
+    public int deleteReply(int replyId) {
+    	 return boardDao.deleteReply(replyId);
+    }
+    //5-7. 자유게시판 추천수 증가
+    @Override
+    public int increaseUpvotes(int postNo) {
+    	 return boardDao.increaseUpvotes(postNo);
+    };
     
     //6. 지식인 조회 (메인)
     @Override
