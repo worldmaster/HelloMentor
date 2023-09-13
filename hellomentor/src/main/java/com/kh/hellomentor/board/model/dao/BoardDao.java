@@ -135,7 +135,9 @@ public class BoardDao {
         return session.selectList("boardMapper.selectReplyList",postNo);
     }
 
-
+    public Board selectBoard(int postNo) {
+        return session.selectOne("boardMapper.selectBoard",postNo);
+    }
 
 
     //------------------------------정승훈-----------------------------------------

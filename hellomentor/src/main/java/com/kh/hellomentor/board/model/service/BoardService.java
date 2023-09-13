@@ -58,4 +58,5 @@ public interface BoardService {
     List<Reply> selectReplyList(int postNo);
 
 
+    Board selectBoard(int postNo);
 }

@@ -425,5 +425,41 @@ public class BoardController {
     }
 
 
+    @GetMapping("/report/{postNo}")
+    public String reportWrite(
+            @PathVariable("postNo") int postNo,
+            HttpSession session,
+            Model model,
+            HttpServletRequest req,
+            HttpServletResponse res
+    ) {
+        Board reportTarget = boardService.selectBoard(postNo);
+
+        model.addAttribute("reportTarget", reportTarget);
+
+        log.info("reportTarget {}", reportTarget);
+
+        return "common/report";
+
+    }
+
+    @PostMapping("report/report.insert")
+    public String insertReport(
+            Board b,
+            @RequestParam(value="upfile", required=false) List<MultipartFile> upfiles,
+            HttpSession session,
+            HttpServletRequest request,
+            Model model,
+            @ModelAttribute("loginUser") Member loginUser
+    ) {
+        Board reportTarget = (Board) model.getAttribute("reportTarget");
+        log.info("board {}", reportTarget);
+
+        return "redirect:/" + request.getHeader("Referer");
+
+    }
+
+
+
 
 }

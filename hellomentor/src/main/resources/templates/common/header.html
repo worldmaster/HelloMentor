@@ -27,7 +27,9 @@
                 <a th:href="@{/free-board}" class="menu">자유게시판</a>
                 <a th:href="@{/knowledge-board}" class="menu">지식인</a>
                 <a th:href="@{/mentoring}" class="menu">멘토링</a>
-                <a th:href="@{/study}" class="menu">스터디</a>
+                <th:block th:if="${session.loginUser.memberType == 'E'}">
+                    <a th:href="@{/study}" class="menu">스터디</a>
+                </th:block>
             </div>
             <div class="profile-bar">
                 <!-- 마이페이지의 alarm페이지로 이동 -->

@@ -17,8 +17,8 @@
         <img th:src="@{/img/HELLO_MENTOR_LOGO.png}"/>
     </div>
 
-    <div class="choose-wrap" th:onclick="'location.href=\'' + @{/sign-up(mValue='O')} + '\''">
-        <div class="choose1 choose">
+    <div class="choose-wrap">
+        <div class="choose1 choose" th:onclick="'location.href=\'' + @{/sign-up(mValue='O')} + '\''">
             <div class="choose-title">멘토 가입하기</div>
             <img id="waterpot" th:src="@{/img/waterpot.png}"/>
             <div class="choose-text">

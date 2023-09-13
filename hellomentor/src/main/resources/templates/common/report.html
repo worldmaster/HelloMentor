@@ -20,7 +20,8 @@
           <div id="report-title">신고하기</div>
         </div>
         <div class="report-form">
-          <form id="report-form" action="" method="post">
+          <form id="report-form" th:action="@{report.insert}" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:name="reportTarget" th:value="${reportTarget}"/>
             <div class="report-category">
               <span>제목</span>
               <select name="report-category" id="report-category">
@@ -62,5 +63,13 @@
         $(".upload-name").val(fileName);
       });
     </script>
+
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      var reportTargetValue = /*[[${reportTarget}]]*/ 'default_value';
+      console.log(reportTargetValue);
+      /*]]>*/
+    </script>
+
   </body>
 </html>

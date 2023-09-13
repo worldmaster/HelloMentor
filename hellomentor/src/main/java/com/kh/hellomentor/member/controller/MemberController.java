@@ -164,7 +164,6 @@ public class MemberController {
 
 
     @RequestMapping("/profile_edit_info")
-
     public String profileEdit(Model model, HttpSession session) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         if ("E".equals(loginUser.getMemberType())) {

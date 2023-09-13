@@ -358,6 +358,11 @@
         WHERE POST_NO = ${postNo}
     </select>
 
+    <select id="selectBoard" resultMap="boardResultMap" parameterType="int">
+        SELECT *
+        FROM BOARD
+        WHERE POST_NO = #{postNo}
+    </select>
 
 
 </mapper>
