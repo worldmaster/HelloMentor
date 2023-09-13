@@ -58,11 +58,22 @@ public interface BoardService {
     //5-2. 자유게시판 상세 조회
     public Board selectFreeDetail(int postNo);
     public Free selectFreeDetail2(int postNo);
-    public List<Reply> selectFreeDetailReply(int postNo);
     
     //5-3. 자유게시판 글 작성
     public int insertFree(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception;
     public int insertFree2(int postNo);
+    
+    //5-4. 자유게시판 댓글 삽입
+    public int insertFreeReply(Reply reply);
+    
+	//5-5. 자유게시판 댓글 조회
+	public List<Reply> selectFreeReplyList(int postNo);
+	
+	//5-6. 자유게시판 댓글 삭제
+    public int deleteReply(int replyId);
+    
+    //5-7. 추천수 증가
+    public int increaseUpvotes(int postNo);
     
     //6. 지식인 조회 (메인)
     public List<Board> selectKnowledgeList();
