@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.kh.hellomentor.board.model.vo.*;
 import com.kh.hellomentor.matching.model.vo.StudyApplicant;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -20,13 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hellomentor.board.model.service.BoardService;
-import com.kh.hellomentor.board.model.vo.Answer;
-import com.kh.hellomentor.board.model.vo.Attachment;
-import com.kh.hellomentor.board.model.vo.Board;
-import com.kh.hellomentor.board.model.vo.Free;
-import com.kh.hellomentor.board.model.vo.Inquiry;
-import com.kh.hellomentor.board.model.vo.Knowledge;
-import com.kh.hellomentor.board.model.vo.Reply;
 import com.kh.hellomentor.common.Utils;
 import com.kh.hellomentor.member.controller.MemberController;
 import com.kh.hellomentor.member.model.vo.Member;
@@ -156,19 +150,20 @@ public class BoardController {
             HttpSession session,
             @RequestParam(name = "nno") int postNo
     ) {
-    	log.info("postNo {}", postNo);
-    	
-    	int result = boardService.increaseCount(postNo);
+        log.info("postNo {}", postNo);
+
+        int result = boardService.increaseCount(postNo);
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
 
         Board selectedPost = boardService.selectNoticeDetail(postNo);
         model.addAttribute("selectedPost", selectedPost);
         log.info("selectedPost {}", selectedPost);
-        
+
         return "board/notice/notice-detail";
 
     }
+
     //1-2. 공지사항 삭제
     @GetMapping("/deletenotice")
     public String deleteNotice(
@@ -177,18 +172,19 @@ public class BoardController {
             @RequestParam(name = "nno") int postNo,
             RedirectAttributes redirectAttributes
     ) {
-    	log.info("postNo {}", postNo);
-    	
-    	int result = boardService.deletePost(postNo);
-    	log.info("result {}", result);
-    	 if (result > 0) {
-             redirectAttributes.addFlashAttribute("message", postNo + "번 공지사항이 성공적으로 삭제되었습니다");
-             return "redirect:/noticelist";
-         } else {
-             redirectAttributes.addFlashAttribute("message", "게시글 삭제에 실패했습니다.");
-             return "redirect:/noticelist";
-         }
+        log.info("postNo {}", postNo);
+
+        int result = boardService.deletePost(postNo);
+        log.info("result {}", result);
+        if (result > 0) {
+            redirectAttributes.addFlashAttribute("message", postNo + "번 공지사항이 성공적으로 삭제되었습니다");
+            return "redirect:/noticelist";
+        } else {
+            redirectAttributes.addFlashAttribute("message", "게시글 삭제에 실패했습니다.");
+            return "redirect:/noticelist";
+        }
     }
+
     //2. FAQ 글 조회
     @GetMapping("/faqlist")
     public String selectFaqList(
@@ -197,13 +193,14 @@ public class BoardController {
     ) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
-        
+
         List<Board> list = boardService.selectFaqList();
         model.addAttribute("list", list);
         log.info("list {}", list);
 
         return "board/faq/faq-board";
     }
+
     //2-1. FAQ 삭제
     @GetMapping("/deletefaq")
     public String deleteFaq(
@@ -212,18 +209,18 @@ public class BoardController {
             @RequestParam(name = "fno") int postNo,
             RedirectAttributes redirectAttributes
     ) {
-    	log.info("postNo {}", postNo);
-    	
-    	int result = boardService.deletePost(postNo);
-    	log.info("result {}", result);
-    	
-    	 if (result > 0) {
-             redirectAttributes.addFlashAttribute("message",  postNo + "번 공지사항이 성공적으로 삭제되었습니다");
-             return "redirect:/faqlist";
-         } else {
-             redirectAttributes.addFlashAttribute("message", "게시글 삭제에 실패했습니다.");
-             return "redirect:/faqlist";
-         }
+        log.info("postNo {}", postNo);
+
+        int result = boardService.deletePost(postNo);
+        log.info("result {}", result);
+
+        if (result > 0) {
+            redirectAttributes.addFlashAttribute("message", postNo + "번 공지사항이 성공적으로 삭제되었습니다");
+            return "redirect:/faqlist";
+        } else {
+            redirectAttributes.addFlashAttribute("message", "게시글 삭제에 실패했습니다.");
+            return "redirect:/faqlist";
+        }
     }
 
     //3. 문의 내역 insert
@@ -244,7 +241,7 @@ public class BoardController {
     ) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         int userNo = loginUser.getUserNo();
-        
+
         // 이미지, 파일을 저장할 저장경로 얻어오기
         String webPath = "/resources/static/img/attachment/inquiry";
         String severFolderPath = application.getRealPath(webPath);
@@ -286,12 +283,12 @@ public class BoardController {
         }
         inquiry.setPostNo(postNo);
         result = boardService.insertInquiry2(inquiry);
-        
+
         if (result > 0) {
-        	redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
+            redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
             return "redirect:/inquirylist";
         } else {
-        	redirectAttributes.addFlashAttribute("message",  "게시글 작성에 실패하였습니다. 다시 작성해주세요");
+            redirectAttributes.addFlashAttribute("message", "게시글 작성에 실패하였습니다. 다시 작성해주세요");
             return "redirect:/inquiryinsert";
         }
     }
@@ -308,7 +305,7 @@ public class BoardController {
         List<Board> list = boardService.selectInquiryList(userNo);
         model.addAttribute("list", list);
         log.info("list {}", list);
-        
+
         List<Inquiry> list2 = boardService.selectInquiryList2(userNo);
         model.addAttribute("list2", list2);
         log.info("list2 {}", list2);
@@ -328,12 +325,12 @@ public class BoardController {
             Model model,
             @RequestParam(name = "ino") int postNo
     ) {
-    	log.info("postNo {}", postNo);
-    	
+        log.info("postNo {}", postNo);
+
         Board selectedPost = boardService.selectInquiryDetail(postNo);
         model.addAttribute("selectedPost", selectedPost);
         log.info("selectedPost {}", selectedPost);
-        
+
         Inquiry selectedPost2 = boardService.selectInquiryDetail2(postNo);
         model.addAttribute("selectedPost2", selectedPost2);
         log.info("selectedPost2 {}", selectedPost2);
@@ -351,7 +348,7 @@ public class BoardController {
         List<Board> list = boardService.selectFreeList();
         model.addAttribute("list", list);
         log.info("list {}", list);
-        
+
         List<Free> list2 = boardService.selectFreeList2();
         model.addAttribute("list2", list2);
         log.info("list2 {}", list2);
@@ -360,7 +357,7 @@ public class BoardController {
         List<Board> list3 = boardService.selectBestFreeList();
         model.addAttribute("list3", list3);
         log.info("list3 {}", list3);
-        
+
         List<Free> list4 = boardService.selectBestFreeList2();
         model.addAttribute("list4", list4);
         log.info("list4 {}", list4);
@@ -389,8 +386,8 @@ public class BoardController {
             HttpSession session,
             @RequestParam(name = "fno") int postNo
     ) {
-    	log.info("postNo {}", postNo);
-    	
+        log.info("postNo {}", postNo);
+
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
 
@@ -415,6 +412,7 @@ public class BoardController {
     public String moveFreeInsert() {
         return "board/free/free-insert";
     }
+
     @PostMapping("/freeinsert")
     public String freeInsert(
             Board board,
@@ -468,12 +466,12 @@ public class BoardController {
         }
         result = boardService.insertFree2(postNo);
         log.info("result {}", result);
-        
+
         if (result > 0) {
-        	redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
+            redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
             return "redirect:/freelist";
         } else {
-        	redirectAttributes.addFlashAttribute("message", "게시글이 작성에 실패하였습니다. 다시 작성해주세요.");
+            redirectAttributes.addFlashAttribute("message", "게시글이 작성에 실패하였습니다. 다시 작성해주세요.");
             return "redirect:/freeinsert";
         }
     }
@@ -488,11 +486,11 @@ public class BoardController {
         List<Board> list = boardService.selectKnowledgeList();
         model.addAttribute("list", list);
         log.info("list {}", list);
-        
+
         List<Knowledge> list2 = boardService.selectKnowledgeList2();
         model.addAttribute("list2", list2);
         log.info("list2 {}", list2);
-        
+
         List<Answer> list3 = boardService.selectKnowledgeList3();
         model.addAttribute("list3", list3);
         log.info("list3 {}", list3);
@@ -513,11 +511,11 @@ public class BoardController {
             HttpSession session,
             @RequestParam(name = "kno") int postNo
     ) {
-    	log.info("postNo {}", postNo);
-    	
+        log.info("postNo {}", postNo);
+
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
-        
+
         int total = boardService.selectKnowledgeAnswerCount(postNo);
         model.addAttribute("total", total);
         log.info("total {}", total);
@@ -599,12 +597,12 @@ public class BoardController {
         knowledge.setPostNo(postNo);
         result = boardService.insertKnowledgeQuestion2(knowledge);
         log.info("result {}", result);
-        
+
         if (result > 0) {
-        	redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
+            redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
             return "redirect:/knowledgelist";
         } else {
-        	redirectAttributes.addFlashAttribute("message", "게시글이 작성에 실패하였습니다. 다시 작성해주세요.");
+            redirectAttributes.addFlashAttribute("message", "게시글이 작성에 실패하였습니다. 다시 작성해주세요.");
             return "redirect:/knowledgequestioninsert";
         }
     }
@@ -637,19 +635,19 @@ public class BoardController {
         try {
             postNo = boardService.insertKnowledgeAnswer(board);
             log.info("postNo {}", postNo);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         answer.setPostNo(postNo);
         result = boardService.insertKnowledgeAnswer2(answer);
         log.info("result {}", result);
-        
+
         if (result > 0) {
-        	redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
+            redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
             return "redirect:/knowledgelist";
         } else {
-        	redirectAttributes.addFlashAttribute("message", "게시글 작성에 실패하였습니다. 다시 작성해주세요.");
+            redirectAttributes.addFlashAttribute("message", "게시글 작성에 실패하였습니다. 다시 작성해주세요.");
             return "redirect:/knowledgeanswerinsert";
         }
     }
@@ -800,6 +798,87 @@ public class BoardController {
 
         return url;
 
+
+    }
+
+    @GetMapping("/report/{postNo}")
+    public String reportWrite(
+            @PathVariable("postNo") int postNo,
+            HttpSession session,
+            Model model,
+            HttpServletRequest req,
+            HttpServletResponse res
+    ) {
+        Board reportTarget = boardService.selectBoard(postNo);
+
+        model.addAttribute("reportTarget", reportTarget);
+
+        return "common/report";
+
+    }
+
+    @PostMapping("/report.insert")
+    public String insertReport(
+            @RequestParam(value = "upfile", required = false) MultipartFile upfile,
+            HttpSession session,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes,
+            @ModelAttribute("loginUser") Member loginUser,
+            @RequestParam("reportTargetId") int reportTargetId,
+            @RequestParam("reportTargetUser") int reportTargetUser,
+            @RequestParam("report-category") String reportCategory,
+            @RequestParam("report-content") String reportContent
+    ) {
+        int categoryId = Integer.parseInt(reportCategory);
+        reportContent = Utils.XSSHandling(reportContent);
+        reportContent = Utils.newLineHandling(reportContent);
+
+
+        // 이미지, 파일을 저장할 저장경로 얻어오기
+        String projectRootPath = System.getProperty("user.dir");
+        String savePath = projectRootPath + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "img" + File.separator + "attachment" + File.separator + "report" + File.separator;
+
+
+
+        // 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
+        File dir = new File(savePath);
+            System.out.println("Attempting to create directory: " + dir.getAbsolutePath());
+        if (!dir.exists()) {
+            dir.mkdirs();
+            System.out.println("Failed to create directory: " + dir.getAbsolutePath());
+        }
+
+        Map<String, Object> reportInfo = new HashMap<>();
+
+        if (!upfile.isEmpty()) {
+            //  파일명 재정의 해주는 함수.
+            String changeName = Utils.saveFile(upfile, savePath);
+            reportInfo.put("changeName", changeName);
+            reportInfo.put("originName", upfile.getOriginalFilename());
+            reportInfo.put("fileSize", upfile.getSize());
+        }
+
+
+        reportInfo.put("writerNo", loginUser.getUserNo());
+        reportInfo.put("postContent", reportContent);
+        reportInfo.put("categoryId", categoryId);
+        reportInfo.put("targetUser", reportTargetUser);
+        reportInfo.put("targetPost", reportTargetId);
+        reportInfo.put("webPath", savePath);
+
+
+
+        int result = 0;
+
+        result = boardService.insertReport(reportInfo);
+
+        if (result > 0) {
+            redirectAttributes.addFlashAttribute("message", "성공적으로 신고가 접수 되었습니다");
+            return "redirect:/main";
+        } else {
+            redirectAttributes.addFlashAttribute("message", "신고 접수가 실패했습니다.");
+            return "redirect:/main";
+        }
 
     }
 

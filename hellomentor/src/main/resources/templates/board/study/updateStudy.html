@@ -42,7 +42,7 @@
 
     <!-- 신고하기 링크는 작성자는 안보임-->
     <th:block th:if="${dstudy.userNo != loginUser.userId}">
-      <a th:href="@{/report}" class="report-this-board">신고하기</a>
+      <a th:attr="onclick='movePage(\'' + ${dstudy.postNo} + '\');'" class="report-this-board">신고하기</a>
     </th:block>
 
 
@@ -205,6 +205,13 @@
 
     }
 
+    </script>
+
+    <script>
+      function movePage(no) {
+        var url = "/hellomentor/report/" + no;
+        window.location.href = url;
+      }
     </script>
 </body>
 </html>

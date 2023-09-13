@@ -254,9 +254,28 @@ public class BoardDao {
 
 
 
-
     //------------------------------정승훈-----------------------------------------
+    public Board selectBoard(int postNo) {
+        return session.selectOne("boardMapper.selectBoard",postNo);
+    }
 
 
+    public int insertReport(Map<String, Object> reportInfo) {
+        Board board = null;
+        int result1 = session.insert("boardMapper.insertReport1", reportInfo);
+        int result2 = 0;
+        int result3 = 0;
 
+        if(result1 > 0) {
+            result2 = session.insert("boardMapper.insertReport2", reportInfo);
+
+            if(reportInfo.get("changeName") != null) {
+                result3 = session.insert("boardMapper.insertReportAttach", reportInfo);
+                return result1 * result2 * result3;
+            }
+
+            return result1 * result2;
+        }
+        return result1 * result2;
+    }
 }

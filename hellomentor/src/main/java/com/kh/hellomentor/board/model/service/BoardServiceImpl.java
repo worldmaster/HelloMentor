@@ -283,6 +283,16 @@ public class BoardServiceImpl implements BoardService {
         return boardDao.selectReplyList(postNo);
     }
 
+    @Override
+    public Board selectBoard(int postNo) {
+        return boardDao.selectBoard(postNo);
+    }
+
+    @Override
+    public int insertReport(Map<String, Object> reportInfo) {
+        return boardDao.insertReport(reportInfo);
+    }
+
 
 }
 
