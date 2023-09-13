@@ -51,6 +51,19 @@
 
 
 
+.trashbtn {
+    background-color: white;
+    width: 40px;
+}
+
+.trash-logo:hover {
+    cursor: pointer;
+}
+
+.trash-logo:hover path {
+    stroke: red;
+}
+
 
 
 
@@ -59,7 +72,7 @@
 #notice-area {
     margin-top: 40px;
     border-collapse: separate;
-    border-spacing: 0 10px;
+    border-spacing: 0 12px;
     font-size: 17px;
 
 }
@@ -111,26 +124,25 @@
 
 /*글작성 버튼*/
 #move-to-insert {
-    height: 36px;
-    width: 114px;
-    background: #48917A;
-    border-radius: 10px;
-    margin-top: 14px;
-    margin-left: 910px;
+    width: 900px;
+    margin-top: 20px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+    justify-content: right;
+    margin-right : 50px;
 }
 
-#move-to-insert a {
-    text-decoration: none;
-    color: black;
+#move-to-insert>button {
+    height: 36px;
+    width: 114px;
+    background-color: #48917A;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
     font-size: 18px;
     font-family: "bd";
 }
 
-#move-to-insert a:hover {
+#move-to-insert>button:hover {
     color: white;
 }
 

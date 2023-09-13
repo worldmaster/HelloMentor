@@ -2,6 +2,7 @@ package com.kh.hellomentor.member.controller;
 
 import javax.servlet.http.HttpSession;
 
+import com.kh.hellomentor.matching.model.service.MatchingService;
 import com.kh.hellomentor.member.model.vo.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,9 @@ public class MemberController {
 
     @Autowired
     private MemberService mService;
+
+    @Autowired
+    private MatchingService mtService;
 
     @PostMapping("login.me")
     public String loginMember(
@@ -133,6 +137,7 @@ public class MemberController {
         List<Profile> profileList = mService.getFollowerProfileList(userNo);
 
 
+
         List<Map<String, Object>> combinedList = new ArrayList<>();
         for (Member member : followerList) {
             Map<String, Object> combinedInfo = new HashMap<>();
@@ -164,6 +169,7 @@ public class MemberController {
 
 
     @RequestMapping("/profile_edit_info")
+
     public String profileEdit(Model model, HttpSession session) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         if ("E".equals(loginUser.getMemberType())) {

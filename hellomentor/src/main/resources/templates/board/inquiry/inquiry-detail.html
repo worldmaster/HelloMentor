@@ -27,9 +27,9 @@
 
         <!-- 메뉴바 -->
         <div align="center" class="cs-menu-bar">
-          <div class="cs-menu"><a th:href="@{/notice-board}">공지사항</a></div>
-          <div class="cs-menu"><a th:href="@{/faq-board}">FAQ</a></div>
-          <div class="cs-menu"><a th:href="@{/inquiry-insert}">1:1문의</a></div>
+          <div class="cs-menu"><a th:href="@{/noticelist}">공지사항</a></div>
+          <div class="cs-menu"><a th:href="@{/faqlist}">FAQ</a></div>
+          <div class="cs-menu"><a th:href="@{/inquiryinsert}">1:1문의</a></div>
           <div class="cs-menu" id="selected-menu"><a th:href="@{/inquirylist}">문의내역</a></div>
         </div>
 
@@ -39,35 +39,37 @@
           <div class="question-title">
             <div id="q-logo">Q.</div>
             <div class="question-info">
-              <div id="question-title" th:text="${combinedList[0].postTitle}">질문제목</div>
+              <div id="question-title" th:text="${selectedPost.postTitle}">질문제목</div>
               <div id="question-info">
-                <div id="question-writer" th:text="${combinedList[0].boardType}">카테고리</div>
-                <div id="question-create-date" th:text="${combinedList[0].createDate}">작성일자</div>
+                <div id="question-writer" th:text="${selectedPost.boardType}">카테고리</div>
+                <div id="question-create-date" th:text="${selectedPost.createDate}">작성일자</div>
                 <div id="question-status">
-                	<span th:if="${combinedList[1].isProcessed}">처리 완료</span> 
-              	  <span th:if="${!combinedList[1].isProcessed}">처리중</span>
+                	<span th:if="${selectedPost2.isProcessed}">처리 완료</span> 
+              	  <span th:if="${!selectedPost2.isProcessed}">처리중</span>
 				</div>
               </div>
             </div>
           </div>
           <div class="question-box">
-            <div name="question" id="question" th:text="${combinedList[0].postContent}">질문</div>
+            <div name="question" id="question" th:text="${selectedPost.postContent}">질문</div>
           </div>
         </div>
 
         <div class="line line2"></div>
 
         <!-- 답변 미등록시 -->
-        <div class="no-answer" th:if="${#lists.isEmpty(combinedList)}">등록된 답변이 없습니다</div> 
-
+        <div class="answer-section"  th:if="${!selectedPost2.isProcessed}">
+      		  <div id="a-logo">A.</div>
+        	<div class="no-answer" >등록된 답변이 없습니다</div> 
+		</div>
         <!-- 답변 등록시 -->
-        <div class="answer-section" th:unless="${#lists.isEmpty(combinedList)}">
+        <div class="answer-section" th:if="${selectedPost2.isProcessed}">
           <div id="a-logo">A.</div>
-          <div class="answer" th:text="${combinedList[1].answer}">답변</div>
+          <div class="answer" th:text="${selectedPost2.answer}">답변</div>
         </div>
 
         <!-- 목록 버튼 -->
-        <button type="button" id="move-to-inquiry">
+        <button type="button" id="move-to-inquiry" th:onclick="window.location.href='/hellomentor/inquirylist'">
           목록
         </button>
         <!-- 목록 버튼 끝 -->

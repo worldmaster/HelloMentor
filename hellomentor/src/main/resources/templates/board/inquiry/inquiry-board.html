@@ -29,13 +29,13 @@
 			<!-- 메뉴바 -->
 			<div align="center" class="cs-menu-bar">
 				<div class="cs-menu">
-					<a th:href="@{/notice-board}">공지사항</a>
+					<a th:href="@{/noticelist}">공지사항</a>
 				</div>
 				<div class="cs-menu">
-					<a th:href="@{/faq-board}">FAQ</a>
+					<a th:href="@{/faqlist}">FAQ</a>
 				</div>
 				<div class="cs-menu">
-					<a th:href="@{/inquiry-insert}">1:1문의</a>
+					<a th:href="@{/inquiryinsert}">1:1문의</a>
 				</div>
 				<div class="cs-menu" id="selected-menu">
 					<a th:href="@{/inquirylist}">문의내역</a>
@@ -59,11 +59,14 @@
 					</tr>
 					<tr th:each="item : ${combinedList}"  class="movingDetailInquiry">
 						<td th:text="${item[0].boardType}">분류</td>
-						<td th:text="${item[0].postTitle}">제목</td>
+						<td>
+						    <a th:if="${loginUser.userId == 'admin'}" th:text="${item[0].postTitle}" th:href="'/hellomentor/admin-question-answer?ino=' + ${item[0].postNo}">제목</a>
+						    <a th:unless="${loginUser.userId == 'admin'}" th:text="${item[0].postTitle}" th:href="'/hellomentor/inquirydetail?ino=' + ${item[0].postNo}">제목</a>
+						</td>
+
 						<td th:text="${item[0].createDate}">작성일자</td>
-						<td><span th:if="${item[1].isProcessed}">처리 완료</span> <span
-							th:if="${!item[1].isProcessed}">처리중</span></td>
-						<input type="hidden" value="${item[0].postNo}" class="postNo">
+						<td><span th:if="${item[1].isProcessed}">처리 완료</span> 
+							<span th:if="${!item[1].isProcessed}">처리중</span></td>
 					</tr>
 				</tbody>
 			</table>
@@ -72,7 +75,7 @@
 			<!-- 게시글 끝 -->
 
 			<div id="move-to-inquiry">
-				<button onclick="location.href=''">1:1 문의하기</button>
+				<button  th:onclick="|window.location.href='/hellomentor/inquiryinsert'|">1:1 문의하기</button>
 			</div>
 
 			<!--페이징바-->

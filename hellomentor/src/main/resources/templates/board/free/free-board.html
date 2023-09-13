@@ -24,7 +24,7 @@
         <h1 class="title">자유게시판</h1>
 
  <!--    분류, 검색창 -->
-<!--         <form th:action="@{}" method="get">
+<!--        <form th:action="@{}" method="get"> -->
           <div id="category-search">
             <select name="free-category" id="free-category">
               <option value="1">작성자</option>
@@ -48,7 +48,7 @@
               </svg>
             </button>
           </div>
-        </form> -->
+       <!-- </form> -->
   <!--  분류, 검색창 끝 -->
 
         <div id="button-container">
@@ -69,11 +69,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr onclick="location.href=''">
-              <td>이찬우</td>
-              <td>서버 점검 안내 [1]</td>
-              <td>100</td>
-              <td>10</td>
+			<tr th:each="item2 : ${combinedList2}">
+              <td th:text="${item2[0].userNo}">사용자 ID</td>
+              <td >
+            	  <a th:text="${item2[0].postTitle}" th:href="'/hellomentor/freedetail?fno=' + ${item2[0].postNo}">제목</a>
+              </td>
+              <td th:text="${item2[0].views}">조회수</td>
+              <td th:text="${item2[1].upVotes}">추천수</td>
             </tr>
           </tbody>
         </table>
@@ -87,7 +89,9 @@
 			</tr>
 			<tr th:each="item : ${combinedList}"  class="movingDetailFree">
               <td width="150" th:text="${item[0].userNo}">사용자 ID</td>
-              <td width="550" th:text="${item[0].postTitle}">글 제목</td>
+              <td width="550" >
+              	  <a th:text="${item[0].postTitle}" th:href="'/hellomentor/freedetail?fno=' + ${item[0].postNo}">제목</a>
+              </td>
               <td width="70" th:text="${item[0].views}">조회수</td>
               <td width="70" th:text="${item[1].upVotes}">추천수</td>
             </tr>
@@ -95,16 +99,18 @@
         </table>
         <!-- 일반 게시글 끝 -->
 
-        <div id="move-to-insert"><button>글 작성</button></div>
+        <div id="move-to-insert">
+        	<button th:onclick="|window.location.href='/hellomentor/freeinsert'|">글 작성</button>
+        </div>
 
         <!--페이징바-->
-<!--         <div align="center" class="paging-area">
+         <div align="center" class="paging-area">
           <button onclick="location.href= '#' ">이전 페이지</button>
           <button onclick="location.href='#'">1</button>
           <button onclick="location.href='#'">2</button>
           <button onclick="location.href='#'">3</button>
           <button onclick="location.href = '#'">다음 페이지</button>
-        </div> -->
+        </div> 
       </div>
     </div>
 

@@ -26,9 +26,9 @@
 
         <!-- 메뉴바 -->
         <div align="center" class="cs-menu-bar">
-          <div class="cs-menu" id="selected-menu"><a th:href="@{/notice-board}">공지사항</a></div>
-          <div class="cs-menu"><a th:href="@{/faq-board}">FAQ</a></div>
-          <div class="cs-menu"><a th:href="@{/inquiry-insert}">1:1문의</a></div>
+          <div class="cs-menu" id="selected-menu"><a th:href="@{/noticelist}">공지사항</a></div>
+          <div class="cs-menu"><a th:href="@{/faqlist}">FAQ</a></div>
+          <div class="cs-menu"><a th:href="@{/inquiryinsert}">1:1문의</a></div>
           <div class="cs-menu"><a th:href="@{/inquirylist}">문의내역</a></div>
         </div>
         <!-- 메뉴바 끝 -->
@@ -37,27 +37,33 @@
         <table align="center" id="notice-table">
           <thead>
             <tr>
-              <th colspan="3" class="notice-title">서버 점검 안내</th>
+              <th colspan="3" class="notice-title" th:text="${selectedPost.postTitle}">제목</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td width="200px">점검</td>
-              <td width="200px">23.08.12</td>
-              <td width="400px">조회수 | 0</td>
+              <td width="200px" th:text="${selectedPost.boardType}">분류</td>
+              <td width="200px" th:text="${selectedPost.createDate}">작성일자</td>
+              <td width="400px" th:text="'조회수 ' + ${selectedPost.views}">조회수</td>
+
+
             </tr>
           </tbody>
         </table>
-
-        <div class="noticecontent">공지사항 내용</div>
+ 
+        <div class="notice-content" th:text="${selectedPost.postContent}">내용</div>
 
         <!--공지사항 정보 및 내용 끝-->
 
         <!--하단 버튼-->
         <div class="notice-btns">
-          <button type="button"  th:onclick="" id="list-btn">목록</button>
+          <button type="button" id="list-btn" th:onclick="window.location.href='/hellomentor/noticelist'">목록</button>
           <!-- 관리자만 삭제가 보인다. -->
-          <button type="button"  th:onclick="" id="delete-btn">삭제</button>
+          <a th:href="'/hellomentor/deletenotice?nno=' + ${selectedPost.postNo}">
+          <button type="button" id="delete-btn" th:if="${loginUser.userId == 'admin'}"  >
+          삭제
+          </button>
+          </a>
         </div>
 
         <!--하단 버튼 끝-->
