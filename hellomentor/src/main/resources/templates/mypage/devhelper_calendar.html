@@ -7,15 +7,15 @@
         var today = new Date();
         var selectedCell = null;
 
-        function buildCalendar() {
 
+
+        function buildCalendar() {
             var dateElement = document.createElement("input");
             dateElement.setAttribute("type", "text");
             dateElement.setAttribute("id", "date");
-            // document.body.appendChild(dateElement);
 
-            var row = null
-            var row1 = null
+            var row = null;
+            var row1 = null;
             var cnt = 0;
             var calendarTable = document.getElementById("calendar");
             var calendarTableTitle = document.getElementById("calendarTitle");
@@ -44,30 +44,15 @@
                 cell.innerHTML = i;
                 cell.align = "center";
 
-                // cell.onclick----------------------------------------------------------------------------------------------------------
-                cell.onclick = function () {
-                    if (selectedCell) {
-                        selectedCell.classList.remove("product-calendar-selected");
-                    }
-                    selectedCell = this;
-                    selectedCell.classList.add("product-calendar-selected");
-                    this.classList.remove("product-calendar-hover");
+                // 해당 날짜에 대한 메모 데이터 로드
+                var clickedYear = today.getFullYear();
+                var clickedMonth = (1 + today.getMonth());
+                var clickedDate = i;
 
-                    clickedYear = today.getFullYear();
-                    clickedMonth = (1 + today.getMonth());
-                    clickedDate = this.getAttribute('id');
-
-                    clickedDate = clickedDate >= 10 ? clickedDate : '0' + clickedDate;
-                    clickedMonth = clickedMonth >= 10 ? clickedMonth : '0' + clickedMonth;
-                    selectedDate = clickedYear.toString().substring(2) + "/" + clickedMonth + "/" + clickedDate;
-
-                    document.getElementById("selectedDate").innerText = selectedDate;
-
-
-                    // document.getElementById("date").value = selectedDate;
-                    showMemoModal();
-                }
-
+                clickedDate = clickedDate >= 10 ? clickedDate : '0' + clickedDate;
+                clickedMonth = clickedMonth >= 10 ? clickedMonth : '0' + clickedMonth;
+                var selectedDate = clickedYear + "-" + clickedMonth + "-" + clickedDate;
+                LoadMemoData(selectedDate, cell);
 
                 if (cnt % 7 == 1) {
                     cell.innerHTML = "<font color=#FF0000>" + i + "</font>";
@@ -75,7 +60,7 @@
 
                 if (cnt % 7 == 0) {
                     cell.innerHTML = "<font color=#0055FF>" + i + "</font>";
-                    row = calendar.insertRow();
+                    row = calendarTable.insertRow();
                 }
             }
 
@@ -84,9 +69,22 @@
                     cell = row.insertCell();
                 }
             }
-
-
         }
+
+        function LoadMemoData(selectedDate, cell) {
+            console.log("Selected Date: " + selectedDate);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "loadMemo", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var memoText = xhr.responseText;
+                    cell.innerHTML += "<br>" + memoText;
+                }
+            };
+            xhr.send(JSON.stringify({ date: selectedDate }));
+        }
+
 
         function prevCalendar() {
             today = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
@@ -136,6 +134,7 @@
         <label for="memo">메모:</label>
         <input type="text" id="memo" name="memo">
         <button onclick="saveMemo()">저장</button>
+        <button onclick="deleteMemo()">삭제</button>
         <button onclick="cancelMemo()">취소</button>
     </div>
 </div>
@@ -147,10 +146,68 @@
         document.getElementById("memoModal").style.display = "block";
     }
 
+
+    var selectedDate = "[[${selectedDate}]]";
+
     function saveMemo() {
-        // 메모를 저장하는 로직을 추가할 수 있습니다.
-        document.getElementById("memoModal").style.display = "none";
+        const todoContent = document.getElementById("memo").value;
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "saveMemo", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    alert(xhr.responseText);
+                    document.getElementById("memo").value = "";
+                    document.getElementById("memoModal").style.display = "none";
+                } else {
+                    alert("메모 저장 중 오류 발생: " + xhr.status);
+                }
+            }
+        };
+        xhr.send(JSON.stringify({ todoContent: todoContent, todoDeadline: selectedDate }));
     }
+
+    function deleteMemo() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "deleteMemo", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    alert(xhr.responseText);
+                    document.getElementById("memo").value = "";
+                    document.getElementById("memoModal").style.display = "none";
+                } else {
+                    alert("메모 삭제 중 오류 발생: " + xhr.status);
+                }
+            }
+        };
+        xhr.send(JSON.stringify({ todoDeadline: selectedDate }));
+    }
+
+
+
+    function loadMemo() {
+        const memoRequest = {
+            todoDeadline: selectedDate
+        };
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "loadMemo", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    document.getElementById("memo").value = xhr.responseText;
+                } else {
+                    alert("메모 불러오기 중 오류 발생: " + xhr.status);
+                }
+            }
+        };
+        xhr.send(JSON.stringify(memoRequest));
+    }
+
+
 
     function cancelMemo() {
         // 취소 로직을 추가할 수 있습니다.

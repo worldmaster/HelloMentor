@@ -74,17 +74,13 @@ public class MatchingController {
 
             }
 
+
             for (Matching matching : matchingList) {
                 if (matching.getMenteeNo() == mentor.getUserNo()) {
                     for (Mentoring mentoring : mentoringList) {
                         if (matching.getMatchingRegisNo() == mentoring.getRegisNo()) {
-                            if (mentoring.getTitle() == null) {
-                                mentoring.setTitle("타이틀없음");
-                            }
                             combinedInfo.put("title", mentoring.getTitle());
                             combinedInfo.put("regisNo", mentoring.getRegisNo());
-
-
                             break;
                         }
                     }
@@ -115,6 +111,7 @@ public class MatchingController {
         List<Member> mentorList = matchingService.getMentorList2(userNo);
         List<Profile> mentorProfileList = matchingService.getMentorProfileList2(userNo);
         List<Mentoring> mentoringList = matchingService.getMentoringList2(userNo);
+
         List<Matching> matchingList = matchingService.getMatchingList2(userNo);
 
         List<Map<String, Object>> combinedList = new ArrayList<>();
@@ -150,13 +147,8 @@ public class MatchingController {
                     combinedInfo.put("status", matching.getStatus());
                     for (Mentoring mentoring : mentoringList) {
                         if (matching.getMatchingRegisNo() == mentoring.getRegisNo()) {
-                            if (mentoring.getTitle() == null) {
-                                mentoring.setTitle("타이틀없음");
-                            }
                             combinedInfo.put("title", mentoring.getTitle());
                             combinedInfo.put("regisNo", mentoring.getRegisNo());
-
-
                             break;
                         }
                     }
@@ -202,9 +194,6 @@ public class MatchingController {
     public Map<String, Object> mentoring_accept(@RequestParam("userNo") int userNo, @RequestParam("regisNo") int regisNo, HttpSession session) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         int loginuserNo = loginUser.getUserNo();
-        System.out.println(loginuserNo);
-        System.out.println(regisNo);
-        System.out.println(userNo);
         Map<String, Object> response = new HashMap<>();
 
 

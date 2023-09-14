@@ -3,6 +3,8 @@ package com.kh.hellomentor.member.controller;
 import javax.servlet.http.HttpSession;
 
 import com.kh.hellomentor.matching.model.service.MatchingService;
+import com.kh.hellomentor.member.model.vo.Calendar;
+import com.kh.hellomentor.member.model.vo.Payment;
 import com.kh.hellomentor.member.model.vo.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,10 +24,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,7 +139,6 @@ public class MemberController {
         List<Profile> profileList = mService.getFollowerProfileList(userNo);
 
 
-
         List<Map<String, Object>> combinedList = new ArrayList<>();
         for (Member member : followerList) {
             Map<String, Object> combinedInfo = new HashMap<>();
@@ -201,7 +202,6 @@ public class MemberController {
     }
 
 
-
     @PostMapping("/updateProfile")
     public ResponseEntity<String> updateProfile(@RequestParam("file") MultipartFile file,
                                                 @RequestParam("originPwd") String originPwd,
@@ -230,10 +230,9 @@ public class MemberController {
                 loginUser.setUserPwd(newPwd);
             }
 
-            if(mService.isProfileImgExists(loginUser.getUserNo())){
+            if (mService.isProfileImgExists(loginUser.getUserNo())) {
                 mService.updateProfileImg(profile);
-            }
-            else{
+            } else {
                 mService.insertProfileImg(profile);
             }
 
@@ -247,6 +246,99 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("프로필 업데이트 중 오류가 발생했습니다. 다시 시도해주세요");
         }
     }
+
+    @RequestMapping("/payment_payment_history")
+
+    public String paymentHistory(Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        String type = "p"; // P면 페이먼트
+        List<Payment> payments = mService.getPaymentHistory(loginUser.getUserNo(), type);
+        model.addAttribute("payments", payments);
+        model.addAttribute("loginUser", loginUser);
+        return "mypage/payment_payment_history";
+    }
+
+    @RequestMapping("/payment_exchange_history")
+
+    public String exchangeHistory(Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        String type = "e"; // E면 익스체인지
+        List<Payment> payments = mService.getPaymentHistory(loginUser.getUserNo(), type);
+        model.addAttribute("payments", payments);
+        model.addAttribute("loginUser", loginUser);
+        return "mypage/payment_exchange_history";
+    }
+
+    @RequestMapping("/devhelper_calendar")
+
+    public String calendar(Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        return "mypage/devhelper_calendar";
+    }
+
+    @PostMapping("/saveMemo")
+    public ResponseEntity<String> saveMemo(@RequestBody Calendar memoRequest, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        try {
+            memoRequest.setUserNo(loginUser.getUserNo());
+            boolean isMemoExists = mService.isMemoExists(memoRequest);
+            if (isMemoExists) {
+                mService.updateMemo(memoRequest);
+                return ResponseEntity.ok("메모가 업데이트되었습니다.");
+            } else {
+                mService.saveMemo(memoRequest);
+                return ResponseEntity.ok("메모가 저장되었습니다.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("메모 저장 중 오류 발생: " + e.getMessage());
+        }
+
+    }
+
+    @PostMapping("/deleteMemo")
+    public ResponseEntity<String> deleteMemo(@RequestBody Calendar memoRequest, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        memoRequest.setUserNo(loginUser.getUserNo());
+        boolean isMemoExists = mService.isMemoExists(memoRequest);
+        if (isMemoExists) {
+            mService.deleteMemo(memoRequest);
+            return ResponseEntity.ok("메모가 삭제되었습니다");
+        } else {
+            return ResponseEntity.ok("메모가 존재하지 않습니다.");
+        }
+    }
+
+    @PostMapping("/loadMemo")
+    public ResponseEntity<String> loadMemo(@RequestBody String date, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        Calendar memoRequest = new Calendar();
+        log.info(date);
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedDate = (Date) dateFormat.parse(date);
+            memoRequest.setTodoDeadline(parsedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("날짜 형식 오류");
+        }
+
+        memoRequest.setUserNo(loginUser.getUserNo());
+
+        String memoContent = mService.loadMemo(memoRequest);
+
+        if (memoContent != null) {
+            return ResponseEntity.ok(memoContent);
+        } else {
+            return ResponseEntity.ok("");
+        }
+    }
+
+
+
+
+
+
+
 }
 
 

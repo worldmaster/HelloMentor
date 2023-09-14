@@ -1,5 +1,7 @@
 package com.kh.hellomentor.member.model.dao;
 
+import com.kh.hellomentor.member.model.vo.Calendar;
+import com.kh.hellomentor.member.model.vo.Payment;
 import com.kh.hellomentor.member.model.vo.Profile;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hellomentor.member.model.vo.Member;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class MemberDao {
@@ -65,4 +69,33 @@ public class MemberDao {
         return count != null && count > 0;
     }
 
+    public List<Payment> getPaymentHistory(int userNo, String type) {
+        if (Objects.equals(type, "p")) {
+            return sqlSession.selectList("memberMapper.getPaymentHistory", userNo);
+        } else {
+            return sqlSession.selectList("memberMapper.getExchangeHistory", userNo);
+        }
+    }
+
+
+    public void saveMemo(Calendar memoRequest) {
+        sqlSession.insert("memberMapper.saveMemo", memoRequest);
+    }
+
+    public void updateMemo(Calendar memoRequest) {
+        sqlSession.update("memberMapper.updateMemo", memoRequest);
+    }
+
+    public Boolean isMemoExists(Calendar memoRequest) {
+        List<Calendar> result = sqlSession.selectList("memberMapper.isMemoExists", memoRequest);
+        return result != null && !result.isEmpty();
+    }
+
+    public void deleteMemo(Calendar memoRequest) {
+        sqlSession.delete("memberMapper.deleteMemo", memoRequest);
+    }
+
+    public String loadMemo(Calendar memoRequest) {
+        return sqlSession.selectOne("memberMapper.loadMemo", memoRequest);
+    }
 }

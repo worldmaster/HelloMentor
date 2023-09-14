@@ -26,7 +26,21 @@
         <result column="FILE_SIZE" property="fileSize"/>
     </resultMap>
 
+    <resultMap id="PaymentResultMap" type="payment">
+        <id column="PAYMENT_NO" property="paymentNo"/>
+        <result column="USER_NO" property="userNo"/>
+        <result column="PAY_DATE" property="paymentDate"/>
+        <result column="PAY_CONTENT" property="payContent"/>
+        <result column="PRICE" property="price"/>
+        <result column="PAY_TYPE" property="payType"/>
+    </resultMap>
 
+    <resultMap id="calendarResultMap" type="calendar">
+        <id column="TASK_ID" property="taskId"/>
+        <result column="USER_NO" property="userNo"/>
+        <result column="TODO_CONTENT" property="todoContent"/>
+        <result column="TODO_DEADLINE" property="todoDeadline"/>
+    </resultMap>
 
 
     <select id="loginUser" parameterType="member" resultMap="memberResultSet">
@@ -103,13 +117,11 @@
 
     <update id="updateProfileImg" parameterType="profile">
         UPDATE PROFILE_IMG
-        SET
-            FILE_CHANGE_NAME = #{changeName},
-            FILE_SIZE = #{fileSize},
-            FILE_PATH = #{filePath},
+        SET FILE_CHANGE_NAME = #{changeName},
+            FILE_SIZE        = #{fileSize},
+            FILE_PATH        = #{filePath},
             FILE_ORIGIN_NAME = #{originName}
-        WHERE
-            USER_NO = #{userNo}
+        WHERE USER_NO = #{userNo}
     </update>
 
     <!-- MemberMapper.xml -->
@@ -125,9 +137,59 @@
 
 
     <select id="isProfileImgExists" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM PROFILE_IMG
+        SELECT COUNT(*)
+        FROM PROFILE_IMG
         WHERE USER_NO = #{userNo}
     </select>
+
+    <select id="getPaymentHistory" resultMap="PaymentResultMap">
+        SELECT P.*
+        FROM PAYMENT P
+        WHERE USER_NO = 1
+          and PAY_TYPE = 'P'
+    </select>
+
+    <select id="getExchangeHistory" resultMap="PaymentResultMap">
+        SELECT P.*
+        FROM PAYMENT P
+        WHERE USER_NO = #{userNo}
+          and PAY_TYPE = 'E'
+    </select>
+
+    <insert id="saveMemo" parameterType="calendar">
+        INSERT INTO CALENDAR(USER_NO, TODO_CONTENT, TODO_DEADLINE)
+        VALUES (#{userNo},
+                #{todoContent},
+                #{todoDeadline})
+    </insert>
+
+    <update id="updateMemo" parameterType="calendar">
+        UPDATE CALENDAR
+        SET TODO_CONTENT = #{todoContent}
+        WHERE USER_NO = #{userNo}
+          AND TODO_DEADLINE = #{todoDeadline}
+    </update>
+
+    <select id="isMemoExists" parameterType="calendar" resultMap="calendarResultMap">
+        SELECT C.*
+        FROM CALENDAR C
+        WHERE USER_NO = #{userNo}
+          AND TODO_DEADLINE = #{todoDeadline}
+    </select>
+
+    <delete id="deleteMemo" parameterType="calendar">
+        DELETE
+        FROM CALENDAR
+        WHERE USER_NO = #{userNo}
+          AND TODO_DEADLINE = #{todoDeadline}
+    </delete>
+
+    <select id="loadMemo" parameterType="calendar" resultMap="calendarResultMap">
+        SELECT TODO_CONTENT
+        FROM CALENDAR
+        WHERE USER_NO = #{userNo} AND TODO_DEADLINE = #{todoDeadline}
+    </select>
+
 
 </mapper>
 

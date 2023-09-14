@@ -1,5 +1,7 @@
 package com.kh.hellomentor.member.model.service;
 
+import com.kh.hellomentor.member.model.vo.Calendar;
+import com.kh.hellomentor.member.model.vo.Payment;
 import com.kh.hellomentor.member.model.vo.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kh.hellomentor.member.model.dao.MemberDao;
 import com.kh.hellomentor.member.model.vo.Member;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -64,6 +67,35 @@ public class MemberServiceImpl implements MemberService {
     public Boolean isProfileImgExists(int userNo) {
        return memberDao.isProfileImgExists(userNo);
     }
+
+    @Override
+    public List<Payment> getPaymentHistory(int userNo, String type) {return memberDao.getPaymentHistory(userNo, type);}
+
+    @Override
+    public void saveMemo(Calendar memoRequest) {
+        memberDao.saveMemo(memoRequest);
+    }
+
+    @Override
+    public void updateMemo(Calendar memoRequest) {
+        memberDao.updateMemo(memoRequest);
+    }
+
+    @Override
+    public boolean isMemoExists(Calendar memoRequest) {
+        return memberDao.isMemoExists(memoRequest);
+    }
+
+    @Override
+    public void deleteMemo(Calendar memoRequest) {
+        memberDao.deleteMemo(memoRequest);
+    }
+
+    @Override
+    public String loadMemo(Calendar memoRequest) {
+        return memberDao.loadMemo(memoRequest);
+    }
+
 
 }
 
