@@ -132,14 +132,54 @@ public class BoardController {
     @GetMapping("/noticelist")
     public String selectNoticeList(
             Model model,
-            HttpSession session
+            HttpSession session,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "ticekind", required = false) String ticekind,
+            @RequestParam(name = "keyword", required = false) String keyword
     ) {
+        log.info("ticekind {}", ticekind);
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
+        
+    	  // 페이지 번호와 페이지당 항목 수로 페이징 정보를 생성합니다
+        long totalItems = 0;
+        
+        List<Board> pageItems;
+        if (ticekind != null && keyword != null) {
+           // 검색 로직을 수행하고 결과를 처리
+           totalItems = boardService.searchNoticeCount(ticekind, keyword); // 현재 검색된 게시글의 총 갯수 
+           pageItems = boardService.searchNoticeList(ticekind, keyword, page, pageSize); // 현재 검색된 게시글
+        } else {
+           // 일반 목록을 가져옵니다
+           totalItems = boardService.selectNoticeCount(); // 전체 일반목록의 총 갯수
+           pageItems = boardService.selectNoticeList(page, pageSize); // 전체 일반목록의 게시글
+        }
+        long totalPages = 0; // 
+        
+        if(totalItems == 0) {
+           totalItems = 1;
+           totalPages = (totalItems + pageSize - 1) / pageSize;
+        }                        
+        totalPages = (totalItems + pageSize - 1) / pageSize;
+        
+        //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨                         
+         // 모델에 데이터와 페이징 정보를 추가합니다.
+        
+        model.addAttribute("list", pageItems);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("ticekind", ticekind);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("totalPages", totalPages); // 총 페이지 수 추가
+        log.info("pageItems {}", pageItems);
+        log.info("page {}", page);
+        log.info("keyword {}", keyword);
 
-        List<Board> list = boardService.selectNoticeList();
-        model.addAttribute("list", list);
-        log.info("list {}", list);
+        log.info("pageSize {}", pageSize);
+        log.info("totalItems {}", totalItems);
+        log.info("totalPages {}", totalPages);
 
         return "board/notice/notice-board";
     }

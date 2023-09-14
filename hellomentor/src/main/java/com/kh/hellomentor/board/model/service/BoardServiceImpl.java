@@ -50,9 +50,21 @@ public class BoardServiceImpl implements BoardService {
 
     //1. 공지사항 목록 select
     @Override
-    public List<Board> selectNoticeList() {
-        return boardDao.selectNoticeList();
-    }
+    public int selectNoticeCount() {
+    	return boardDao.selectNoticeCount();
+    };
+    @Override
+    public int searchNoticeCount(String ticekind, String keyword) {
+    	return boardDao.searchNoticeCount(ticekind,keyword);
+    };
+    @Override
+    public List<Board> selectNoticeList(int page, int pageSize){
+    	return boardDao.selectNoticeList(page,pageSize);
+    };
+    @Override
+    public List<Board> searchNoticeList(String ticekind, String keyword, int page, int pageSize){
+    	return boardDao.searchNoticeList(ticekind,keyword,page,pageSize);
+    };
     //1-1.공지사항 상세조회
     @Override
     public Board selectNoticeDetail(int postNo){

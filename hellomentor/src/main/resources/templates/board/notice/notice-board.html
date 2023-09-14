@@ -44,14 +44,16 @@
 			<!-- 메뉴바 끝 -->
 
 			<!-- 분류, 검색창 -->
-			<!-- <form th:action="@{}" method="get"> -->
+			 <form th:action="@{/noticelist}" method="get"> 
 			<div id="kind-search">
-				<select name="noticekind" id="noticekind">
+				<select name="ticekind" id="ticekind">
+					<option value="">선택</option>
 					<option value="6">안내</option>
 					<option value="7">서비스</option>
 					<option value="8">업데이트</option>
 					<option value="9">이벤트</option>
-				</select> <input type="text" id="keyword" name="keyword" value="" />
+				</select> 
+				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요" />
 				<button type="submit" id="search-btn">
 					<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
 						viewBox="0 0 36 36" fill="none">
@@ -62,7 +64,7 @@
               </svg>
 				</button>
 			</div>
-			<!--  </form> -->
+			  </form>
 			<!-- 분류, 검색창 끝 -->
 
 
@@ -109,14 +111,29 @@
 			</script>
 
 			<!--페이징바-->
+			<div class="pagination">
+				<ul>
+					<li th:if="${currentPage > 1}"><a
+						th:href="@{${'/noticelist?page=' + (currentPage - 1) + (ticekind != null ? '&ticekind=' + ticekind : '') + (keyword != null ? '&keyword=' + keyword : '')}}">이전</a>
+					</li>
+					<li
+						th:each="page, i : ${#numbers.sequence((currentPage - 5 < 1 ? 1 : currentPage - 5), (currentPage + 4 > totalPages ? totalPages : currentPage + 4))}"
+						th:classappend="${page == currentPage} ? 'active' : ''"><a
+						th:href="@{${'/noticelist?page=' + page + (ticekind != null ? '&ticekind=' + ticekind : '') + (keyword != null ? '&keyword=' + keyword : '')}}"
+						th:text="${page}"></a></li>
+					<li th:if="${currentPage < totalPages}"><a
+						th:href="@{${'/noticelist?page=' + (currentPage + 1) + (ticekind != null ? '&ticekind=' + ticekind : '') + (keyword != null ? '&keyword=' + keyword : '')}}">다음</a>
+					</li>
+				</ul>
+			</div>
 
-			<div align="center" class="paging-area">
+			<!-- <div align="center" class="paging-area">
 				<button onclick="location.href= '#' ">이전 페이지</button>
 				<button onclick="location.href='#'">1</button>
 				<button onclick="location.href='#'">2</button>
 				<button onclick="location.href='#'">3</button>
 				<button onclick="location.href = '#'">다음 페이지</button>
-			</div>
+			</div> -->
 		</div>
 
 	</div>
