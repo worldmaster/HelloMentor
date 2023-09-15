@@ -107,8 +107,41 @@
 
 
    <!-- 1. 공지사항 게시글 조회 -->
-   <select id="selectNoticeList" resultMap="boardResultMap">
-      SELECT
+   <select id="selectNoticeCount" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE IS_DELETE = FALSE AND BOARD_TYPE = 'N'
+	</select>
+	 <select id="searchNoticeCount" parameterType="hashmap" resultType="int">
+      SELECT COUNT(*)
+      FROM BOARD B
+      JOIN INQUIRY_BOARD I ON B.POST_NO = I.POST_NO
+      WHERE B.IS_DELETE = FALSE
+      		AND B.BOARD_TYPE = 'N'
+      <choose>
+     		 <when test="keyword != null and keyword.length() > 0">
+		        AND (
+		            B.POST_TITLE LIKE CONCAT('%', #{keyword}, '%')
+		            OR B.POST_CONTENT LIKE CONCAT('%', #{keyword}, '%')
+		        )
+		    </when>
+            <when test="ticekind == 6">
+                AND I.CATEGORY_ID LIKE 6
+            </when>
+            <when test="ticekind == 7">
+                AND I.CATEGORY_ID LIKE 7
+            </when>
+            <when test="ticekind == 8">
+                AND I.CATEGORY_ID LIKE 8
+            </when>
+            <when test="ticekind == 9">
+                AND I.CATEGORY_ID LIKE 9
+            </when>
+        </choose>
+       ORDER BY B.POST_NO DESC
+   </select>
+	<select id="selectNoticeList" resultMap="boardResultMap">
+	  SELECT
       B.POST_NO,
       B.POST_TITLE,
       B.CREATE_DATE,
@@ -116,10 +149,47 @@
       FROM BOARD B
       JOIN INQUIRY_BOARD I ON B.POST_NO = I.POST_NO
       JOIN CATEGORY C ON I.CATEGORY_ID = C.CATEGORY_ID
-      WHERE IS_DELETE = FALSE
+      WHERE B.IS_DELETE = FALSE
       AND B.BOARD_TYPE = 'N'
       ORDER BY B.POST_NO DESC
-   </select>
+       LIMIT #{start}, #{pageSize}
+    </select>
+ 	<select id="searchNoticeList"  resultMap="boardResultMap">
+    SELECT
+      B.POST_NO,
+      B.POST_TITLE,
+      B.CREATE_DATE,
+      C.CATEGORY AS BOARD_TYPE
+      FROM BOARD B
+      JOIN INQUIRY_BOARD I ON B.POST_NO = I.POST_NO
+      JOIN CATEGORY C ON I.CATEGORY_ID = C.CATEGORY_ID
+      WHERE B.IS_DELETE = FALSE
+      AND B.BOARD_TYPE = 'N'
+      <choose>
+     		<when test="keyword != null and keyword.length() > 0">
+		        AND (
+		            B.POST_TITLE LIKE CONCAT('%', #{keyword}, '%')
+		            OR B.POST_CONTENT LIKE CONCAT('%', #{keyword}, '%')
+		        )
+		    </when>
+        
+            <when test="ticekind == '6'">
+                AND I.CATEGORY_ID LIKE 6
+            </when>
+            <when test="ticekind == '7'">
+                AND I.CATEGORY_ID LIKE 7
+            </when>
+            <when test="ticekind == '8'">
+                AND I.CATEGORY_ID LIKE 8
+            </when>
+            <when test="ticekind == '9'">
+                AND I.CATEGORY_ID LIKE 9
+            </when>
+        </choose>
+    ORDER BY B.POST_NO DESC
+    LIMIT #{start}, #{pageSize}    
+</select>
+
    <!-- 1-1. 공지사항 조회 (상세) -->
    <select id="selectNoticeDetail" parameterType="int"
       resultMap="boardResultMap">
@@ -137,6 +207,10 @@
       JOIN MEMBER M ON B.USER_WRITER_NO = M.USER_NO
       WHERE B.POST_NO = #{postNo}
    </select>
+   
+
+  
+
 
 
    <!-- 2. FAQ 게시글 조회 -->
@@ -192,6 +266,7 @@
    </insert>
 
    <!-- 4. 문의내역 조회 (메인) -->
+   
    <select id="selectInquiryList" resultMap="boardResultMap">
       SELECT
       B.POST_NO,

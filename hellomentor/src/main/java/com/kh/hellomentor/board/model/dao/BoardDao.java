@@ -1,5 +1,6 @@
 package com.kh.hellomentor.board.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,11 +46,38 @@ public class BoardDao {
     public int deletePost(int postNo) {
         return session.update("boardMapper.deletePost",postNo);
     }
-    // 1. 공지사항 게시글 조회
-    public List<Board> selectNoticeList() {
-        return session.selectList("boardMapper.selectNoticeList");
-    }  
-    
+    // 1. 공지사항 게시글 조회 (페이징바, 필터링)
+    public int selectNoticeCount() {
+    	return session.selectOne("boardMapper.selectNoticeCount");
+    };
+ 
+    public int searchNoticeCount(String ticekind, String keyword) {
+    	 Map<String, Object> paramMap = new HashMap<>();
+  	   paramMap.put("searchOption", ticekind);
+  	    paramMap.put("keyword", keyword);
+    	return session.selectOne("boardMapper.searchNoticeCount",paramMap);
+    };
+
+    public List<Board> selectNoticeList(int page, int pageSize){
+    	 int start = (page - 1) * pageSize;
+         
+  	   // MyBatis 매퍼를 사용하여 데이터베이스에서 페이징된 데이터를 조회합니다.
+  	   Map<String, Object> params = new HashMap<>();
+  	   params.put("start", start);
+  	   params.put("pageSize", pageSize);
+    	return session.selectList("boardMapper.selectNoticeList",params);
+    };
+ 
+    public List<Board> searchNoticeList(String ticekind, String keyword, int page, int pageSize){
+    	 Map<String, Object> paramMap = new HashMap<>();
+	        int start = (page - 1) * pageSize;
+	       paramMap.put("searchOption", ticekind);
+	       paramMap.put("keyword", keyword);
+	       paramMap.put("start", start);
+	      paramMap.put("pageSize", pageSize);
+    	return session.selectList("boardMapper.searchNoticeList",paramMap);
+    };
+
     // 1-2. 공지사항 상세 조회
     public Board selectNoticeDetail(int postNo) {
         return session.selectOne("boardMapper.selectNoticeDetail",postNo);

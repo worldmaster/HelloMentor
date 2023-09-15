@@ -26,7 +26,11 @@ public interface BoardService {
     public int deletePost(int postNo);
     
     //1. 공지사항 목록 select
-    public List<Board> selectNoticeList();
+    public int selectNoticeCount();
+    public int searchNoticeCount(String ticekind, String keyword);
+    
+    public List<Board> selectNoticeList(int page, int pageSize);
+    public List<Board> searchNoticeList(String ticekind, String keyword, int page, int pageSize);
     
     //1-1. 공지사항 조회 (상세)
     public Board selectNoticeDetail(int postNo);
