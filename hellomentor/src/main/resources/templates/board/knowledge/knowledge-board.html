@@ -26,12 +26,14 @@
 			<div class="title">지식인</div>
 
 			<!-- 분류, 검색창 -->
-			<!--   <form th:action="@{}" method="get"> -->
-			<div id="category-search">
-				<select name="knowledge-category" id="knowledge-category">
-					<option value="1">작성자</option>
-					<option value="2">제목</option>
-				</select> <input type="text" id="keyword" name="keyword" value="" />
+			   <form th:action="@{knowledgelist}" method="get">
+				<div id="category-search">
+				<select name="knowledgekind" id="knowledgekind">
+					<option value="">선택</option>
+					<option value="userId">작성자</option>
+					<option value="postTitle">제목</option>
+					<option value="postContent">내용</option>
+				</select> <input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요" />
 				<button type="submit" id="search-btn">
 					<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
 						viewBox="0 0 36 36" fill="none">
@@ -41,7 +43,7 @@
               </svg>
 				</button>
 			</div>
-			<!--   </form> -->
+			   </form> 
 			<!-- 분류, 검색창 끝 -->
 
 			<div id="button-container">
@@ -58,28 +60,43 @@
 			<!-- 일반 게시글 -->
 			<table align="center" id="knowledge-area">
 				<tbody>
-					<tr th:each="item : ${combinedList}">
+					<tr th:each="item : ${combinedList}"  class="movingDetailKnowledge">
 						<td width="100" th:text="'#' + ${item[1].categoryId}">카테고리</td>
 						<td width="540" align="left">
-							<b style="font-size: 20px;" >
-								<a th:text="${item[0].postTitle}" th:href="'/hellomentor/knowledgedetail?kno=' + ${item[0].postNo}">제목</a>
-							</b> <br />
-							<hr color="gray"
-								style="background-color: rgb(0, 0, 0); height: 0.1px; border: 0px; opacity: 0.2; margin-top: 5px; margin-bottom: 5px;" />
-							<span
-							th:text="${item[0].postContent.length() <= 65 ? item[0].postContent : item[0].postContent.substring(0, 65) + '...'}">질문내용</span>
-
+							<b style="font-size: 20px;" th:text="${item[0].postTitle}">제목</b> <br />
+							<hr color="gray" style="background-color: rgb(0, 0, 0); height: 0.1px; border: 0px; opacity: 0.2; margin-top: 5px; margin-bottom: 5px;" />
+							<span th:text="${item[0].postContent.length() <= 65 ? item[0].postContent : item[0].postContent.substring(0, 65) + '...'}">질문내용</span>
 						</td>
 						<td width="100"><img th:src="@{/img/beforelove.png}"
 							class="loveimg" /><span th:text="${item[1].upVotes}">100</span>
 						</td>
 						<td width="100"><span th:if="${item[2] != null && item[2].isAccepted}">채택완료</span>
 							<span th:if="${item[2] == null || !item[2].isAccepted}">답변대기중</span></td>
+							<input type="hidden" name="postNo" th:value="${item[0].postNo}" />
 					</tr>
 
 				</tbody>
 			</table>
 
+<script>
+	    document.addEventListener("DOMContentLoaded", function () {
+	        // 각 <tr> 요소에 대한 클릭 이벤트 리스너 추가
+	        var rows = document.querySelectorAll(".movingDetailKnowledge");
+	        rows.forEach(function (row) {
+	            row.addEventListener("click", function () {
+	                // 해당 행의 데이터를 가져와서 URL을 생성
+	                 var postNoInput = row.querySelector("input[type=hidden][name='postNo']");
+	           		 var postNo = postNoInput.value;
+	          		var url = "/hellomentor/knowledgedetail?kno=" + postNo;
+	                // 페이지 이동
+	                window.location.href = url;
+	            });
+	        });
+	    });
+	</script>
+	
+	
+	
 			<!-- Q&A, 베스트 버튼 -->
 			<script>
 				function filterPostsByVotes(minVotes) {
@@ -120,12 +137,20 @@
 			</div>
 
 			<!--페이징바-->
-			<div align="center" class="paging-area">
-				<button onclick="location.href= '#' ">이전 페이지</button>
-				<button onclick="location.href='#'">1</button>
-				<button onclick="location.href='#'">2</button>
-				<button onclick="location.href='#'">3</button>
-				<button onclick="location.href = '#'">다음 페이지</button>
+			<div class="pagination">
+				<ul>
+					<li th:if="${currentPage > 1}"><a
+						th:href="@{${'/knowledgelist?page=' + (currentPage - 1) + (knowledge != null ? '&knowledgekind=' + knowledgekind : '') + (keyword != null ? '&keyword=' + keyword : '')}}">이전</a>
+					</li>
+					<li
+						th:each="page, i : ${#numbers.sequence((currentPage - 5 < 1 ? 1 : currentPage - 5), (currentPage + 4 > totalPages ? totalPages : currentPage + 4))}"
+						th:classappend="${page == currentPage} ? 'active' : ''"><a
+						th:href="@{${'/knowledgelist?page=' + page + (knowledgekind != null ? '&knowledgekind=' + knowledgekind : '') + (keyword != null ? '&keyword=' + keyword : '')}}"
+						th:text="${page}"></a></li>
+					<li th:if="${currentPage < totalPages}"><a
+						th:href="@{${'/knowledgelist?page=' + (currentPage + 1) + (knowledgekind != null ? '&knowledgekind=' + knowledgekind : '') + (keyword != null ? '&keyword=' + keyword : '')}}">다음</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>

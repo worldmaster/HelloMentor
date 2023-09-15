@@ -43,49 +43,98 @@
 			</div>
 			<!-- 메뉴바 끝 -->
 
-			<!-- 게시글 -->
-			<table align="center" id="inquiry-area">
-				<thead>
-					<tr>
-						<th width="100">분류</th>
-						<th width="540">제목</th>
-						<th width="100">작성일자</th>
-						<th width="100">처리상태</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:if="${#lists.isEmpty(list)}">
-						<td colspan="4">문의내역이 존재하지 않습니다</td>
-					</tr>
-					<tr th:each="item : ${combinedList}"  class="movingDetailInquiry">
-						<td th:text="${item[0].boardType}">분류</td>
-						<td>
-						    <a th:if="${loginUser.userId == 'admin'}" th:text="${item[0].postTitle}" th:href="'/hellomentor/admin-question-answer?ino=' + ${item[0].postNo}">제목</a>
-						    <a th:unless="${loginUser.userId == 'admin'}" th:text="${item[0].postTitle}" th:href="'/hellomentor/inquirydetail?ino=' + ${item[0].postNo}">제목</a>
-						</td>
+			
 
-						<td th:text="${item[0].createDate}">작성일자</td>
-						<td><span th:if="${item[1].isProcessed}">처리 완료</span> 
-							<span th:if="${!item[1].isProcessed}">처리중</span></td>
-					</tr>
-				</tbody>
-			</table>
+			<!-- 게시글 -->
+<table align="center" id="inquiry-area">
+    <thead>
+        <tr>
+            <th width="100">분류</th>
+            <th width="540">제목</th>
+            <th width="100">작성일자</th>
+            <th width="100">처리상태</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:if="${#lists.isEmpty(combinedList)}">
+            <td colspan="4">문의내역이 존재하지 않습니다</td>
+        </tr>
+        <tr th:each="item: ${combinedList}" class="movingDetailInquiry" >
+            <td th:text="${item[0].boardType}">분류</td>
+            <td th:text="${item[0].postTitle}">제목</td>
+            <td th:text="${item[0].createDate}">작성일자</td>
+            <td>
+                <span th:if="${item[1].isProcessed}">처리 완료</span>
+                <span th:if="${!item[1].isProcessed}">처리중</span>
+            </td>
+            <input type="hidden" name="postNo" th:value="${item[0].postNo}" />
+            <input type="hidden" name="userId" th:value="${loginUser.userId}" />
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // 각 <tr> 요소에 대한 클릭 이벤트 리스너 추가
+        var rows = document.querySelectorAll(".movingDetailInquiry");
+        rows.forEach(function (row) {
+            row.addEventListener("click", function () {
+                // 해당 행의 데이터를 가져와서 URL을 생성
+                 var postNoInput = row.querySelector("input[type=hidden][name='postNo']");
+           		 var postNo = postNoInput.value;
+           		var userIdInput = row.querySelector("input[type=hidden][name='userId']");
+          		 var userId = userIdInput.value;
+          		var url = "";
+                if (userId === 'admin') {
+                	url = "/hellomentor/admin-question-answer?ino=" + postNo;
+                }else {
+                    url = "/hellomentor/inquirydetail?ino=" + postNo;
+                }
+                // 페이지 이동
+                window.location.href = url;
+            });
+        });
+    });
+</script>
+
+
+
+
+
 
 			
 			<!-- 게시글 끝 -->
 
 			<div id="move-to-inquiry">
-				<button  th:onclick="|window.location.href='/hellomentor/inquiryinsert'|">1:1 문의하기</button>
+				<button
+					th:onclick="|window.location.href='/hellomentor/inquiryinsert'|">1:1
+					문의하기</button>
 			</div>
 
 			<!--페이징바-->
-			<div align="center" class="paging-area">
+			<div class="pagination" >
+				<ul>
+					<li th:if="${currentPage > 1}"><a
+						th:href="@{${'/inquirylist?page=' + (currentPage - 1)}}">이전</a>
+					</li>
+					<li
+						th:each="page, i : ${#numbers.sequence((currentPage - 5 < 1 ? 1 : currentPage - 5), (currentPage + 4 > totalPages ? totalPages : currentPage + 4))}"
+						th:classappend="${page == currentPage} ? 'active' : ''"><a
+						th:href="@{${'/inquirylist?page=' + page }}"
+						th:text="${page}"></a></li>
+					<li th:if="${currentPage < totalPages}"><a
+						th:href="@{${'/inquirylist?page=' + (currentPage + 1) }}">다음</a>
+					</li>
+				</ul>
+			</div>
+			
+			<!-- <div align="center" class="paging-area">
 				<button onclick="location.href= '#' ">이전 페이지</button>
 				<button onclick="location.href='#'">1</button>
 				<button onclick="location.href='#'">2</button>
 				<button onclick="location.href='#'">3</button>
 				<button onclick="location.href = '#'">다음 페이지</button>
-			</div>
+			</div> -->
 		</div>
 	</div>
 

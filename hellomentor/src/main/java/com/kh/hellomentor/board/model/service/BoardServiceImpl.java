@@ -54,16 +54,16 @@ public class BoardServiceImpl implements BoardService {
     	return boardDao.selectNoticeCount();
     };
     @Override
-    public int searchNoticeCount(String ticekind, String keyword) {
-    	return boardDao.searchNoticeCount(ticekind,keyword);
+    public int searchNoticeCount(String ntkind, String keyword) {
+    	return boardDao.searchNoticeCount(ntkind,keyword);
     };
     @Override
     public List<Board> selectNoticeList(int page, int pageSize){
     	return boardDao.selectNoticeList(page,pageSize);
     };
     @Override
-    public List<Board> searchNoticeList(String ticekind, String keyword, int page, int pageSize){
-    	return boardDao.searchNoticeList(ticekind,keyword,page,pageSize);
+    public List<Board> searchNoticeList(String ntkind, String keyword, int page, int pageSize){
+    	return boardDao.searchNoticeList(ntkind,keyword,page,pageSize);
     };
     //1-1.공지사항 상세조회
     @Override
@@ -73,10 +73,22 @@ public class BoardServiceImpl implements BoardService {
  
     //2. FAQ 조회
     @Override
-    public List<Board> selectFaqList() {
-        return boardDao.selectFaqList();
-    }
-
+    public int selectFaqCount() {
+    	return boardDao.selectFaqCount();
+    };
+    @Override
+    public int searchFaqCount(String faqkind, String keyword) {
+    	return boardDao.searchFaqCount(faqkind,keyword);
+    };
+    @Override
+    public List<Board> selectFaqList(int page, int pageSize){
+    	return boardDao.selectFaqList(page,pageSize);
+    };
+    @Override
+    public List<Board> searchFaqList(String faqkind, String keyword, int page, int pageSize){
+    	return boardDao.searchFaqList(faqkind,keyword,page,pageSize);
+    };
+    
     //3. 1:1문의 작성
     @Override
     public int insertInquiry(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception {
@@ -85,8 +97,15 @@ public class BoardServiceImpl implements BoardService {
 		board.setPostContent(Utils.XSSHandling(board.getPostContent()));
 		board.setPostContent(Utils.newLineHandling(board.getPostContent()));
     	
+		int result = 0;
     	int postNo = boardDao.insertInquiry(board);
-    
+    	if(postNo > 0 && !list.isEmpty()) {
+			for(Attachment attach    :   list) {
+				attach.setPostNo(postNo);
+				attach.setFilePath(webPath);
+			}
+			result = boardDao.insertInquiryAttachment(list);
+    	}
 		return postNo;
     }
     @Override
@@ -100,13 +119,19 @@ public class BoardServiceImpl implements BoardService {
     
     //4. 문의내역 조회
     @Override
-    public List<Board> selectInquiryList(int userNo){
-    	 return boardDao.selectInquiryList(userNo);
+    public int selectInquiryCount() {
+    	return boardDao.selectInquiryCount();
+    };
+    
+    @Override
+    public List<Board> selectInquiryList(int userNo, int page, int pageSize){
+    	 return boardDao.selectInquiryList(userNo, page,pageSize);
     }
     @Override
-    public List<Inquiry> selectInquiryList2(int userNo){
-   	 return boardDao.selectInquiryList2(userNo);
+    public List<Inquiry> selectInquiryList2(int userNo, int page, int pageSize){
+   	 return boardDao.selectInquiryList2(userNo, page,pageSize);
    }
+    
     //4-1.문의내역 상세조회
     @Override
     public Board selectInquiryDetail(int postNo){
@@ -119,13 +144,29 @@ public class BoardServiceImpl implements BoardService {
     
     //5. 자유게시판 조회
     @Override
-    public List<Board> selectFreeList(){
-    	 return boardDao.selectFreeList();
-    }
+    public int selectFreeCount() {
+    	 return boardDao.selectFreeCount();
+    };
     @Override
-    public List<Free> selectFreeList2(){
-    	return boardDao.selectFreeList2();
-   }
+    public int searchFreeCount(String freekind, String keyword) {
+    	 return boardDao.searchFreeCount(freekind,keyword);
+    };
+    @Override
+    public List<Board> selectFreeList(int page, int pageSize){
+    	 return boardDao.selectFreeList(page,pageSize);
+    };
+    @Override
+    public List<Free> selectFreeList2(int page, int pageSize){
+    	 return boardDao.selectFreeList2(page,pageSize);
+    };
+    @Override
+    public List<Board> searchFreeList(String freekind, String keyword, int page, int pageSize){
+    	 return boardDao.searchFreeList(freekind,keyword,page,pageSize);
+    };
+    @Override
+    public List<Free> searchFreeList2(String freekind, String keyword, int page, int pageSize){
+    	 return boardDao.searchFreeList2(freekind,keyword,page,pageSize);
+    };
     //5-1. 자유게시판 조회 (화제글 3개)
     @Override
     public List<Board> selectBestFreeList(){
@@ -188,17 +229,37 @@ public class BoardServiceImpl implements BoardService {
     
     //6. 지식인 조회 (메인)
     @Override
-    public List<Board> selectKnowledgeList(){
-    	 return boardDao.selectKnowledgeList();
-    }
+    public int selectKnowledgeCount() {
+    	return boardDao.selectKnowledgeCount();
+    };
     @Override
-    public List<Knowledge> selectKnowledgeList2(){
-    	return boardDao.selectKnowledgeList2();
-   }
+    public int searchKnowledgeCount(String knowledgekind, String keyword) {
+    	return boardDao.searchKnowledgeCount(knowledgekind,keyword);
+    };
     @Override
-    public List<Answer> selectKnowledgeList3(){
-    	return boardDao.selectKnowledgeList3();
-   }
+    public List<Board> selectKnowledgeList(int page, int pageSize){
+    	return boardDao.selectKnowledgeList(page,pageSize);
+    };
+    @Override
+    public List<Knowledge> selectKnowledgeList2(int page, int pageSize){
+    	return boardDao.selectKnowledgeList2(page,pageSize);
+    };
+    @Override
+    public List<Answer> selectKnowledgeList3(int page, int pageSize){
+    	return boardDao.selectKnowledgeList3(page,pageSize);
+    };
+    @Override
+    public List<Board> searchKnowledgeList(String knowledgekind, String keyword, int page, int pageSize){
+    	return boardDao.searchKnowledgeList(knowledgekind,keyword,page,pageSize);
+    };
+    @Override
+    public List<Knowledge> searchKnowledgeList2(String knowledgekind, String keyword, int page, int pageSize){
+    	return boardDao.searchKnowledgeList2(knowledgekind,keyword,page,pageSize);
+    };
+    @Override
+    public List<Answer> searchKnowledgeList3(String knowledgekind, String keyword, int page, int pageSize){
+    	return boardDao.searchKnowledgeList3(knowledgekind,keyword,page,pageSize);
+    };
     //6-1. 지식인 상세 조회
     @Override
     public Board selectKnowledgeDetail(int postNo){

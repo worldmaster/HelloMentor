@@ -13,7 +13,7 @@
 }
 
 /*분류*/
-#knowledge-category {
+#knowledgekind {
     padding-left: 10px;
     width: 100px;
     height: 32px;
@@ -211,25 +211,40 @@
 
 
 /* 페이징바 */
-.paging-area button {
-    padding: 7px 12px;
-    margin-top: 40px;
+.pagination ul li {
+	
+	padding: 7px 12px;
+ 	margin-right: 10px; /* 버튼 간격 조정 */
+    margin-top: 20px;
     border: none;
     background-color: white;
     font-size: 17px;
     cursor: pointer;
     border-radius: 8px;
     border: 1px solid rgb(226, 219, 219);
+     display: flex;
+        align-items: center;
+        justify-content: center;
 }
 
-.paging-area button.active {
+
+
+.pagination ul li:hover {
     background-color: #48917A;
     color: #fff;
 }
+.pagination ul {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+    }
 
-.paging-area button:hover {
-    background-color: #48917A;
-    color: #fff;
-}
-
+ .pagination ul li:last-child {
+     margin-right: 0; /* 마지막 버튼의 오른쪽 여백 제거 */
+ }
+    .pagination ul li a {
+     color: black; /* 글자 색상을 검정색으로 설정 */
+     text-decoration: none; /* 밑줄 제거 */
+ }
 /* 페이징바 끝 */
