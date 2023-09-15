@@ -122,9 +122,7 @@ public class BoardDao {
     public Free selectFreeDetail2(int postNo) {
         return session.selectOne("boardMapper.selectFreeDetail2",postNo);
     }
-    public List<Reply> selectFreeDetailReply(int postNo) {
-        return session.selectList("boardMapper.selectFreeDetailReply",postNo);
-    }
+
     //5-3. 자유게시판 글 작성
     public int insertFree(Board board) {
     	int result = 0;
@@ -145,6 +143,22 @@ public class BoardDao {
 
     public int insertFreeAttachment(List<Attachment> list) {
         return session.insert("boardMapper.insertFreeAttachment", list);
+    }
+    //5-4. 자유게시판 댓글 삽입
+    public int insertFreeReply(Reply reply) {
+		return session.insert("boardMapper.insertFreeReply" , reply);
+	}
+	//5-5. 자유게시판 댓글 조회
+    public List<Reply> selectFreeReplyList(int postNo) {
+        return session.selectList("boardMapper.selectFreeReplyList",postNo);
+    }
+    //5-6. 자유게시판 댓글 삭제
+    public int deleteReply(int replyNo) {
+        return session.update("boardMapper.deleteReply",replyNo);
+    }
+    // 5-7. 자유게시판 추천수 증가
+    public int increaseUpvotes(int postNo) {
+    	return session.update("boardMapper.increaseUpvotes",postNo);
     }
     
     //6. 지식인 조회 (메인)
@@ -254,9 +268,28 @@ public class BoardDao {
 
 
 
-
     //------------------------------정승훈-----------------------------------------
+    public Board selectBoard(int postNo) {
+        return session.selectOne("boardMapper.selectBoard",postNo);
+    }
 
 
+    public int insertReport(Map<String, Object> reportInfo) {
+        Board board = null;
+        int result1 = session.insert("boardMapper.insertReport1", reportInfo);
+        int result2 = 0;
+        int result3 = 0;
 
+        if(result1 > 0) {
+            result2 = session.insert("boardMapper.insertReport2", reportInfo);
+
+            if(reportInfo.get("changeName") != null) {
+                result3 = session.insert("boardMapper.insertReportAttach", reportInfo);
+                return result1 * result2 * result3;
+            }
+
+            return result1 * result2;
+        }
+        return result1 * result2;
+    }
 }

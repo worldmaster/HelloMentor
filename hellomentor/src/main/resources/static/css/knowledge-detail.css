@@ -5,6 +5,7 @@
     width: 820px;
     display: flex;
     align-items: center;
+    transform: translate(-10px, 0px);
 }
 
 #question-language {
@@ -137,7 +138,7 @@
 /*하트 버튼 */
 .heart-logo {
     cursor: pointer;
-    margin-top: 80px;
+    margin-top: 40px;
 }
 
 .heart-logo:hover {
@@ -151,7 +152,7 @@
 
 
 #count-love {
-    font-size: 28px;
+    font-size: 24px;
     margin-top: 10px;
 }
 
@@ -162,8 +163,8 @@
 .knowledge-reply {
     width: 800px;
     display: flex;
-    justify-content: right;
-    margin-top: 20px;
+    justify-content: center;
+    margin-top: 50px;
     
 }
 
@@ -258,7 +259,7 @@
 /* 일반 답변자, 답변*/
 /* 게시글 정보 테이블 시작 */
 .knowledge-reply-list {
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .reply-section {

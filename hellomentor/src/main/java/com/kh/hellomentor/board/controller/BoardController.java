@@ -5,10 +5,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.kh.hellomentor.board.model.vo.*;
 import com.kh.hellomentor.matching.model.vo.StudyApplicant;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -20,13 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hellomentor.board.model.service.BoardService;
-import com.kh.hellomentor.board.model.vo.Answer;
-import com.kh.hellomentor.board.model.vo.Attachment;
-import com.kh.hellomentor.board.model.vo.Board;
-import com.kh.hellomentor.board.model.vo.Free;
-import com.kh.hellomentor.board.model.vo.Inquiry;
-import com.kh.hellomentor.board.model.vo.Knowledge;
-import com.kh.hellomentor.board.model.vo.Reply;
 import com.kh.hellomentor.common.Utils;
 import com.kh.hellomentor.member.controller.MemberController;
 import com.kh.hellomentor.member.model.vo.Member;
@@ -132,7 +127,7 @@ public class BoardController {
     }
 
 
-    //이찬우 구역 시작
+  //이찬우 구역 시작
     //1. 공지사항 게시글 조회
     @GetMapping("/noticelist")
     public String selectNoticeList(
@@ -154,17 +149,87 @@ public class BoardController {
     public String selectNoticeDetail(
             Model model,
             HttpSession session,
-            @RequestParam(name = "nno") int postNo
+            @RequestParam(name = "nno") int postNo,
+            HttpServletRequest req, 
+            HttpServletResponse res,
+            RedirectAttributes redirectAttributes
     ) {
-    	log.info("postNo {}", postNo);
-    	
-    	int result = boardService.increaseCount(postNo);
+       log.info("postNo {}", postNo);
+       
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
 
         Board selectedPost = boardService.selectNoticeDetail(postNo);
         model.addAttribute("selectedPost", selectedPost);
         log.info("selectedPost {}", selectedPost);
+        
+     // 상세조회 성공시 쿠키를 이용해서 조회수가 중복으로 증가되지 않도록 방지 + 본인의 글은 애초에 조회수 증가되지 않게 설정
+     		if (selectedPost != null) {
+
+     			// int userNo = 0;
+     			String userId = "";
+
+     			if (loginUser != null) {
+     				userId = loginUser.getUserId();
+     			}
+
+     			// 게시글의 작성자 아이디와, 현재 세션의 접속중인 아이디가 같지 않은 경우에만 조회수증가
+     			if (!selectedPost.getUserNo().equals(userId)) {
+
+     				// 쿠키
+     				Cookie cookie = null;
+
+     				Cookie[] cArr = req.getCookies(); // 사용자의 쿠키정보 얻어오기.
+     				if (cArr != null && cArr.length > 0) {
+
+     					for (Cookie c : cArr) {
+     						if (c.getName().equals("readPostNo")) {
+     							cookie = c;
+     							break;
+     						}
+     					}
+     				}
+
+     				int result = 0;
+
+     				if (cookie == null) { // 원래 readBoardNo라는 이름의 쿠키가 없는 케이스
+     					// 쿠키 생성
+     					cookie = new Cookie("readPostNo", postNo + "");// 게시글작성자와 현재 세션에 저장된 작성자 정보가 일치하지않고, 쿠기도 없다.
+     					// 조회수 증가 서비스 호출
+     					result = boardService.increaseCount(postNo);
+     				} else { // 존재 했던 케이스
+     					// 쿠키에 저장된 값중에 현재 조회된 게시글번호(boardNo)를 추가
+     					// 단, 기존 쿠키값에 중복되는 번호가 없는 경우에만 추가 => 조회수증가와함께
+
+     					String[] arr = cookie.getValue().split("/");
+     					// "reacBoardNo" : "1/2/5/10/135" ==> ["1","2","5","10","135"]
+
+     					// 배열을 컬렉션으로 변환 => indexOf를 사용하기 위  해서
+     					// List.indexOf(obj) : list안에서 매개변수로 들어온 obj와 일치(equals)하는 부분의 인덱스를 반환
+     					// 일치하는 값이 없는경우 -1 반환
+     					List<String> list2 = Arrays.asList(arr);
+     					log.info("list2 {}", list2);
+
+     					if (list2.indexOf(postNo + "") == -1) { // 기존 쿠키값에 현재 게시글 번호와 일치하는 값이 없는경우(처음들어온글)
+     						// 단, 기존 쿠키값에 중복되는 번호가 없는 경우에만 추가 => 조회수증가와함께
+     						cookie.setValue(cookie.getValue() + "/" + postNo);
+     						result = boardService.increaseCount(postNo);
+     					}
+     				}
+     				log.info("result {}", result);
+     				if (result > 0) { // 성공적으로 조회수 증가함 (브라우저 단위)
+     					selectedPost.setViews(selectedPost.getViews() + 1);
+
+     					cookie.setPath(req.getContextPath());
+     					cookie.setMaxAge(60 * 60 * 1); // 1시간만 유지
+     					res.addCookie(cookie);
+     				}
+     			}
+     		} else {
+     			redirectAttributes.addFlashAttribute("message", "게시글 조회 실패");
+     		}
+
+        
         
         return "board/notice/notice-detail";
 
@@ -177,11 +242,11 @@ public class BoardController {
             @RequestParam(name = "nno") int postNo,
             RedirectAttributes redirectAttributes
     ) {
-    	log.info("postNo {}", postNo);
-    	
-    	int result = boardService.deletePost(postNo);
-    	log.info("result {}", result);
-    	 if (result > 0) {
+       log.info("postNo {}", postNo);
+       
+       int result = boardService.deletePost(postNo);
+       log.info("result {}", result);
+        if (result > 0) {
              redirectAttributes.addFlashAttribute("message", postNo + "번 공지사항이 성공적으로 삭제되었습니다");
              return "redirect:/noticelist";
          } else {
@@ -212,12 +277,12 @@ public class BoardController {
             @RequestParam(name = "fno") int postNo,
             RedirectAttributes redirectAttributes
     ) {
-    	log.info("postNo {}", postNo);
-    	
-    	int result = boardService.deletePost(postNo);
-    	log.info("result {}", result);
-    	
-    	 if (result > 0) {
+       log.info("postNo {}", postNo);
+       
+       int result = boardService.deletePost(postNo);
+       log.info("result {}", result);
+       
+        if (result > 0) {
              redirectAttributes.addFlashAttribute("message",  postNo + "번 공지사항이 성공적으로 삭제되었습니다");
              return "redirect:/faqlist";
          } else {
@@ -288,10 +353,10 @@ public class BoardController {
         result = boardService.insertInquiry2(inquiry);
         
         if (result > 0) {
-        	redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
+           redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
             return "redirect:/inquirylist";
         } else {
-        	redirectAttributes.addFlashAttribute("message",  "게시글 작성에 실패하였습니다. 다시 작성해주세요");
+           redirectAttributes.addFlashAttribute("message",  "게시글 작성에 실패하였습니다. 다시 작성해주세요");
             return "redirect:/inquiryinsert";
         }
     }
@@ -328,8 +393,8 @@ public class BoardController {
             Model model,
             @RequestParam(name = "ino") int postNo
     ) {
-    	log.info("postNo {}", postNo);
-    	
+       log.info("postNo {}", postNo);
+       
         Board selectedPost = boardService.selectInquiryDetail(postNo);
         model.addAttribute("selectedPost", selectedPost);
         log.info("selectedPost {}", selectedPost);
@@ -382,15 +447,18 @@ public class BoardController {
         return "board/free/free-board";
     }
 
-    //5-2. 자유게시판 상세 조회
+    //5-1. 자유게시판 상세 조회
     @GetMapping("/freedetail")
     public String selectFreeDetail(
             Model model,
             HttpSession session,
-            @RequestParam(name = "fno") int postNo
+            @RequestParam(name = "fno") int postNo,
+            HttpServletRequest req, 
+            HttpServletResponse res,
+            RedirectAttributes redirectAttributes
     ) {
-    	log.info("postNo {}", postNo);
-    	
+       log.info("postNo {}", postNo);
+       
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
 
@@ -402,15 +470,81 @@ public class BoardController {
         model.addAttribute("selectedPost2", selectedPost2);
         log.info("selectedPost2 {}", selectedPost2);
 
-        List<Reply> list = boardService.selectFreeDetailReply(postNo);
+        List<Reply> list = boardService.selectFreeReplyList(postNo);
         model.addAttribute("list", list);
         log.info("list {}", list);
+        
+    	// 상세조회 성공시 쿠키를 이용해서 조회수가 중복으로 증가되지 않도록 방지 + 본인의 글은 애초에 조회수 증가되지 않게 설정
+		if (selectedPost != null) {
+
+			// int userNo = 0;
+			String userId = "";
+
+			if (loginUser != null) {
+				userId = loginUser.getUserId();
+			}
+
+			// 게시글의 작성자 아이디와, 현재 세션의 접속중인 아이디가 같지 않은 경우에만 조회수증가
+			if (!selectedPost.getUserNo().equals(userId)) {
+
+				// 쿠키
+				Cookie cookie = null;
+
+				Cookie[] cArr = req.getCookies(); // 사용자의 쿠키정보 얻어오기.
+				if (cArr != null && cArr.length > 0) {
+
+					for (Cookie c : cArr) {
+						if (c.getName().equals("readPostNo")) {
+							cookie = c;
+							break;
+						}
+					}
+				}
+
+				int result = 0;
+
+				if (cookie == null) { // 원래 readBoardNo라는 이름의 쿠키가 없는 케이스
+					// 쿠키 생성
+					cookie = new Cookie("readPostNo", postNo + "");// 게시글작성자와 현재 세션에 저장된 작성자 정보가 일치하지않고, 쿠기도 없다.
+					// 조회수 증가 서비스 호출
+					result = boardService.increaseCount(postNo);
+				} else { // 존재 했던 케이스
+					// 쿠키에 저장된 값중에 현재 조회된 게시글번호(boardNo)를 추가
+					// 단, 기존 쿠키값에 중복되는 번호가 없는 경우에만 추가 => 조회수증가와함께
+
+					String[] arr = cookie.getValue().split("/");
+					// "reacBoardNo" : "1/2/5/10/135" ==> ["1","2","5","10","135"]
+
+					// 배열을 컬렉션으로 변환 => indexOf를 사용하기 위  해서
+					// List.indexOf(obj) : list안에서 매개변수로 들어온 obj와 일치(equals)하는 부분의 인덱스를 반환
+					// 일치하는 값이 없는경우 -1 반환
+					List<String> list2 = Arrays.asList(arr);
+					log.info("list2 {}", list2);
+
+					if (list2.indexOf(postNo + "") == -1) { // 기존 쿠키값에 현재 게시글 번호와 일치하는 값이 없는경우(처음들어온글)
+						// 단, 기존 쿠키값에 중복되는 번호가 없는 경우에만 추가 => 조회수증가와함께
+						cookie.setValue(cookie.getValue() + "/" + postNo);
+						result = boardService.increaseCount(postNo);
+					}
+				}
+				log.info("result {}", result);
+				if (result > 0) { // 성공적으로 조회수 증가함 (브라우저 단위)
+					selectedPost.setViews(selectedPost.getViews() + 1);
+
+					cookie.setPath(req.getContextPath());
+					cookie.setMaxAge(60 * 60 * 1); // 1시간만 유지
+					res.addCookie(cookie);
+				}
+			}
+		} else {
+			redirectAttributes.addFlashAttribute("message", "게시글 조회 실패");
+		}
 
         return "board/free/free-detail";
 
     }
 
-    //5-3. 자유게시판 글 등록
+    //5-2. 자유게시판 글 등록
     @GetMapping("/freeinsert")
     public String moveFreeInsert() {
         return "board/free/free-insert";
@@ -470,15 +604,150 @@ public class BoardController {
         log.info("result {}", result);
         
         if (result > 0) {
-        	redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
+           redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
             return "redirect:/freelist";
         } else {
-        	redirectAttributes.addFlashAttribute("message", "게시글이 작성에 실패하였습니다. 다시 작성해주세요.");
+           redirectAttributes.addFlashAttribute("message", "게시글이 작성에 실패하였습니다. 다시 작성해주세요.");
             return "redirect:/freeinsert";
         }
     }
+   
+    //5-3. 자유게시판 댓글 등록
+    @GetMapping("/insertFreeReply")
+	@ResponseBody // 리턴되는 값이 뷰페이지가 아니라 값 자체임을 의미
+	public int insertFreeReply(Reply reply, HttpSession session) {
 
+    	Member loginUser = (Member) session.getAttribute("loginUser");
+		if (loginUser != null) {
+			reply.setUserNo(loginUser.getUserNo() + "");
+		}
 
+		int result = boardService.insertFreeReply(reply);
+		log.info("result {}", result);
+
+		return result;
+	}
+    //5-4. 자유게시판 댓글 조회
+	@GetMapping("/selectFreeReplyList")
+	@ResponseBody
+	public List<Reply> selectFreeReplyList(int postNo) {
+		return boardService.selectFreeReplyList(postNo);
+	}
+	//5-5. 자유게시판 댓글 삭제
+    @GetMapping("/deletereply")
+    public String deleteReply(
+            Model model,
+            HttpSession session,
+            @RequestParam(name = "rno") int replyId,
+            @RequestParam(name = "fno") int postNo,
+            RedirectAttributes redirectAttributes
+    ) {
+       log.info("replyId {}", replyId);
+       
+       int result = boardService.deleteReply(replyId);
+       log.info("result {}", result);
+        if (result > 0) {
+             redirectAttributes.addFlashAttribute("message", "댓글이 성공적으로 삭제되었습니다");
+             return "redirect:/freedetail?fno="+postNo;
+         } else {
+             redirectAttributes.addFlashAttribute("message", "댓글 삭제에 실패했습니다.");
+             return "redirect:/freedetail?fno="+postNo;
+         }
+    }
+  //5-6. 자유게시판 글 삭제
+    @GetMapping("/deletefree")
+    public String deleteFree(
+            Model model,
+            HttpSession session,
+            @RequestParam(name = "fno") int postNo,
+            RedirectAttributes redirectAttributes
+    ) {
+       log.info("postNo {}", postNo);
+       
+       int result = boardService.deletePost(postNo);
+       log.info("result {}", result);
+        if (result > 0) {
+             redirectAttributes.addFlashAttribute("message", postNo + "번 글이 성공적으로 삭제되었습니다");
+             return "redirect:/freelist";
+         } else {
+             redirectAttributes.addFlashAttribute("message", "글 삭제에 실패했습니다.");
+             return "redirect:/freelist";
+         }
+    }
+
+   
+    //5-7. 자유게시판 추천수
+	/*
+	 * @GetMapping("/increaseupvotes") public String increaseUpvotes( Model model,
+	 * HttpSession session,
+	 * 
+	 * @RequestParam(name = "fno") int postNo,
+	 * 
+	 * @RequestParam(name = "uno") String userNo, HttpServletRequest req,
+	 * HttpServletResponse res, RedirectAttributes redirectAttributes ) {
+	 * log.info("postNo {}", postNo);
+	 * 
+	 * Member loginUser = (Member) session.getAttribute("loginUser");
+	 * model.addAttribute("loginUser", loginUser);
+	 * 
+	 * 
+	 * Free selectedPost2 = boardService.selectFreeDetail2(postNo);
+	 * log.info("selectedPost2 {}", selectedPost2);
+	 * 
+	 * // 상세조회 성공시 쿠키를 이용해서 조회수가 중복으로 증가되지 않도록 방지 + 본인의 글은 애초에 조회수 증가되지 않게 설정 if
+	 * (selectedPost2 != null) {
+	 * 
+	 * // int userNo = 0; String userId = "";
+	 * 
+	 * if (loginUser != null) { userId = loginUser.getUserId(); }
+	 * 
+	 * // 게시글의 작성자 아이디와, 현재 세션의 접속중인 아이디가 같지 않은 경우에만 조회수증가 if
+	 * (!userNo.equals(userId)) {
+	 * 
+	 * // 쿠키 Cookie cookie = null;
+	 * 
+	 * Cookie[] cArr = req.getCookies(); // 사용자의 쿠키정보 얻어오기. if (cArr != null &&
+	 * cArr.length > 0) {
+	 * 
+	 * for (Cookie c : cArr) { if (c.getName().equals("readPostNo")) { cookie = c;
+	 * break; } } }
+	 * 
+	 * int result = 0;
+	 * 
+	 * if (cookie == null) { // 원래 readBoardNo라는 이름의 쿠키가 없는 케이스 // 쿠키 생성 cookie =
+	 * new Cookie("readPostNo", postNo + "");// 게시글작성자와 현재 세션에 저장된 작성자 정보가 일치하지않고,
+	 * 쿠기도 없다. // 조회수 증가 서비스 호출 result = boardService.increaseUpvotes(postNo); }
+	 * else { // 존재 했던 케이스 // 쿠키에 저장된 값중에 현재 조회된 게시글번호(boardNo)를 추가 // 단, 기존 쿠키값에
+	 * 중복되는 번호가 없는 경우에만 추가 => 조회수증가와함께
+	 * 
+	 * String[] arr = cookie.getValue().split("/"); // "reacBoardNo" :
+	 * "1/2/5/10/135" ==> ["1","2","5","10","135"]
+	 * 
+	 * // 배열을 컬렉션으로 변환 => indexOf를 사용하기 위 해서 // List.indexOf(obj) : list안에서 매개변수로
+	 * 들어온 obj와 일치(equals)하는 부분의 인덱스를 반환 // 일치하는 값이 없는경우 -1 반환 List<String> list2 =
+	 * Arrays.asList(arr); log.info("list2 {}", list2);
+	 * 
+	 * if (list2.indexOf(postNo + "") == -1) { // 기존 쿠키값에 현재 게시글 번호와 일치하는 값이
+	 * 없는경우(처음들어온글) // 단, 기존 쿠키값에 중복되는 번호가 없는 경우에만 추가 => 조회수증가와함께
+	 * cookie.setValue(cookie.getValue() + "/" + postNo); result =
+	 * boardService.increaseUpvotes(postNo); } } log.info("result {}", result); if
+	 * (result > 0) { // 성공적으로 조회수 증가함 (브라우저 단위)
+	 * selectedPost2.setUpVotes(selectedPost2.getUpVotes() + 1);
+	 * 
+	 * cookie.setPath(req.getContextPath()); cookie.setMaxAge(60 * 60 * 1); // 1시간만
+	 * 유지 res.addCookie(cookie); } } } else {
+	 * redirectAttributes.addFlashAttribute("message", "추천수 증가 실패"); }
+	 * 
+	 * return "board/free/free-detail";
+	 * 
+	 * }
+	 */
+    //5-8. 자유게시판 글 수정
+    @GetMapping("/freeupdate")
+    public String moveFreeUpdate() {
+        return "board/free/free-insert";
+    }
+    
     //6. 지식인 글 조회
     @GetMapping("/knowledgelist")
     public String selectKnowledgeList(
@@ -511,10 +780,13 @@ public class BoardController {
     public String selectKnowledgeDetail(
             Model model,
             HttpSession session,
-            @RequestParam(name = "kno") int postNo
+            @RequestParam(name = "kno") int postNo,
+            HttpServletRequest req, 
+            HttpServletResponse res,
+            RedirectAttributes redirectAttributes
     ) {
-    	log.info("postNo {}", postNo);
-    	
+       log.info("postNo {}", postNo);
+       
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
         
@@ -533,7 +805,73 @@ public class BoardController {
         List<Board> list = boardService.selectKnowledgeDetailAnswer(postNo);
         model.addAttribute("list", list);
         log.info("list {}", list);
+        
+        
+        	// 상세조회 성공시 쿠키를 이용해서 조회수가 중복으로 증가되지 않도록 방지 + 본인의 글은 애초에 조회수 증가되지 않게 설정
+     		if (selectedPost != null) {
 
+     			// int userNo = 0;
+     			String userId = "";
+
+     			if (loginUser != null) {
+     				userId = loginUser.getUserId();
+     			}
+
+     			// 게시글의 작성자 아이디와, 현재 세션의 접속중인 아이디가 같지 않은 경우에만 조회수증가
+     			if (!selectedPost.getUserNo().equals(userId)) {
+
+     				// 쿠키
+     				Cookie cookie = null;
+
+     				Cookie[] cArr = req.getCookies(); // 사용자의 쿠키정보 얻어오기.
+     				if (cArr != null && cArr.length > 0) {
+
+     					for (Cookie c : cArr) {
+     						if (c.getName().equals("readPostNo")) {
+     							cookie = c;
+     							break;
+     						}
+     					}
+     				}
+
+     				int result = 0;
+
+     				if (cookie == null) { // 원래 readBoardNo라는 이름의 쿠키가 없는 케이스
+     					// 쿠키 생성
+     					cookie = new Cookie("readPostNo", postNo + "");// 게시글작성자와 현재 세션에 저장된 작성자 정보가 일치하지않고, 쿠기도 없다.
+     					// 조회수 증가 서비스 호출
+     					result = boardService.increaseCount(postNo);
+     				} else { // 존재 했던 케이스
+     					// 쿠키에 저장된 값중에 현재 조회된 게시글번호(boardNo)를 추가
+     					// 단, 기존 쿠키값에 중복되는 번호가 없는 경우에만 추가 => 조회수증가와함께
+
+     					String[] arr = cookie.getValue().split("/");
+     					// "reacBoardNo" : "1/2/5/10/135" ==> ["1","2","5","10","135"]
+
+     					// 배열을 컬렉션으로 변환 => indexOf를 사용하기 위  해서
+     					// List.indexOf(obj) : list안에서 매개변수로 들어온 obj와 일치(equals)하는 부분의 인덱스를 반환
+     					// 일치하는 값이 없는경우 -1 반환
+     					List<String> list2 = Arrays.asList(arr);
+     					log.info("list2 {}", list2);
+
+     					if (list2.indexOf(postNo + "") == -1) { // 기존 쿠키값에 현재 게시글 번호와 일치하는 값이 없는경우(처음들어온글)
+     						// 단, 기존 쿠키값에 중복되는 번호가 없는 경우에만 추가 => 조회수증가와함께
+     						cookie.setValue(cookie.getValue() + "/" + postNo);
+     						result = boardService.increaseCount(postNo);
+     					}
+     				}
+     				log.info("result {}", result);
+     				if (result > 0) { // 성공적으로 조회수 증가함 (브라우저 단위)
+     					selectedPost.setViews(selectedPost.getViews() + 1);
+
+     					cookie.setPath(req.getContextPath());
+     					cookie.setMaxAge(60 * 60 * 1); // 1시간만 유지
+     					res.addCookie(cookie);
+     				}
+     			}
+     		} else {
+     			redirectAttributes.addFlashAttribute("message", "게시글 조회 실패");
+     		}
         return "board/knowledge/knowledge-detail";
 
     }
@@ -601,10 +939,10 @@ public class BoardController {
         log.info("result {}", result);
         
         if (result > 0) {
-        	redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
+           redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
             return "redirect:/knowledgelist";
         } else {
-        	redirectAttributes.addFlashAttribute("message", "게시글이 작성에 실패하였습니다. 다시 작성해주세요.");
+           redirectAttributes.addFlashAttribute("message", "게시글이 작성에 실패하였습니다. 다시 작성해주세요.");
             return "redirect:/knowledgequestioninsert";
         }
     }
@@ -646,14 +984,39 @@ public class BoardController {
         log.info("result {}", result);
         
         if (result > 0) {
-        	redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
+           redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
             return "redirect:/knowledgelist";
         } else {
-        	redirectAttributes.addFlashAttribute("message", "게시글 작성에 실패하였습니다. 다시 작성해주세요.");
+           redirectAttributes.addFlashAttribute("message", "게시글 작성에 실패하였습니다. 다시 작성해주세요.");
             return "redirect:/knowledgeanswerinsert";
         }
     }
-
+    //6-5. 지식인 글 삭제
+    @GetMapping("/deleteknowledge")
+    public String deleteknowledge(
+            Model model,
+            HttpSession session,
+            @RequestParam(name = "kno") int postNo,
+            RedirectAttributes redirectAttributes
+    ) {
+       log.info("postNo {}", postNo);
+       
+       int result = boardService.deletePost(postNo);
+       log.info("result {}", result);
+        if (result > 0) {
+             redirectAttributes.addFlashAttribute("message", postNo + "번 글이 성공적으로 삭제되었습니다");
+             return "redirect:/knowledgelist";
+         } else {
+             redirectAttributes.addFlashAttribute("message", "글 삭제에 실패했습니다.");
+             return "redirect:/knowledgelist";
+         }
+    }
+    //6-6. 지식인 글 수정
+    @GetMapping("/knowledgeupdate")
+    public String moveKnowledgeUpdate() {
+        return "board/knowledge/knowledge-question";
+    }
+    
     //이찬우 구역 끝
 
 
@@ -800,6 +1163,87 @@ public class BoardController {
 
         return url;
 
+
+    }
+
+    @GetMapping("/report/{postNo}")
+    public String reportWrite(
+            @PathVariable("postNo") int postNo,
+            HttpSession session,
+            Model model,
+            HttpServletRequest req,
+            HttpServletResponse res
+    ) {
+        Board reportTarget = boardService.selectBoard(postNo);
+
+        model.addAttribute("reportTarget", reportTarget);
+
+        return "common/report";
+
+    }
+
+    @PostMapping("/report.insert")
+    public String insertReport(
+            @RequestParam(value = "upfile", required = false) MultipartFile upfile,
+            HttpSession session,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes,
+            @ModelAttribute("loginUser") Member loginUser,
+            @RequestParam("reportTargetId") int reportTargetId,
+            @RequestParam("reportTargetUser") int reportTargetUser,
+            @RequestParam("report-category") String reportCategory,
+            @RequestParam("report-content") String reportContent
+    ) {
+        int categoryId = Integer.parseInt(reportCategory);
+        reportContent = Utils.XSSHandling(reportContent);
+        reportContent = Utils.newLineHandling(reportContent);
+
+
+        // 이미지, 파일을 저장할 저장경로 얻어오기
+        String projectRootPath = System.getProperty("user.dir");
+        String savePath = projectRootPath + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "img" + File.separator + "attachment" + File.separator + "report" + File.separator;
+
+
+
+        // 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
+        File dir = new File(savePath);
+            System.out.println("Attempting to create directory: " + dir.getAbsolutePath());
+        if (!dir.exists()) {
+            dir.mkdirs();
+            System.out.println("Failed to create directory: " + dir.getAbsolutePath());
+        }
+
+        Map<String, Object> reportInfo = new HashMap<>();
+
+        if (!upfile.isEmpty()) {
+            //  파일명 재정의 해주는 함수.
+            String changeName = Utils.saveFile(upfile, savePath);
+            reportInfo.put("changeName", changeName);
+            reportInfo.put("originName", upfile.getOriginalFilename());
+            reportInfo.put("fileSize", upfile.getSize());
+        }
+
+
+        reportInfo.put("writerNo", loginUser.getUserNo());
+        reportInfo.put("postContent", reportContent);
+        reportInfo.put("categoryId", categoryId);
+        reportInfo.put("targetUser", reportTargetUser);
+        reportInfo.put("targetPost", reportTargetId);
+        reportInfo.put("webPath", savePath);
+
+
+
+        int result = 0;
+
+        result = boardService.insertReport(reportInfo);
+
+        if (result > 0) {
+            redirectAttributes.addFlashAttribute("message", "성공적으로 신고가 접수 되었습니다");
+            return "redirect:/main";
+        } else {
+            redirectAttributes.addFlashAttribute("message", "신고 접수가 실패했습니다.");
+            return "redirect:/main";
+        }
 
     }
 
