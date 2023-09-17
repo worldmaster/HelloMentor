@@ -132,14 +132,54 @@ public class BoardController {
     @GetMapping("/noticelist")
     public String selectNoticeList(
             Model model,
-            HttpSession session
+            HttpSession session,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "ntkind", required = false) String ntkind,
+            @RequestParam(name = "keyword", required = false) String keyword
     ) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
-
-        List<Board> list = boardService.selectNoticeList();
-        model.addAttribute("list", list);
-        log.info("list {}", list);
+        
+        
+    	  // 페이지 번호와 페이지당 항목 수로 페이징 정보를 생성합니다
+        long totalItems = 0;
+        
+        List<Board> pageItems;
+        if (ntkind != null  && keyword != null) {
+           // 검색 로직을 수행하고 결과를 처리
+           totalItems = boardService.searchNoticeCount(ntkind, keyword); // 현재 검색된 게시글의 총 갯수 
+           pageItems = boardService.searchNoticeList(ntkind, keyword, page, pageSize); // 현재 검색된 게시글
+        } else {
+           // 일반 목록을 가져옵니다
+           totalItems = boardService.selectNoticeCount(); // 전체 일반목록의 총 갯수
+           pageItems = boardService.selectNoticeList(page, pageSize); // 전체 일반목록의 게시글
+        }
+        long totalPages = 0; // 
+        
+        if(totalItems == 0) {
+           totalItems = 1;
+           totalPages = (totalItems + pageSize - 1) / pageSize;
+        }                        
+        totalPages = (totalItems + pageSize - 1) / pageSize;
+        
+        //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨                         
+         // 모델에 데이터와 페이징 정보를 추가합니다.
+        
+        model.addAttribute("list", pageItems);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("ntkind", ntkind);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("totalPages", totalPages); // 총 페이지 수 추가
+        log.info("pageItems {}", pageItems);
+        log.info("page {}", page);
+        log.info("keyword {}", keyword);
+        log.info("ntkind {}", ntkind);
+        log.info("pageSize {}", pageSize);
+        log.info("totalItems {}", totalItems);
+        log.info("totalPages {}", totalPages);
 
         return "board/notice/notice-board";
     }
@@ -258,17 +298,58 @@ public class BoardController {
     @GetMapping("/faqlist")
     public String selectFaqList(
             Model model,
-            HttpSession session
+            HttpSession session,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "faqkind", required = false) String faqkind,
+            @RequestParam(name = "keyword", required = false) String keyword
     ) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
         
-        List<Board> list = boardService.selectFaqList();
-        model.addAttribute("list", list);
-        log.info("list {}", list);
+ 
+        	  // 페이지 번호와 페이지당 항목 수로 페이징 정보를 생성합니다
+            long totalItems = 0;
+            
+            List<Board> pageItems;
+            if (faqkind != null  && keyword != null) {
+               // 검색 로직을 수행하고 결과를 처리
+               totalItems = boardService.searchFaqCount(faqkind, keyword); // 현재 검색된 게시글의 총 갯수 
+               pageItems = boardService.searchFaqList(faqkind, keyword, page, pageSize); // 현재 검색된 게시글
+            } else {
+               // 일반 목록을 가져옵니다
+               totalItems = boardService.selectFaqCount(); // 전체 일반목록의 총 갯수
+               pageItems = boardService.selectFaqList(page, pageSize); // 전체 일반목록의 게시글
+            }
+            long totalPages = 0; // 
+            
+            if(totalItems == 0) {
+               totalItems = 1;
+               totalPages = (totalItems + pageSize - 1) / pageSize;
+            }                        
+            totalPages = (totalItems + pageSize - 1) / pageSize;
+            
+            //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨                         
+             // 모델에 데이터와 페이징 정보를 추가합니다.
+            
+            model.addAttribute("list", pageItems);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("faqkind", faqkind);
+            model.addAttribute("pageSize", pageSize);
+            model.addAttribute("totalItems", totalItems);
+            model.addAttribute("totalPages", totalPages); // 총 페이지 수 추가
+            log.info("pageItems {}", pageItems);
+            log.info("page {}", page);
+            log.info("keyword {}", keyword);
+            log.info("faqkind {}", faqkind);
+            log.info("pageSize {}", pageSize);
+            log.info("totalItems {}", totalItems);
+            log.info("totalPages {}", totalPages);
 
-        return "board/faq/faq-board";
-    }
+            return "board/faq/faq-board";
+        }
+    
     //2-1. FAQ 삭제
     @GetMapping("/deletefaq")
     public String deleteFaq(
@@ -349,9 +430,11 @@ public class BoardController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        log.info("postNo {}", postNo);
         inquiry.setPostNo(postNo);
+        log.info("inquiry {}", inquiry);
         result = boardService.insertInquiry2(inquiry);
-        
+        log.info("result {}", result);
         if (result > 0) {
            redirectAttributes.addFlashAttribute("message", "게시글이 성공적으로 작성되었습니다");
             return "redirect:/inquirylist";
@@ -365,24 +448,49 @@ public class BoardController {
     @GetMapping("/inquirylist")
     public String selectInquiryList(
             Model model,
-            HttpSession session
+            HttpSession session,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "pageSize", defaultValue = "15") int pageSize
     ) {
         Member loginUser = (Member) session.getAttribute("loginUser");
+        model.addAttribute("loginUser", loginUser);
         int userNo = loginUser.getUserNo();
-
-        List<Board> list = boardService.selectInquiryList(userNo);
-        model.addAttribute("list", list);
-        log.info("list {}", list);
         
-        List<Inquiry> list2 = boardService.selectInquiryList2(userNo);
-        model.addAttribute("list2", list2);
-        log.info("list2 {}", list2);
+        // 페이지 번호와 페이지당 항목 수로 페이징 정보를 생성합니다
+        long totalItems = 0;
+        List<Board> list;
+        List<Inquiry> list2;
+       
+        // 일반 목록을 가져옵니다
+        totalItems = boardService.selectInquiryCount(); // 전체 일반목록의 총 갯수
+        list = boardService.selectInquiryList(userNo, page, pageSize); // 전체 일반목록의 게시글
+        list2 = boardService.selectInquiryList2(userNo, page, pageSize);
+         long totalPages = 0; 
+         
+         if(totalItems == 0) {
+             totalItems = 1;
+             totalPages = (totalItems + pageSize - 1) / pageSize;
+          }                        
+          totalPages = (totalItems + pageSize - 1) / pageSize;
+          
+          List<Object[]> combinedList = new ArrayList<>();
+          for (int i = 0; i < list.size(); i++) {
+              combinedList.add(new Object[]{list.get(i), list2.get(i)});
+          }
+          
+          model.addAttribute("combinedList", combinedList);
+          model.addAttribute("currentPage", page);
+          model.addAttribute("pageSize", pageSize);
+          model.addAttribute("totalItems", totalItems);
+          model.addAttribute("totalPages", totalPages); // 총 페이지 수 추가
+          log.info("combinedList {}", combinedList);
+          log.info("page {}", page);
+          log.info("pageSize {}", pageSize);
+          log.info("totalItems {}", totalItems);
+          log.info("totalPages {}", totalPages);
+          
 
-        List<Object[]> combinedList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            combinedList.add(new Object[]{list.get(i), list2.get(i)});
-        }
-        model.addAttribute("combinedList", combinedList);
+  
 
         return "board/inquiry/inquiry-board";
     }
@@ -410,16 +518,45 @@ public class BoardController {
     //5. 자유게시판 글 조회 (화제 게시글 포함)
     @GetMapping("/freelist")
     public String selectFreeList(
-            Model model
+            Model model,
+            HttpSession session,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "freekind", required = false) String freekind,
+            @RequestParam(name = "keyword", required = false) String keyword
     ) {
-        //일반 게시글
-        List<Board> list = boardService.selectFreeList();
-        model.addAttribute("list", list);
-        log.info("list {}", list);
+    	Member loginUser = (Member) session.getAttribute("loginUser");
+        model.addAttribute("loginUser", loginUser);
         
-        List<Free> list2 = boardService.selectFreeList2();
-        model.addAttribute("list2", list2);
-        log.info("list2 {}", list2);
+        // 페이지 번호와 페이지당 항목 수로 페이징 정보를 생성합니다
+        long totalItems = 0;
+        
+        List<Board> pageItems;
+        List<Free> pageItems2;
+        if (freekind != null  && keyword != null) {
+           // 검색 로직을 수행하고 결과를 처리
+           totalItems = boardService.searchFreeCount(freekind, keyword); // 현재 검색된 게시글의 총 갯수 
+           pageItems = boardService.searchFreeList(freekind, keyword, page, pageSize); // 현재 검색된 게시글
+           pageItems2 = boardService.searchFreeList2(freekind, keyword, page, pageSize);
+        } else {
+           // 일반 목록을 가져옵니다
+           totalItems = boardService.selectFreeCount(); // 전체 일반목록의 총 갯수
+           pageItems = boardService.selectFreeList(page, pageSize); // 전체 일반목록의 게시글
+           pageItems2 = boardService.selectFreeList2(page, pageSize); 
+        }
+        long totalPages = 0; // 
+        
+        if(totalItems == 0) {
+           totalItems = 1;
+           totalPages = (totalItems + pageSize - 1) / pageSize;
+        }                        
+        totalPages = (totalItems + pageSize - 1) / pageSize;
+        
+        //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨                         
+         // 모델에 데이터와 페이징 정보를 추가합니다.
+        
+        //일반 게시글
+ 
 
         //핫 게시글
         List<Board> list3 = boardService.selectBestFreeList();
@@ -432,18 +569,33 @@ public class BoardController {
 
         // 일반 게시글 묶어주기
         List<Object[]> combinedList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            combinedList.add(new Object[]{list.get(i), list2.get(i)});
+        for (int i = 0; i < pageItems.size(); i++) {
+            combinedList.add(new Object[]{pageItems.get(i), pageItems2.get(i)});
         }
-        model.addAttribute("combinedList", combinedList);
-
+        
         //핫게시글 묶어주기
         List<Object[]> combinedList2 = new ArrayList<>();
         for (int i = 0; i < list3.size(); i++) {
             combinedList2.add(new Object[]{list3.get(i), list4.get(i)});
         }
+        
+        model.addAttribute("combinedList", combinedList);
         model.addAttribute("combinedList2", combinedList2);
-
+        model.addAttribute("currentPage", page);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("freekind", freekind);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("totalPages", totalPages); // 총 페이지 수 추가
+        log.info("combinedList {}", combinedList);
+        log.info("combinedList2 {}", combinedList2);
+        log.info("page {}", page);
+        log.info("keyword {}", keyword);
+        log.info("freekind {}", freekind);
+        log.info("pageSize {}", pageSize);
+        log.info("totalItems {}", totalItems);
+        log.info("totalPages {}", totalPages);
+        
         return "board/free/free-board";
     }
 
@@ -751,26 +903,66 @@ public class BoardController {
     //6. 지식인 글 조회
     @GetMapping("/knowledgelist")
     public String selectKnowledgeList(
-            Model model
+            Model model,
+            HttpSession session,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "knowledgekind", required = false) String knowledgekind,
+            @RequestParam(name = "keyword", required = false) String keyword
     ) {
-
-        List<Board> list = boardService.selectKnowledgeList();
-        model.addAttribute("list", list);
-        log.info("list {}", list);
+    	Member loginUser = (Member) session.getAttribute("loginUser");
+        model.addAttribute("loginUser", loginUser);
         
-        List<Knowledge> list2 = boardService.selectKnowledgeList2();
-        model.addAttribute("list2", list2);
-        log.info("list2 {}", list2);
-        
-        List<Answer> list3 = boardService.selectKnowledgeList3();
-        model.addAttribute("list3", list3);
-        log.info("list3 {}", list3);
-
+ 
+        	  // 페이지 번호와 페이지당 항목 수로 페이징 정보를 생성합니다
+            long totalItems = 0;
+            
+            List<Board> pageItems;
+            List<Knowledge> pageItems2;
+            List<Answer> pageItems3;
+            if (knowledgekind != null  && keyword != null) {
+               // 검색 로직을 수행하고 결과를 처리
+               totalItems = boardService.searchKnowledgeCount(knowledgekind, keyword); // 현재 검색된 게시글의 총 갯수 
+               pageItems = boardService.searchKnowledgeList(knowledgekind, keyword, page, pageSize); // 현재 검색된 게시글
+               pageItems2 = boardService.searchKnowledgeList2(knowledgekind, keyword, page, pageSize); // 현재 검색된 게시글
+               pageItems3 = boardService.searchKnowledgeList3(knowledgekind, keyword, page, pageSize); // 현재 검색된 게시글
+            } else {
+               // 일반 목록을 가져옵니다
+               totalItems = boardService.selectKnowledgeCount(); // 전체 일반목록의 총 갯수
+               pageItems = boardService.selectKnowledgeList(page, pageSize); // 전체 일반목록의 게시글
+               pageItems2 = boardService.selectKnowledgeList2(page, pageSize);
+               pageItems3 = boardService.selectKnowledgeList3(page, pageSize);
+            }
+            long totalPages = 0; // 
+            
+            if(totalItems == 0) {
+               totalItems = 1;
+               totalPages = (totalItems + pageSize - 1) / pageSize;
+            }                        
+            totalPages = (totalItems + pageSize - 1) / pageSize;
+            
+            //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨                         
+             // 모델에 데이터와 페이징 정보를 추가합니다.
         List<Object[]> combinedList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            combinedList.add(new Object[]{list.get(i), list2.get(i), list3.get(i)});
-        }
+        for (int i = 0; i < pageItems.size(); i++) {
+            combinedList.add(new Object[]{pageItems.get(i), pageItems2.get(i), pageItems3.get(i)});
+        }    
+            
+
         model.addAttribute("combinedList", combinedList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("knowledgekind", knowledgekind);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("totalPages", totalPages); // 총 페이지 수 추가
+        log.info("combinedList {}", combinedList);
+        log.info("page {}", page);
+        log.info("keyword {}", keyword);
+        log.info("knowledgekind {}", knowledgekind);
+        log.info("pageSize {}", pageSize);
+        log.info("totalItems {}", totalItems);
+        log.info("totalPages {}", totalPages);
 
         return "board/knowledge/knowledge-board";
     }

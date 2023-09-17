@@ -26,13 +26,20 @@ public interface BoardService {
     public int deletePost(int postNo);
     
     //1. 공지사항 목록 select
-    public List<Board> selectNoticeList();
+    public int selectNoticeCount();
+    public int searchNoticeCount(String ntkind, String keyword);
+    
+    public List<Board> selectNoticeList(int page, int pageSize);
+    public List<Board> searchNoticeList(String ntkind, String keyword, int page, int pageSize);
     
     //1-1. 공지사항 조회 (상세)
     public Board selectNoticeDetail(int postNo);
 
     //2. FAQ 조회
-    public List<Board> selectFaqList();
+    public int selectFaqCount();
+    public int searchFaqCount(String faqkind, String keyword);
+    public List<Board> selectFaqList(int page, int pageSize);
+    public List<Board> searchFaqList(String faqkind, String keyword, int page, int pageSize);
     
 
     //3. 1:1문의 작성
@@ -40,16 +47,23 @@ public interface BoardService {
     public int insertInquiry2(Inquiry inquiry);
     
     //4. 문의내역 조회 (메인)
-    public List<Board> selectInquiryList(int userNo);
-    public List<Inquiry> selectInquiryList2(int userNo);
+    
+    public int selectInquiryCount();
+    public List<Board> selectInquiryList(int userNo, int page, int pageSize);
+    public List<Inquiry> selectInquiryList2(int userNo, int page, int pageSize);
+
     
     //4-1. 문의내역 조회 (상세)
     public Board selectInquiryDetail(int postNo);
     public Inquiry selectInquiryDetail2(int postNo);
     
     //5. 자유게시판 조회
-    public List<Board> selectFreeList();
-    public List<Free> selectFreeList2();
+    public int selectFreeCount();
+    public int searchFreeCount(String freekind, String keyword);
+    public List<Board> selectFreeList(int page, int pageSize);
+    public List<Free> selectFreeList2(int page, int pageSize);
+    public List<Board> searchFreeList(String freekind, String keyword, int page, int pageSize);
+    public List<Free> searchFreeList2(String freekind, String keyword, int page, int pageSize);
     
     //5-1. 자유게시판 조회 (화제글 3개)
     public List<Board> selectBestFreeList();
@@ -76,9 +90,14 @@ public interface BoardService {
     public int increaseUpvotes(int postNo);
     
     //6. 지식인 조회 (메인)
-    public List<Board> selectKnowledgeList();
-    public List<Knowledge> selectKnowledgeList2();
-    public List<Answer> selectKnowledgeList3();
+    public int selectKnowledgeCount();
+    public int searchKnowledgeCount(String knowledgekind, String keyword);
+    public List<Board> selectKnowledgeList(int page, int pageSize);
+    public List<Knowledge> selectKnowledgeList2(int page, int pageSize);
+    public List<Answer> selectKnowledgeList3(int page, int pageSize);
+    public List<Board> searchKnowledgeList(String knowledgekind, String keyword, int page, int pageSize);
+    public List<Knowledge> searchKnowledgeList2(String knowledgekind, String keyword, int page, int pageSize);
+    public List<Answer> searchKnowledgeList3(String knowledgekind, String keyword, int page, int pageSize);
     
     //6-1. 지식인 상세 조회
     public Board selectKnowledgeDetail(int postNo);
