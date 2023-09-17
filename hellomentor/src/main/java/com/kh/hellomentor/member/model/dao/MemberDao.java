@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hellomentor.member.model.vo.Member;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
 
 @Repository
 public class MemberDao {
@@ -95,7 +95,8 @@ public class MemberDao {
         sqlSession.delete("memberMapper.deleteMemo", memoRequest);
     }
 
-    public String loadMemo(Calendar memoRequest) {
+    public Calendar loadMemo(Calendar memoRequest) {
         return sqlSession.selectOne("memberMapper.loadMemo", memoRequest);
     }
+
 }

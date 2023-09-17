@@ -92,7 +92,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public String loadMemo(Calendar memoRequest) {
+    public Calendar loadMemo(Calendar memoRequest) {
         return memberDao.loadMemo(memoRequest);
     }
 

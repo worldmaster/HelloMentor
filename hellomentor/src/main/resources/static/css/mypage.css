@@ -601,6 +601,25 @@ ul > li {
     pointer-events: none;
 }
 
+ button#compile-button:hover {
+     background-color: #4CAF50;
+     color: white;
+     cursor: pointer;
+ }
+
+button#run-button:hover {
+    background-color: #008CBA;
+    color: white;
+    cursor: pointer;
+}
+
+button#clear-button:hover {
+    background-color: #f44336;
+    color: white;
+    cursor: pointer;
+}
+
+
 
 
 

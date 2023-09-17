@@ -41,5 +41,5 @@ public interface MemberService {
 
     void deleteMemo(Calendar memoRequest);
 
-    String loadMemo(Calendar memoRequest);
+    Calendar loadMemo(Calendar memoRequest);
 }

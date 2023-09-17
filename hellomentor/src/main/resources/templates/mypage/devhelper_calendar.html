@@ -54,6 +54,30 @@
                 var selectedDate = clickedYear + "-" + clickedMonth + "-" + clickedDate;
                 LoadMemoData(selectedDate, cell);
 
+
+                cell.onclick = function () {
+                    if (selectedCell) {
+                        selectedCell.classList.remove("product-calendar-selected");
+                    }
+                    selectedCell = this;
+                    selectedCell.classList.add("product-calendar-selected");
+                    this.classList.remove("product-calendar-hover");
+
+                    clickedYear = today.getFullYear();
+                    clickedMonth = (1 + today.getMonth());
+                    clickedDate = this.getAttribute('id');
+
+                    clickedDate = clickedDate >= 10 ? clickedDate : '0' + clickedDate;
+                    clickedMonth = clickedMonth >= 10 ? clickedMonth : '0' + clickedMonth;
+
+                    selectedDate = clickedYear + "-" + clickedMonth + "-" + clickedDate;
+
+                    document.getElementById("selectedDate").innerText = selectedDate;
+                    showMemoModal(selectedDate);
+                }
+
+
+
                 if (cnt % 7 == 1) {
                     cell.innerHTML = "<font color=#FF0000>" + i + "</font>";
                 }
@@ -72,7 +96,8 @@
         }
 
         function LoadMemoData(selectedDate, cell) {
-            console.log("Selected Date: " + selectedDate);
+            var formattedDate = selectedDate;
+            var requestData = { todoDeadline: formattedDate };
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "loadMemo", true);
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -82,8 +107,10 @@
                     cell.innerHTML += "<br>" + memoText;
                 }
             };
-            xhr.send(JSON.stringify({ date: selectedDate }));
+            xhr.send(JSON.stringify(requestData));
         }
+
+
 
 
         function prevCalendar() {
@@ -142,12 +169,15 @@
 
 
 <script>
-    function showMemoModal() {
+
+    var selectedDate;
+
+    function showMemoModal(date) {
+        selectedDate = date;
         document.getElementById("memoModal").style.display = "block";
     }
 
 
-    var selectedDate = "[[${selectedDate}]]";
 
     function saveMemo() {
         const todoContent = document.getElementById("memo").value;
@@ -160,6 +190,7 @@
                     alert(xhr.responseText);
                     document.getElementById("memo").value = "";
                     document.getElementById("memoModal").style.display = "none";
+                    loadPage('devhelper_calendar');
                 } else {
                     alert("메모 저장 중 오류 발생: " + xhr.status);
                 }
@@ -178,6 +209,7 @@
                     alert(xhr.responseText);
                     document.getElementById("memo").value = "";
                     document.getElementById("memoModal").style.display = "none";
+                    loadPage('devhelper_calendar');
                 } else {
                     alert("메모 삭제 중 오류 발생: " + xhr.status);
                 }
@@ -188,24 +220,7 @@
 
 
 
-    function loadMemo() {
-        const memoRequest = {
-            todoDeadline: selectedDate
-        };
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "loadMemo", true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    document.getElementById("memo").value = xhr.responseText;
-                } else {
-                    alert("메모 불러오기 중 오류 발생: " + xhr.status);
-                }
-            }
-        };
-        xhr.send(JSON.stringify(memoRequest));
-    }
+
 
 
 
