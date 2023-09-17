@@ -557,22 +557,17 @@ ul > li {
 
 .my_payment_box > div:nth-child(1), .my_payment_content2 > div:nth-child(1) {
     text-align: center;
-    width: 35%;
+    width: 34%;
 }
 
 .my_payment_box > div:nth-child(2), .my_payment_content2 > div:nth-child(2) {
     text-align: center;
-    width: 20%;
+    width: 33%;
 }
 
 .my_payment_box > div:nth-child(3), .my_payment_content2 > div:nth-child(3) {
     text-align: center;
-    width: 20%;
-}
-
-.my_payment_box > div:nth-child(4), .my_payment_content2 > div:nth-child(4) {
-    text-align: center;
-    width: 25%;
+    width: 33%;
 }
 
 .my_payment_content2 > div:nth-child(1), .my_payment_content2 > div:nth-child(2), .my_payment_content2 > div:nth-child(3), .my_payment_content2 > div:nth-child(4){
@@ -605,6 +600,25 @@ ul > li {
     align-items: center;
     pointer-events: none;
 }
+
+ button#compile-button:hover {
+     background-color: #4CAF50;
+     color: white;
+     cursor: pointer;
+ }
+
+button#run-button:hover {
+    background-color: #008CBA;
+    color: white;
+    cursor: pointer;
+}
+
+button#clear-button:hover {
+    background-color: #f44336;
+    color: white;
+    cursor: pointer;
+}
+
 
 
 

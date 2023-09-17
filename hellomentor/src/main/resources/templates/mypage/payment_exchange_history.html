@@ -28,21 +28,17 @@
             <span>환전 금액</span>
         </div>
         <div>
-            <span>환전/잔여 토큰</span>
-        </div>
-        <div>
             <span>환전 일자</span>
         </div>
     </div>
 
 
     <div class="my_post_content3">
-        <th:block th:each="i : ${#numbers.sequence(1, 17)}">
+            <th:block th:each="item : ${payments}">
             <div class="my_payment_box">
                 <div><span>신한은행 001010-3535-010502</span></div>
-                <div><span>10,000원</span></div>
-                <div><span>300개/300개</span></div>
-                <div><span>23.05.27</span></div>
+                <div><span th:text="${item.price}+원"></span></div>
+                <div><span th:text="${item.paymentDate}"></span></div>
             </div>
         </th:block>
     </div>

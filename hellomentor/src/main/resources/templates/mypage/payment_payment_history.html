@@ -24,10 +24,7 @@
             <span>상품명</span>
         </div>
         <div>
-            <span>금액</span>
-        </div>
-        <div>
-            <span>잔여 토큰</span>
+            <span>결제 금액</span>
         </div>
         <div>
             <span>충전일자</span>
@@ -35,19 +32,16 @@
     </div>
 
     <div class="my_post_content3">
-        <th:block th:each="i : ${#numbers.sequence(1, 17)}">
+        <th:block th:each="item : ${payments}">
             <div class="my_payment_box">
                 <div>
-                    <span>토큰100개</span>
+                    <span th:text="${item.payContent}"></span>
                 </div>
                 <div>
-                    <span>10,000원</span>
+                    <span th:text="${item.price}+원"></span>
                 </div>
                 <div>
-                    <span>300개</span>
-                </div>
-                <div>
-                    <span>23.05.27</span>
+                    <span th:text="${item.paymentDate}"></span>
                 </div>
             </div>
         </th:block>
