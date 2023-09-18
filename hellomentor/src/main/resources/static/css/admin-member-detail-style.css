@@ -65,7 +65,7 @@
     height: 40px;
     margin-top: 80px;
     font-size: 40px;
-    font-family: "bd";
+   font-family: "bd";
 }
 
 .member-section {
@@ -218,6 +218,7 @@
     height: 440px;
     width: 550px;
     overflow-y: auto;
+    
 }
 
 #board-list::-webkit-scrollbar {
@@ -251,4 +252,24 @@
 #list>tbody>tr>:last-child {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+
+
+.boardK{
+	display: none;
+}
+.boardS{
+	display: none;
+}
+
+.boardK.active {
+    display: block;
+}
+
+.boardS.active {
+    display: block;
+}
+
+.boardF.active {
+    display: block;
 }

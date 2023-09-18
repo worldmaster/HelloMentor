@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'bd';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/LINESeedKR-Bd.woff2') format('woff2');
-    font-weight: 700;
+    font-family: "bd";
     font-style: normal;
 }
 
@@ -120,6 +120,8 @@
     background-color: #48917A;
     font-size: 20px;
     font-family: "bd";
+    position: relative;
+    left: 100px;
 }
 
 #sign-upBtn:hover {

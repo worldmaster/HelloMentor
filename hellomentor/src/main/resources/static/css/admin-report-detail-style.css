@@ -178,3 +178,7 @@
 .report-accept-btn {
     background-color: #DFF6ED;
 }
+a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: black; /* 글자 색상을 검정색으로 변경 */
+}

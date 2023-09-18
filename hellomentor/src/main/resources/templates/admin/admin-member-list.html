@@ -4,42 +4,42 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HelloMentor-회원관리</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="../../static/css/admin-member-list-style.css"
-    />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link th:href="@{/css/admin-member-list-style.css}" type="text/css" rel="stylesheet" />
+    <link 
+    th:href="@{https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css}" 
+    rel="stylesheet" 
+    />
+
+    
   </head>
   <body>
     <div class="content">
       <div class="sideMenuBar">
         <div class="sideMenus">
-          <div class="sideMenu"><a href="">회원관리</a></div>
-          <div class="sideMenu"><a href="">문의관리</a></div>
-          <div class="sideMenu"><a href="">신고관리</a></div>
-          <div class="sideMenu"><a href="">공지사항</a></div>
+          <div class="sideMenu"><a th:href="@{/sideMember}">회원관리</a></div>
+            <div class="sideMenu"><a th:href="@{/inquirylist}">문의관리</a></div>
+            <div class="sideMenu"><a th:href="@{/admin/memberReport}">신고관리</a></div>
+            <div class="sideMenu"><a th:href="@{/noticelist}">공지사항</a></div>
         </div>
       </div>
 
       <div class="section">
         <div class="member-list-wrap">
           <div class="member-title">회원 관리</div>
-
-          <form id="member-search-form" action="" method="post">
-            <div class="member-searchbar">
-              <select id="search-option">
-                <option value="id">아이디</option>
-                <option value="name">이름</option>
-              </select>
-              <input type="text" id="keyword" />
-              <button type="submit" id="search-btn">
+          
+        <form action="/hellomentor/admin/sideMemberList" method="get">
+        <div class="member-searchbar">
+        <select id="search-option" name="searchOption">
+            <option value="id">아이디</option>
+            <option value="name">이름</option>
+        </select>
+        <input type="text" id="keyword" name="keyword" />
+        <button type="submit" id="search-btn">
+                
+       
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="32"
@@ -69,90 +69,40 @@
                 </tr>
               </thead>
               <tbody>
-                <tr onclick="location.href=''">
-                  <td>1</td>
-                  <td>mentee01</td>
-                  <td>김멘티</td>
-                  <td>멘티</td>
-                  <td>정상</td>
-                </tr>
-                <tr onclick="location.href=''">
-                  <td>1</td>
-                  <td>mentee01</td>
-                  <td>김멘티</td>
-                  <td>멘티</td>
-                  <td>정상</td>
-                </tr>
-                <tr onclick="location.href=''">
-                  <td>1</td>
-                  <td>mentee01</td>
-                  <td>김멘티</td>
-                  <td>멘티</td>
-                  <td>정상</td>
-                </tr>
-                <tr onclick="location.href=''">
-                  <td>1</td>
-                  <td>mentee01</td>
-                  <td>김멘티</td>
-                  <td>멘티</td>
-                  <td>정상</td>
-                </tr>
-                <tr onclick="location.href=''">
-                  <td>1</td>
-                  <td>mentee01</td>
-                  <td>김멘티</td>
-                  <td>멘티</td>
-                  <td>정상</td>
-                </tr>
-                <tr onclick="location.href=''">
-                  <td>1</td>
-                  <td>mentee01</td>
-                  <td>김멘티</td>
-                  <td>멘티</td>
-                  <td>정상</td>
-                </tr>
-                <tr onclick="location.href=''">
-                  <td>1</td>
-                  <td>mentee01</td>
-                  <td>김멘티</td>
-                  <td>멘티</td>
-                  <td>정상</td>
-                </tr>
-                <tr onclick="location.href=''">
-                  <td>1</td>
-                  <td>mentee01</td>
-                  <td>김멘티</td>
-                  <td>멘티</td>
-                  <td>정상</td>
-                </tr>
-                <tr onclick="location.href=''">
-                  <td>1</td>
-                  <td>mentee01</td>
-                  <td>김멘티</td>
-                  <td>멘티</td>
-                  <td>정상</td>
-                </tr>
-                <tr onclick="location.href=''">
-                  <td>1</td>
-                  <td>mentee01</td>
-                  <td>김멘티</td>
-                  <td>멘티</td>
-                  <td>정상</td>
-                </tr>
+                <tr th:each="member : ${sideMember}" th:onclick="'javascript:redirectToMemberDetail(\'' + ${member.userNo} + '\');'">
+                <td th:text="${member.userNo}"></td>
+                <td th:text="${member.userId}"></td>
+                <td th:text="${member.userName}"></td>
+                <td th:switch="${member.memberType}">
+                              <span th:case="'E'">멘티</span>
+                             <span th:case="'O'">멘토</span>
+                              </td>
+                <td th:switch="${member.status}">
+                              <span th:case="'Y'">활동회원</span>
+                             <span th:case="'N'">탈퇴회원</span>
+                              </td>
+                <!-- 다른 필드들을 추가하세요 -->
+               </tr>
               </tbody>
             </table>
           </div>
+   
 
-          <div align="center" class="paging-area">
-            <button onclick="location.href= '#' ">이전 페이지</button>
-            <button onclick="location.href='#'">1</button>
-            <button onclick="location.href='#'">2</button>
-            <button onclick="location.href='#'">3</button>
-            <button onclick="location.href = '#'">다음 페이지</button>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="pagination">
+    <ul>
+        <li th:if="${currentPage > 1}">
+            <a th:href="@{${'/admin/sideMemberList?page=' + (currentPage - 1) + (searchOption != null ? '&searchOption=' + searchOption : '') + (keyword != null ? '&keyword=' + keyword : '')}}">이전</a>
+        </li>
+       <li th:each="page, i : ${#numbers.sequence((currentPage - 5 < 1 ? 1 : currentPage - 5), (currentPage + 4 > totalPages ? totalPages : currentPage + 4))}"
+        th:classappend="${page == currentPage} ? 'active' : ''">
+            <a th:href="@{${'/admin/sideMemberList?page=' + page + (searchOption != null ? '&searchOption=' + searchOption : '') + (keyword != null ? '&keyword=' + keyword : '')}}" th:text="${page}"></a>
+        </li>
+        <li th:if="${currentPage < totalPages}">
+            <a th:href="@{${'/admin/sideMemberList?page=' + (currentPage + 1) + (searchOption != null ? '&searchOption=' + searchOption : '') + (keyword != null ? '&keyword=' + keyword : '')}}">다음</a>
+        </li>
+    </ul>
+</div> 
+
 
     <script>
       $(document).ready(function () {
@@ -165,5 +115,18 @@
         });
       });
     </script>
+    
+
+     <script th:inline="javascript">
+        var DetailUrl = /*[[@{/memberDetail}]]*/'';
+    </script>
+   
+    <script>
+        function redirectToMemberDetail(userNo) {
+            var url = DetailUrl + '?userNo=' + userNo;
+            window.location.href = url;
+        }
+    </script>
+ 
   </body>
 </html>

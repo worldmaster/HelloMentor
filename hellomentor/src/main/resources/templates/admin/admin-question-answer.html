@@ -23,10 +23,16 @@
         <div id="question-headline">문의내역</div>
 
         <div align="center" class="cs-menu-bar">
-          <div class="cs-menu"><a href="#">공지사항</a></div>
-          <div class="cs-menu"><a href="#">FAQ</a></div>
-          <div class="cs-menu"><a href="#">1:1문의</a></div>
-          <div class="cs-menu" id="selected-menu"><a href="#">문의내역</a></div>
+           <div class="cs-menu">
+               <a th:href="@{/noticelist}">공지사항</a>
+            </div>
+            <div class="cs-menu">
+               <a th:href="@{/faqlist}">FAQ</a>
+            </div>
+            <div class="cs-menu">
+               <a th:href="@{/inquiryinsert}">1:1문의</a>
+            </div>
+          <div class="cs-menu" id="selected-menu"><a th:href="@{/inquirylist}">문의내역</a></div>
         </div>
 
         <div class="line line1"></div>
@@ -35,36 +41,40 @@
           <div class="question-title">
             <div id="q-logo">Q.</div>
             <div class="question-info">
-              <div id="question-title">질문제목</div>
+              <div id="question-title" th:text="${selectedPost.postTitle}">질문제목</div>
               <div id="question-info">
-                <div id="question-writer">mentee01</div>
-                <div id="question-create-date">2023-08-01</div>
-                <div id="question-status">처리상태</div>
+                <div id="question-writer" th:text="${selectedPost.boardType}">카테고리</div>
+                <div id="question-create-date" th:text="${selectedPost.createDate}">작성일자</div>
+                <div id="question-status">
+                   <span th:if="${selectedPost2.isProcessed}">처리 완료</span> 
+                   <span th:if="${!selectedPost2.isProcessed}">처리중</span>
+            </div>
               </div>
             </div>
           </div>
           <div class="question-box">
-            <div name="question" id="question">질문질문</div>
+            <div name="question" id="question" th:text="${selectedPost.postContent}">질문</div>
           </div>
         </div>
 
+       <form th:action="@{/admin/QuestionWrite}" id="question-form" method="post">
         <div class="line line2"></div>
-
         <div class="answer-section">
           <div id="a-logo">A.</div>
           <textarea
-            name="answer"
+            name="pContent"
             id="answer"
             placeholder="(이곳에 답변을 등록해주세요)"
           ></textarea>
         </div>
-
         <div class="send-btn">
           <button id="back-btn" type="button" onclick="">목록</button>
-          <button id="send-btn" type="submit" form="notice-form">
+          <button id="send-btn" type="submit" form="question-form">
             답변등록
           </button>
         </div>
+        <input type="hidden" name="postNo" th:value="${selectedPost.postNo}" />
+        </form>
       </div>
     </div>
     <script>

@@ -1,10 +1,12 @@
 package com.kh.hellomentor.member.controller;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.kh.hellomentor.matching.model.service.MatchingService;
+import com.kh.hellomentor.member.model.vo.BaseResponse;
 import com.kh.hellomentor.member.model.vo.Calendar;
 import com.kh.hellomentor.member.model.vo.Payment;
 import com.kh.hellomentor.member.model.vo.Profile;
@@ -17,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import com.kh.hellomentor.member.model.service.EmailService;
 import com.kh.hellomentor.member.model.service.MemberService;
 import com.kh.hellomentor.member.model.vo.Member;
 
@@ -46,30 +49,37 @@ public class MemberController {
 
     @Autowired
     private MatchingService mtService;
-
+   
+    @Autowired
+    private EmailService emailService;
+    
+    @Autowired
+    private BaseResponse baseResponse;
+    
     @PostMapping("login.me")
     public String loginMember(
-            @ModelAttribute Member m,
-            HttpSession session,
-            RedirectAttributes redirectAttributes
-    ) {
-        Member loginUser = mService.loginUser(m);
-        String url = "";
-        if (loginUser != null) {
-            if (loginUser.getUserId().equals("admin")) {
-                session.setAttribute("loginUser", loginUser);
-                redirectAttributes.addFlashAttribute("message", "관리자로 로그인했습니다.");
-                url = "redirect:/adminMain";
-            } else {
-                session.setAttribute("loginUser", loginUser);
-                redirectAttributes.addFlashAttribute("message", loginUser.getUserName() + "님 반갑습니다");
-                url = "redirect:/main";
-            }
-        } else {
-            redirectAttributes.addFlashAttribute("message", "아이디 또는 비밀번호를 확인해주세요.");
-            url = "redirect:/";
-        }
-        return url;
+  		            RedirectAttributes redirectAttributes,
+                      @ModelAttribute Member m , 
+                      HttpSession session , 
+                      Model model
+          ) {
+       Member loginUser = mService.loginUser(m);
+       String url = "";
+       if(loginUser != null) {
+      	 if(loginUser.getUserId().equals("admin")){
+      		 session.setAttribute("loginUser", loginUser);
+      		 redirectAttributes.addFlashAttribute("message", "관리자님 반갑습니다");
+               url = "redirect:/admin/selectList";
+      	 }else {
+      		 session.setAttribute("loginUser", loginUser);
+      		 model.addAttribute("message", loginUser.getUserName()+"님 반갑습니다");
+               url = "common/main";
+      	 }
+      	 }else{
+      		 model.addAttribute("message", "아이디 또는 비밀번호를 확인해주세요.");
+      		 url = "login/login";
+      	 }
+       return url;
     }
 
     @PostMapping("/sign.up")
@@ -89,6 +99,25 @@ public class MemberController {
         }
         return url;
     }
+    @ResponseBody
+    @GetMapping("/member/idCheck.me")
+    public int idCheck(@RequestParam("userId") String userId) {
+    	int result = mService.idCheck(userId);
+
+    	return result;
+      	
+      }
+    
+    @ResponseBody
+    @PostMapping("login/mailConfirm")  //이메일    
+    public String EmailCheck(@RequestParam(name = "email") String email) throws MessagingException{
+    	   System.out.println(email);  
+    	   
+    	   String authCode = emailService.sendEmail(email);
+    	   
+           return authCode;
+    }
+    
 
     @RequestMapping("/home_follow")
     public String homeFollow() {
