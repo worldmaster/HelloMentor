@@ -1,8 +1,11 @@
 package com.kh.hellomentor.member.model.service;
 
+import com.kh.hellomentor.member.model.vo.Calendar;
 import com.kh.hellomentor.member.model.vo.Member;
+import com.kh.hellomentor.member.model.vo.Payment;
 import com.kh.hellomentor.member.model.vo.Profile;
 
+import java.util.Date;
 import java.util.List;
 
 public interface MemberService {
@@ -27,4 +30,16 @@ public interface MemberService {
 
     Boolean isProfileImgExists(int userNo);
 
+    List<Payment> getPaymentHistory(int userNo, String type);
+
+
+    void saveMemo(Calendar memoRequest);
+
+    void updateMemo(Calendar memoRequest);
+
+    boolean isMemoExists(Calendar memoRequest);
+
+    void deleteMemo(Calendar memoRequest);
+
+    Calendar loadMemo(Calendar memoRequest);
 }

@@ -1,10 +1,19 @@
 package com.kh.hellomentor.member.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.tools.DiagnosticCollector;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileObject;
+import javax.tools.ToolProvider;
 
 import com.kh.hellomentor.matching.model.service.MatchingService;
+import com.kh.hellomentor.member.model.vo.Calendar;
+import com.kh.hellomentor.member.model.vo.Payment;
 import com.kh.hellomentor.member.model.vo.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,12 +29,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +41,7 @@ import org.slf4j.LoggerFactory;
 @Controller
 @Slf4j
 public class MemberController {
+
 
     private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
@@ -137,7 +146,6 @@ public class MemberController {
         List<Profile> profileList = mService.getFollowerProfileList(userNo);
 
 
-
         List<Map<String, Object>> combinedList = new ArrayList<>();
         for (Member member : followerList) {
             Map<String, Object> combinedInfo = new HashMap<>();
@@ -201,7 +209,6 @@ public class MemberController {
     }
 
 
-
     @PostMapping("/updateProfile")
     public ResponseEntity<String> updateProfile(@RequestParam("file") MultipartFile file,
                                                 @RequestParam("originPwd") String originPwd,
@@ -230,10 +237,9 @@ public class MemberController {
                 loginUser.setUserPwd(newPwd);
             }
 
-            if(mService.isProfileImgExists(loginUser.getUserNo())){
+            if (mService.isProfileImgExists(loginUser.getUserNo())) {
                 mService.updateProfileImg(profile);
-            }
-            else{
+            } else {
                 mService.insertProfileImg(profile);
             }
 
@@ -247,7 +253,177 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("프로필 업데이트 중 오류가 발생했습니다. 다시 시도해주세요");
         }
     }
+
+    @RequestMapping("/payment_payment_history")
+
+    public String paymentHistory(Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        String type = "p"; // P면 페이먼트
+        List<Payment> payments = mService.getPaymentHistory(loginUser.getUserNo(), type);
+        model.addAttribute("payments", payments);
+        model.addAttribute("loginUser", loginUser);
+        return "mypage/payment_payment_history";
+    }
+
+    @RequestMapping("/payment_exchange_history")
+
+    public String exchangeHistory(Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        String type = "e"; // E면 익스체인지
+        List<Payment> payments = mService.getPaymentHistory(loginUser.getUserNo(), type);
+        model.addAttribute("payments", payments);
+        model.addAttribute("loginUser", loginUser);
+        return "mypage/payment_exchange_history";
+    }
+
+    @RequestMapping("/devhelper_calendar")
+
+    public String calendar(Model model, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        return "mypage/devhelper_calendar";
+    }
+
+    @PostMapping("/saveMemo")
+    public ResponseEntity<String> saveMemo(@RequestBody Calendar memoRequest, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        try {
+            memoRequest.setUserNo(loginUser.getUserNo());
+            boolean isMemoExists = mService.isMemoExists(memoRequest);
+            if (isMemoExists) {
+                mService.updateMemo(memoRequest);
+                return ResponseEntity.ok("메모가 업데이트되었습니다.");
+            } else {
+                mService.saveMemo(memoRequest);
+                return ResponseEntity.ok("메모가 저장되었습니다.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("메모 저장 중 오류 발생: " + e.getMessage());
+        }
+
+    }
+
+    @PostMapping("/deleteMemo")
+    public ResponseEntity<String> deleteMemo(@RequestBody Calendar memoRequest, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        memoRequest.setUserNo(loginUser.getUserNo());
+        boolean isMemoExists = mService.isMemoExists(memoRequest);
+        if (isMemoExists) {
+            mService.deleteMemo(memoRequest);
+            return ResponseEntity.ok("메모가 삭제되었습니다");
+        } else {
+            return ResponseEntity.ok("메모가 존재하지 않습니다.");
+        }
+    }
+
+    @PostMapping("/loadMemo")
+    public ResponseEntity<String> loadMemo(@RequestBody Calendar requestData, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        Calendar data = new Calendar();
+        data.setUserNo(loginUser.getUserNo());
+        data.setTodoDeadline(requestData.getTodoDeadline());
+        data = mService.loadMemo(data);
+        if (data != null) {
+            return ResponseEntity.ok(data.getTodoContent());
+        } else {
+            return ResponseEntity.ok("");
+        }
+
+    }
+
+    @RequestMapping("/devhelper_codelab")
+    public String codelab(HttpSession session) {
+        return "mypage/devhelper_codelab";
+    }
+
+
+    @PostMapping("/Compile")
+    @ResponseBody
+    public ResponseEntity<String> compileCode(@RequestParam("code") String code, @RequestParam("className") String className) {
+
+        String currentDirectory = System.getProperty("user.dir");
+        String FilesLocation = currentDirectory + "/src/main/resources/compile/";
+
+        try {
+            Path directoryPath = Paths.get(FilesLocation);
+            if (!Files.exists(directoryPath)) {
+                Files.createDirectories(directoryPath);
+            }
+
+            String fileName = className + ".java";
+            Path filePath = Paths.get(FilesLocation, fileName);
+            File javaFile = filePath.toFile();
+
+            try (FileOutputStream fos = new FileOutputStream(javaFile)) {
+                byte[] sourceCodeBytes = code.getBytes();
+                fos.write(sourceCodeBytes);
+            }
+
+
+            String compileCmd = "javac -d " + FilesLocation + "/Classes " + FilesLocation + "/" + fileName;
+            Process error = Runtime.getRuntime().exec(compileCmd);
+
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(error.getErrorStream()))) {
+                StringBuilder errorMessage = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    errorMessage.append(line).append("\n");
+                }
+                if (errorMessage.toString().isEmpty()) {
+                    return new ResponseEntity<>("컴파일 성공", HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(errorMessage.toString(), HttpStatus.BAD_REQUEST);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error occurred during compilation.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/Run")
+    @ResponseBody
+    public ResponseEntity<String> runCode(
+            @RequestParam("classname") String className,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        try {
+            String currentDirectory = System.getProperty("user.dir");
+            String FilesLocation = currentDirectory + "/src/main/resources/compile/Classes/";
+            String runCmd = "java -cp " + FilesLocation + " " + className;
+
+            Process exe = Runtime.getRuntime().exec(runCmd);
+
+            exe.waitFor();
+
+            BufferedReader bin = new BufferedReader(new InputStreamReader(exe.getInputStream()));
+            BufferedReader berr = new BufferedReader(new InputStreamReader(exe.getErrorStream()));
+            StringBuilder result = new StringBuilder();
+            String line;
+
+            while ((line = bin.readLine()) != null) {
+                result.append(line).append("\n");
+            }
+
+            if (result.length() == 0) {
+                while ((line = berr.readLine()) != null) {
+                    result.append(line).append("\n");
+                }
+            }
+
+            bin.close();
+            berr.close();
+
+
+            return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error occurred during code execution.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
+
+
 
 
 
