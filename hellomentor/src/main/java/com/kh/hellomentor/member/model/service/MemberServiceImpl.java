@@ -27,7 +27,12 @@ public class MemberServiceImpl implements MemberService {
     public int insertMember(Member m) {
         return memberDao.insertMember(m);
     }
-
+    
+    @Override
+    public int idCheck(String userId) {
+    	return memberDao.idCheck(userId);
+    }
+    
     @Override
     public List<Member> getFollowList(int userNo) {
         return memberDao.getFollowList(userNo);
