@@ -25,8 +25,9 @@
 
 
 		
-        <form th:action="@{knowledgeanswerinsert}" method="post">
+        <form th:action="@{knowledgeanswerupdate}" method="post">
           <!-- 회원가입form안에.txt -->
+          <input type="hidden" name="postNo" th:value="${postNo}" />
           <input type="hidden" name="knowledgePostNo" th:value="${knowledgePostNo}" />
           <table id="knowledge-table">
             <tr>
@@ -37,16 +38,14 @@
                   name="postContent"
                   required
                   placeholder="내용을 입력하세요"
+                  th:text="${board.postContent}"
                 ></textarea>
               </td>
             </tr>
           </table>
           <div align="center">
             <button type="button" id="knowledge-back">취소</button>
-            <!-- 최초 답변 등록시에만 보여짐 -->
-            <button type="submit" id="knowledge-reply">답변</button>
-            <!-- 지식인 답글 수정 시에만 보여짐 -->
-            <!-- <button type="submit" id="knowledge-change">수정</button> -->
+             <button type="submit" id="knowledge-change">수정</button>
           </div>
         </form>
       </div>
