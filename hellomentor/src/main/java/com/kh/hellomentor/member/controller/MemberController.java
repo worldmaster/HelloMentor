@@ -3,17 +3,12 @@ package com.kh.hellomentor.member.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.tools.DiagnosticCollector;
-import javax.tools.JavaCompiler;
-import javax.tools.JavaFileObject;
-import javax.tools.ToolProvider;
 
 import com.kh.hellomentor.matching.model.service.MatchingService;
 import com.kh.hellomentor.member.model.vo.Calendar;
 import com.kh.hellomentor.member.model.vo.Payment;
 import com.kh.hellomentor.member.model.vo.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,6 +28,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 import org.slf4j.Logger;
@@ -193,18 +189,32 @@ public class MemberController {
         String currentDirectory = System.getProperty("user.dir");
 
         String uploadDir = currentDirectory + "/hellomentor/src/main/resources/static/img/profile/";
+        String buildUploadDir = currentDirectory + "/hellomentor/build/resources/main/static/img/profile/";
+
 
         String fileName = "profile_" + userNo + ".jpg";
 
         File uploadPath = new File(uploadDir);
+        File buildUploadPath = new File(buildUploadDir);
 
         if (!uploadPath.exists()) {
             uploadPath.mkdirs();
         }
 
+        if (!buildUploadPath.exists()) {
+            buildUploadPath.mkdirs();
+        }
+
+
         File destFile = new File(uploadPath, fileName);
+        File buildDestFile = new File(buildUploadPath, fileName);
+
         file.transferTo(destFile);
         logger.info("Saved file path: {}", destFile.getAbsolutePath());
+
+        Files.copy(destFile.toPath(), buildDestFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        logger.info("Saved file path in build directory: {}", buildDestFile.getAbsolutePath());
+
         return fileName;
     }
 
@@ -421,6 +431,20 @@ public class MemberController {
             return new ResponseEntity<>("Error occurred during code execution.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/userExit")
+    public ResponseEntity<String> userExit(HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+
+
+        if (mService.performExit(loginUser.getUserNo())) {
+            session.invalidate();
+            return ResponseEntity.ok("탈퇴 처리가 완료되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("탈퇴 처리 중 오류가 발생했습니다.");
+        }
+    }
+
 }
 
 

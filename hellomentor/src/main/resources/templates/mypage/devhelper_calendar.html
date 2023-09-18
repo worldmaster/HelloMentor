@@ -19,6 +19,7 @@
             var cnt = 0;
             var calendarTable = document.getElementById("calendar");
             var calendarTableTitle = document.getElementById("calendarTitle");
+            calendarTable.style.backgroundColor = "#DFF6ED";
             calendarTableTitle.innerHTML = today.getFullYear() + "년" + (today.getMonth() + 1) + "월";
 
             var firstDate = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -43,6 +44,7 @@
                 cell.setAttribute('id', i);
                 cell.innerHTML = i;
                 cell.align = "center";
+
 
                 // 해당 날짜에 대한 메모 데이터 로드
                 var clickedYear = today.getFullYear();
@@ -75,9 +77,6 @@
                     document.getElementById("selectedDate").innerText = selectedDate;
                     showMemoModal(selectedDate);
                 }
-
-
-
                 if (cnt % 7 == 1) {
                     cell.innerHTML = "<font color=#FF0000>" + i + "</font>";
                 }
@@ -140,7 +139,7 @@
         </tr>
         <tr>
             <td align="center" class="product-calendar">
-                <font color="#F79DC2">일
+                <font color="#FF0000">일
             </td>
             <td align="center" class="product-calendar">월</td>
             <td align="center" class="product-calendar">화</td>
@@ -148,7 +147,7 @@
             <td align="center" class="product-calendar">목</td>
             <td align="center" class="product-calendar">금</td>
             <td align="center" class="product-calendar">
-                <font color="skyblue">토</font>
+                <font color="#0055FF">토</font>
             </td>
         </tr>
         <script type="text/javascript">buildCalendar();</script>

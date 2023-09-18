@@ -190,6 +190,12 @@
         WHERE USER_NO = #{userNo} AND TODO_DEADLINE = #{todoDeadline}
     </select>
 
+    <update id="performExit" parameterType="int">
+        UPDATE MEMBER
+        SET STATUS = 'N'
+        WHERE USER_NO = #{userNo}
+    </update>
+
 
 
 </mapper>
