@@ -96,6 +96,11 @@ public class MemberServiceImpl implements MemberService {
         return memberDao.loadMemo(memoRequest);
     }
 
+    @Override
+    public boolean performExit(int userNo) {
+        return memberDao.performExit(userNo);
+    }
+
 
 }
 

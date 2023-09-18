@@ -34,7 +34,7 @@
 
     <div class="my_left_content1">
         <div class="my_left_content1-1">홈</div>
-        <div class="my_left_content1-2" onclick="loadPage('home_notification')">알림</div>
+<!--        <div class="my_left_content1-2" onclick="loadPage('home_notification')">알림</div>-->
         <div class="my_left_content1-3" onclick="loadPage('home_follow')">팔로잉/팔로워 목록</div>
     </div>
 
@@ -55,7 +55,9 @@
         <div class="my_left_content4-1">멘토링</div>
         <div class="my_left_content4-2" onclick="loadPage('mentoring_mentor_applications')">보낸 제안 내역</div>
         <div class="my_left_content4-2" onclick="loadPage('mentoring_mentor_applications2')">받은 제안 내역</div>
-        <div class="my_left_content4-3" onclick="loadPage('mentoring_mentor_registdetail')">멘토 / 멘티 정보 등록 내역</div>
+        <div class="my_left_content4-3" th:if="${session.loginUser.memberType == 'O'}" onclick="MentorInsert()">멘토 정보 등록</div>
+        <div class="my_left_content4-3" th:if="${session.loginUser.memberType == 'E'}" onclick="MentorInsert()">멘티 정보 등록</div>
+
     </div>
 
     <div class="my_left_content5">
@@ -63,6 +65,13 @@
         <div class="my_left_content5-2" onclick="loadPage('payment_payment_history')">결제 내역</div>
         <div class="my_left_content5-3" onclick="loadPage('payment_exchange_history')">환전 내역</div>
     </div>
+
+
+<script>
+    function MentorInsert() {
+        window.location.href = 'mentoring/insert';
+    }
+</script>
 
 
 

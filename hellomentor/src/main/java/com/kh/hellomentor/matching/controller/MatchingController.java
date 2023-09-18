@@ -210,13 +210,6 @@ public class MatchingController {
     }
 
 
-    @RequestMapping("/mentoring_mentor_registdetail")
-    public String mentor_registdetail(HttpSession session) {
-        Member loginUser = (Member) session.getAttribute("loginUser");
-        return "mypage/mentoring_mentor_registdetail";
-    }
-
-
     @GetMapping("/mentoring")
     public String selectList(
             @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,

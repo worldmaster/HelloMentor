@@ -85,6 +85,32 @@
 
 </div>
 
+<script>
+    document.getElementById('withdrawyesButton').addEventListener('click', function () {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'userExit', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    alert("탈퇴 성공");
+                    window.location.href = '/hellomentor'
+
+                } else {
+                    alert("탈퇴 실패");
+                }
+            }
+        };
+
+        xhr.send();
+    });
+
+
+    document.getElementById('withdrawnoButton').addEventListener('click', function () {
+        document.getElementById('withdrawModal').style.display = 'none';
+    });
+</script>
+
 
 <script>
     document.getElementById('my_editinfo_editBtn').addEventListener('click', function () {

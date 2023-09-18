@@ -42,4 +42,6 @@ public interface MemberService {
     void deleteMemo(Calendar memoRequest);
 
     Calendar loadMemo(Calendar memoRequest);
+
+    boolean performExit(int userNo);
 }

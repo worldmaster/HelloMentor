@@ -99,4 +99,12 @@ public class MemberDao {
         return sqlSession.selectOne("memberMapper.loadMemo", memoRequest);
     }
 
+    public boolean performExit(int userNo) {
+        int result = sqlSession.update("memberMapper.performExit",userNo);
+        if(result > 0) {
+            return true;
+        }
+        return false;
+
+    }
 }
