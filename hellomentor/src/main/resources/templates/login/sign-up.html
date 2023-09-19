@@ -281,7 +281,7 @@ $(document).ready(function () {
             	emconfirmchk = true;
                 $memailconfirmTxt.html("<span id='emconfirmchk'>인증번호 확인 완료</span>");
                 $("#emconfirmchk").css({
-                    "color": "#0D6EFD",
+                	"color": "#0D6EFD",
                     "font-weight": "bold",
                     "font-size": "10px"
                 });
@@ -289,6 +289,12 @@ $(document).ready(function () {
                 updateSignUpButtonStatus(true);
             } else {
            	 emconfirmchk = false;
+           	$memailconfirmTxt.html("<span id='emconfirmchk'>인증번호가 잘못되었습니다.</span>");
+            $("#emconfirmchk").css({
+                "color": "red",
+                "font-weight": "bold",
+                "font-size": "10px"
+            });
              // 인증번호가 잘못된 경우 가입 버튼 비활성화
              updateSignUpButtonStatus(false);
         }
