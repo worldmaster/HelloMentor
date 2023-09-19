@@ -150,8 +150,8 @@ public class BoardServiceImpl implements BoardService {
     	 return boardDao.selectFreeCount();
     };
     @Override
-    public int searchFreeCount(String freekind, String keyword) {
-    	 return boardDao.searchFreeCount(freekind,keyword);
+    public int searchFreeCount(String freekind, String keyword, String views) {
+    	 return boardDao.searchFreeCount(freekind,keyword,views);
     };
     @Override
     public List<Board> selectFreeList(int page, int pageSize){
@@ -162,12 +162,12 @@ public class BoardServiceImpl implements BoardService {
     	 return boardDao.selectFreeList2(page,pageSize);
     };
     @Override
-    public List<Board> searchFreeList(String freekind, String keyword, int page, int pageSize){
-    	 return boardDao.searchFreeList(freekind,keyword,page,pageSize);
+    public List<Board> searchFreeList(String freekind, String keyword,String views,int page, int pageSize){
+    	 return boardDao.searchFreeList(freekind,keyword,views,page,pageSize);
     };
     @Override
-    public List<Free> searchFreeList2(String freekind, String keyword, int page, int pageSize){
-    	 return boardDao.searchFreeList2(freekind,keyword,page,pageSize);
+    public List<Free> searchFreeList2(String freekind, String keyword,String views, int page, int pageSize){
+    	 return boardDao.searchFreeList2(freekind,keyword,views,page,pageSize);
     };
     //5-1. 자유게시판 조회 (화제글 3개)
     @Override
