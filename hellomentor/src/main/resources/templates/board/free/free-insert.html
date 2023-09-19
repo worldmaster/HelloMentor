@@ -22,7 +22,7 @@
       <div class="section">
         <div class="title">자유게시판</div>
 
-         <form th:action="@{/freeinsert}" method="post"  enctype="multipart/form-data"> 
+         <form th:action="@{/freeinsert}" method="post"> 
           <!-- 회원가입form안에.txt -->
           <table id="free-table">
             <tr>
@@ -53,6 +53,9 @@
             <tr>
               <th>첨부파일</th>
               <td>
+                <label for="free-file">
+                  <div id="free-upload">파일 업로드하기</div>
+                </label>
                 <input type="file" id="free-file" name="upfile" />
               </td>
             </tr>

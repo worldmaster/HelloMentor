@@ -48,18 +48,8 @@
 				</div>
 			</div>
 
-			<div class="free-content">
-			 <span th:text="${selectedPost.postContent}">내용</span>
+			<div class="free-content" th:text="${selectedPost.postContent}">안녕하세요</div>
 
-		      <div class="image-container" th:each="attach: ${attachList}">
-		        <a th:href="@{${attach.filePath} + ${attach.changeName}}"
-		           th:download="${attach.originName}">
-		          <img th:src="@{${attach.filePath} + ${attach.changeName}}">
-		        </a>
-		      </div>
- 
-			</div>
-			
 			<!--게시판 정보 및 내용 끝-->
 
 			<!--신고-->
@@ -83,7 +73,8 @@
 			<!--하단 버튼 끝-->
 
 			<!--좋아요-->
-			<a th:href="'/hellomentor/increaseupvotes?uno=' + ${selectedPost.userNo} + '&fno=' + ${selectedPost.postNo}">
+			<a
+				th:href="'/hellomentor/increaseupvotes?uno=' + ${selectedPost.userNo} + '&fno=' + ${selectedPost.postNo}">
 				<svg class="heart-logo" xmlns="http://www.w3.org/2000/svg"
 					width="60" height="60" viewBox="0 0 24 24" fill="none">
           <path

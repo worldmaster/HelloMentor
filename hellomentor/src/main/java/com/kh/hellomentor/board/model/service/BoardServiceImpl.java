@@ -1,6 +1,5 @@
 package com.kh.hellomentor.board.model.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +8,6 @@ import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.matching.model.vo.StudyApplicant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hellomentor.board.model.dao.BoardDao;
 import com.kh.hellomentor.board.model.vo.Answer;
@@ -93,7 +91,7 @@ public class BoardServiceImpl implements BoardService {
     
     //3. 1:1문의 작성
     @Override
-    public int insertInquiry(Board board,  List<Attachment> list, String webPath) throws Exception {
+    public int insertInquiry(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception {
     	
     	board.setPostTitle(Utils.XSSHandling(board.getPostTitle()));
 		board.setPostContent(Utils.XSSHandling(board.getPostContent()));
@@ -187,28 +185,16 @@ public class BoardServiceImpl implements BoardService {
     public Free selectFreeDetail2(int postNo){
    	 return boardDao.selectFreeDetail2(postNo);
    }
-    @Override
-    public List<Attachment> selectAttachment(int postNo){
-   	 return boardDao.selectAttachment(postNo);
-   }
  
     //5-3. 자유게시판 글 작성
     @Override
-    public int insertFree(Board board,  List<Attachment> list, String webPath) throws Exception {
+    public int insertFree(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception {
     	
     	board.setPostTitle(Utils.XSSHandling(board.getPostTitle()));
 		board.setPostContent(Utils.XSSHandling(board.getPostContent()));
 		board.setPostContent(Utils.newLineHandling(board.getPostContent()));
     	
-		int result = 0;
     	int postNo = boardDao.insertFree(board);
-    	if(postNo > 0 && !list.isEmpty()) {
-			for(Attachment attach    :   list) {
-				attach.setPostNo(postNo);
-				attach.setFilePath(webPath);
-			}
-			result = boardDao.insertFreeAttachment(list);
-    	}
     
 		return postNo;
     }
@@ -241,66 +227,14 @@ public class BoardServiceImpl implements BoardService {
     	 return boardDao.increaseUpvotes(postNo);
     };
     
-    //5-8. 자유게시판 수정
-    @Override
-    public int updateFree(Board b, List<MultipartFile> list, String wholePath, String webPath) throws Exception{
-    	// 1) XSS, 개행문자 처리
-		b.setPostTitle(Utils.XSSHandling(b.getPostTitle()));
-		b.setPostContent(Utils.XSSHandling(b.getPostContent()));
-		b.setPostContent(Utils.newLineHandling(b.getPostContent()));
-		
-		int result = boardDao.updateFree(b);
-		
-		if(result> 0) {
-		// 3) 업로드된 파일들 분류작업.
-					List<Attachment> attachList = new ArrayList();
-					
-					if(list != null) {
-						for(int i =0; i<list.size(); i++) {
-							
-							if(!list.get(i).isEmpty()) {
-								
-								// 변경된 파일명 저장
-								String changeName = Utils.saveFile(list.get(i), wholePath);
-								
-								// Attachment객체를 생성해서 값을 추가한 후 attachList에 추가.
-								Attachment at = Attachment
-												.builder()
-												.postNo(b.getPostNo())
-												.originName(list.get(i).getOriginalFilename())
-												.changeName(changeName)
-												.filePath(webPath)
-												.build();
-								attachList.add(at);
-							}
-						}
-					}
-					
-					if(result > 0) {
-						// Attachment객체 하나하나 업데이트
-						for( Attachment at      :       attachList) {
-							result = boardDao.updateAttachment(at);
-							
-							// result = 0 => 수정작업 실패 => 기존에 첨부파일이 등록 X
-							// result = 1 => 수정작업 성공 => 기존에 첨부파일이 있었으니까 O
-							
-							//6) 결과값이 0인경우 -> update는 실패했찌만 , 실제 db에 올라간 첨부파일정보를 등록해야하기 때문에 insert문 실행
-							if(result == 0) {
-								result = boardDao.insertAttachment(at);
-							}
-						}
-					}
-		}
-		return result;
-    }
     //6. 지식인 조회 (메인)
     @Override
     public int selectKnowledgeCount() {
     	return boardDao.selectKnowledgeCount();
     };
     @Override
-    public int searchKnowledgeCount(String knowledgekind, String keyword, String best, String notdone) {
-    	return boardDao.searchKnowledgeCount(knowledgekind,keyword,best,notdone);
+    public int searchKnowledgeCount(String knowledgekind, String keyword) {
+    	return boardDao.searchKnowledgeCount(knowledgekind,keyword);
     };
     @Override
     public List<Board> selectKnowledgeList(int page, int pageSize){
@@ -310,14 +244,17 @@ public class BoardServiceImpl implements BoardService {
     public List<Knowledge> selectKnowledgeList2(int page, int pageSize){
     	return boardDao.selectKnowledgeList2(page,pageSize);
     };
-    
     @Override
-    public List<Board> searchKnowledgeList(String knowledgekind, String keyword, String best, String notdone, int page, int pageSize){
-    	return boardDao.searchKnowledgeList(knowledgekind,keyword,notdone,best,page,pageSize);
+    public List<Answer> selectKnowledgeList3(int page, int pageSize){
+    	return boardDao.selectKnowledgeList3(page,pageSize);
     };
     @Override
-    public List<Knowledge> searchKnowledgeList2(String knowledgekind, String keyword, String best, String notdone, int page, int pageSize){
-    	return boardDao.searchKnowledgeList2(knowledgekind,keyword,notdone,best,page,pageSize);
+    public List<Board> searchKnowledgeList(String knowledgekind, String keyword, int page, int pageSize){
+    	return boardDao.searchKnowledgeList(knowledgekind,keyword,page,pageSize);
+    };
+    @Override
+    public List<Knowledge> searchKnowledgeList2(String knowledgekind, String keyword, int page, int pageSize){
+    	return boardDao.searchKnowledgeList2(knowledgekind,keyword,page,pageSize);
     };
     @Override
     public List<Answer> searchKnowledgeList3(String knowledgekind, String keyword, int page, int pageSize){
@@ -336,10 +273,6 @@ public class BoardServiceImpl implements BoardService {
     public List<Board> selectKnowledgeDetailAnswer(int postNo){
       	 return boardDao.selectKnowledgeDetailAnswer(postNo);
     };
-    @Override
-    public int selectKnowledgeAccepted(int postNo) {
-        return boardDao.selectKnowledgeAccepted(postNo);
-    }
     //6-2. 지식인 답변 갯수 조회
     @Override
     public int selectKnowledgeAnswerCount(int postNo) {
@@ -347,21 +280,13 @@ public class BoardServiceImpl implements BoardService {
 	}
     //6-3. 지식인 질문 등록
     @Override
-    public int insertKnowledgeQuestion(Board board,  List<Attachment> list, String webPath) throws Exception {
+    public int insertKnowledgeQuestion(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception {
     	
     	board.setPostTitle(Utils.XSSHandling(board.getPostTitle()));
 		board.setPostContent(Utils.XSSHandling(board.getPostContent()));
 		board.setPostContent(Utils.newLineHandling(board.getPostContent()));
-		
-		int result = 0;
+    	
     	int postNo = boardDao.insertKnowledgeQuestion(board);
-    	if(postNo > 0 && !list.isEmpty()) {
-			for(Attachment attach    :   list) {
-				attach.setPostNo(postNo);
-				attach.setFilePath(webPath);
-			}
-			result = boardDao.insertFreeAttachment(list);
-    	}
     
 		return postNo;
     }
@@ -381,7 +306,7 @@ public class BoardServiceImpl implements BoardService {
 		board.setPostContent(Utils.XSSHandling(board.getPostContent()));
 		board.setPostContent(Utils.newLineHandling(board.getPostContent()));
     	
-    	int postNo = boardDao.insertKnowledgeAnswer(board);
+    	int postNo = boardDao.insertKnowledgeQuestion(board);
     
 		return postNo;
     }
@@ -393,85 +318,8 @@ public class BoardServiceImpl implements BoardService {
     
 		return result;
     }
+
     
-    //6-6. 지식인 질문 수정
-    @Override
-    public int updateKnowledgeQuestion(Board b, Knowledge k, List<MultipartFile> list, String wholePath, String webPath) throws Exception{
-    	// 1) XSS, 개행문자 처리
-    	b.setPostTitle(Utils.XSSHandling(b.getPostTitle()));
-    	b.setPostContent(Utils.XSSHandling(b.getPostContent()));
-    	b.setPostContent(Utils.newLineHandling(b.getPostContent()));
-    	
-    	int result = boardDao.updateKnowledgeQuestion(b);
-    	int result2 = boardDao.updateKnowledgeQuestion2(k);
-    	
-    	if(result> 0 && result2>0) {
-    		// 3) 업로드된 파일들 분류작업.
-    		List<Attachment> attachList = new ArrayList();
-    		
-    		if(list != null) {
-    			for(int i =0; i<list.size(); i++) {
-    				
-    				if(!list.get(i).isEmpty()) {
-    					
-    					// 변경된 파일명 저장
-    					String changeName = Utils.saveFile(list.get(i), wholePath);
-    					
-    					// Attachment객체를 생성해서 값을 추가한 후 attachList에 추가.
-    					Attachment at = Attachment
-    							.builder()
-    							.postNo(b.getPostNo())
-    							.originName(list.get(i).getOriginalFilename())
-    							.changeName(changeName)
-    							.filePath(webPath)
-    							.build();
-    					attachList.add(at);
-    				}
-    			}
-    		}
-    		
-    		if(result > 0) {
-    			// Attachment객체 하나하나 업데이트
-    			for( Attachment at      :       attachList) {
-    				result = boardDao.updateAttachment(at);
-    				
-    				// result = 0 => 수정작업 실패 => 기존에 첨부파일이 등록 X
-    				// result = 1 => 수정작업 성공 => 기존에 첨부파일이 있었으니까 O
-    				
-    				//6) 결과값이 0인경우 -> update는 실패했찌만 , 실제 db에 올라간 첨부파일정보를 등록해야하기 때문에 insert문 실행
-    				if(result == 0) {
-    					result = boardDao.insertAttachment(at);
-    				}
-    			}
-    		}
-    	}
-    	return result;
-    }
-    
-    //6-8. 지식인 채택
-    @Override
-    public int updateknowledgeAcceped(int postNo) {
-    	return boardDao.updateknowledgeAcceped(postNo);
-    };
-   
-    //6-9. 지식인 추천수 증가
-    @Override
-    public int increaseKnowledgeUpvotes(int postNo) {
-    	 return boardDao.increaseKnowledgeUpvotes(postNo);
-    };
-    
-    //6-10. 지식인 답변 수정
-    @Override
-    public int knowledgeAnswerUpdate(Board b) throws Exception{
-    	// 1) XSS, 개행문자 처리
-		b.setPostContent(Utils.XSSHandling(b.getPostContent()));
-		b.setPostContent(Utils.newLineHandling(b.getPostContent()));
-		
-		int result = boardDao.knowledgeAnswerUpdate(b);
-		
-		return result;
-    }
-  
     //이찬우 구역 끝
 
 

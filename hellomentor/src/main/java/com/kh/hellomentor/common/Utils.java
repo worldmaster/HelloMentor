@@ -7,9 +7,6 @@ import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class Utils {
 	// 변경된 이름을 돌려주면서, 원본파일을 변경된 파일이름으로 서버에 저장시키는 메소드
 		public static String saveFile(MultipartFile upfile, String savePath) {
@@ -20,10 +17,9 @@ public class Utils {
 			String ext = originName.substring(originName.lastIndexOf("."));
 			
 			String changeName = currentTime+random+ext;
-			log.info("changeName {}", changeName);
+			
 			try {
 				upfile.transferTo(new File(savePath+changeName));
-				log.info("upfile {}", upfile);
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 				//log.error("게시글 등록 오류 = {}", e.getMessage());			

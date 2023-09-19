@@ -18,7 +18,11 @@
   
   <div th:insert="common/header :: header"></div>
   
- 
+  <script>
+  	var urlParams = new URLSearchParams(window.location.search);
+ 	var postNo = urlParams.get("postNo");
+  </script>
+  
     <div class="content">
       <div class="section">
         <div class="title">지식인</div>
@@ -27,7 +31,7 @@
 		
         <form th:action="@{knowledgeanswerinsert}" method="post">
           <!-- 회원가입form안에.txt -->
-          <input type="hidden" name="knowledgePostNo" th:value="${knowledgePostNo}" />
+          <input type="hidden" name="postNo" th:value="${postNo}" />
           <table id="knowledge-table">
             <tr>
               <th>답변</th>
@@ -40,6 +44,15 @@
                 ></textarea>
               </td>
             </tr>
+           <!--  <tr>
+              <th>첨부파일</th>
+              <td>
+                <label for="knowledge-file">
+                  <div id="knowledge-upload">파일 업로드하기</div>
+                </label>
+                <input type="file" id="knowledge-file" name="upfile" />
+              </td>
+            </tr> -->
           </table>
           <div align="center">
             <button type="button" id="knowledge-back">취소</button>

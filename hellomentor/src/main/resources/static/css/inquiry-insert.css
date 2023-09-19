@@ -87,24 +87,23 @@
 
 
 /* 첨부파일 */
-
 #inquiry-file {
-
-    color: rgb(95, 95, 95);
-    font-size: 12px;
-    transform: translate(5px, 0px);
-
+    display: none;
 }
 
-input[type=file]::file-selector-button {
-            border: 0px solid black;
-            font-size: 18px;
-            color: #48917A;
-            background-color: #ffffff;
-            cursor: pointer;
-            font-weight: 1000;
-            
-        }
+#inquiry-upload {
+    font-size: 17px;
+    height: 26px;
+    width: 140px;
+    border: 0px solid;
+    cursor: pointer;
+    text-align: center;
+    color: #48917A;
+    line-height: 26px;
+}
+
+
+
 
 
 

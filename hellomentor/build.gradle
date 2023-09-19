@@ -35,12 +35,6 @@ dependencies {
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.3.1'
 	implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
 	implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.6'
-	 // commons-fileupload
-    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
-    // commons-io
-    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
-    // Spring Web 모듈
-    implementation group: 'org.springframework', name: 'spring-web', version: '5.3.10.RELEASE'
 	runtimeOnly 'mysql:mysql-connector-java'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 }

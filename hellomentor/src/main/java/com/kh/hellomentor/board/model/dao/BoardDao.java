@@ -236,9 +236,6 @@ public class BoardDao {
     public Free selectFreeDetail2(int postNo) {
         return session.selectOne("boardMapper.selectFreeDetail2",postNo);
     }
-    public List<Attachment> selectAttachment(int postNo) {
-        return session.selectList("boardMapper.selectAttachment",postNo);
-    }
 
     //5-3. 자유게시판 글 작성
     public int insertFree(Board board) {
@@ -257,9 +254,7 @@ public class BoardDao {
     public int insertFree2(int postNo) {
     	return session.insert("boardMapper.insertFree2" , postNo);
     }
-    public int insertAttachment(Attachment attach) {
-		return session.insert("boardMapper.insertAttachment", attach);
-	}
+
     public int insertFreeAttachment(List<Attachment> list) {
         return session.insert("boardMapper.insertFreeAttachment", list);
     }
@@ -279,25 +274,16 @@ public class BoardDao {
     public int increaseUpvotes(int postNo) {
     	return session.update("boardMapper.increaseUpvotes",postNo);
     }
-    // 5-8. 자유게시판 수정
-    public int updateFree(Board b) {
-		return session.update("boardMapper.updateFree" , b);
-	}
-    public int updateAttachment(Attachment at) {
-		return session.update("boardMapper.updateAttachment", at);
-	}
-
+    
     //6. 지식인 조회 (메인)
     public int selectKnowledgeCount() {
     	return session.selectOne("boardMapper.selectKnowledgeCount");
     };
  
-    public int searchKnowledgeCount(String knowledgekind, String keyword, String best, String notdone) {
+    public int searchKnowledgeCount(String knowledgekind, String keyword) {
     	 Map<String, Object> paramMap = new HashMap<>();
   	   paramMap.put("knowledgekind", knowledgekind);
   	    paramMap.put("keyword", keyword);
-  	  paramMap.put("best", best);
-      paramMap.put("notdone", notdone);
     	return session.selectOne("boardMapper.searchKnowledgeCount",paramMap);
     };
 
@@ -319,27 +305,32 @@ public class BoardDao {
  	   params.put("pageSize", pageSize);
    	return session.selectList("boardMapper.selectKnowledgeList2",params);
    };
+   public List<Answer> selectKnowledgeList3(int page, int pageSize){
+  	 int start = (page - 1) * pageSize;
+       
+	   // MyBatis 매퍼를 사용하여 데이터베이스에서 페이징된 데이터를 조회합니다.
+	   Map<String, Object> params = new HashMap<>();
+	   params.put("start", start);
+	   params.put("pageSize", pageSize);
+  	return session.selectList("boardMapper.selectKnowledgeList3",params);
+  };
   
-    public List<Board> searchKnowledgeList(String knowledgekind, String keyword, String best, String notdone,int page, int pageSize){
+    public List<Board> searchKnowledgeList(String knowledgekind, String keyword, int page, int pageSize){
     	 Map<String, Object> paramMap = new HashMap<>();
 	        int start = (page - 1) * pageSize;
 	       paramMap.put("knowledgekind", knowledgekind);
 	       paramMap.put("keyword", keyword);
 	       paramMap.put("start", start);
 	      paramMap.put("pageSize", pageSize);
-	      paramMap.put("best", best);
-	       paramMap.put("notdone", notdone);
     	return session.selectList("boardMapper.searchKnowledgeList",paramMap);
     };
-    public List<Knowledge> searchKnowledgeList2(String knowledgekind, String keyword, String best, String notdone, int page, int pageSize){
+    public List<Knowledge> searchKnowledgeList2(String knowledgekind, String keyword, int page, int pageSize){
    	 Map<String, Object> paramMap = new HashMap<>();
 	        int start = (page - 1) * pageSize;
 	       paramMap.put("knowledgekind", knowledgekind);
 	       paramMap.put("keyword", keyword);
 	       paramMap.put("start", start);
 	      paramMap.put("pageSize", pageSize);
-	      paramMap.put("best", best);
-	       paramMap.put("notdone", notdone);
    	return session.selectList("boardMapper.searchKnowledgeList2",paramMap);
    };
    
@@ -364,10 +355,6 @@ public class BoardDao {
     public List<Board> selectKnowledgeDetailAnswer(int postNo) {
         return session.selectList("boardMapper.selectKnowledgeDetailAnswer",postNo);
     }
-    public int selectKnowledgeAccepted(int postNo) {
-        return session.selectOne("boardMapper.selectKnowledgeAccepted",postNo);
-    }
-  
     
     // 6-2. 지식인 답변 갯수
     public int selectKnowledgeAnswerCount(int postNo) {
@@ -412,27 +399,6 @@ public class BoardDao {
     public int insertKnowledgeAnswer2(Answer answer) {
     	return session.insert("boardMapper.insertKnowledgeAnswer2" , answer);
     }
-    // 6-6. 지식인 질문 수정
-    public int updateKnowledgeQuestion(Board b) {
-		return session.update("boardMapper.updateKnowledgeQuestion" , b);
-	}
-    public int updateKnowledgeQuestion2(Knowledge k) {
-		return session.update("boardMapper.updateKnowledgeQuestion2" , k);
-	}
-    //6-8. 지식인 채택
-    public int updateknowledgeAcceped(int postNo) {
-    	return session.update("boardMapper.updateknowledgeAcceped",postNo);
-    };
-    // 6-9. 지식인 추천수 증가
-    public int increaseKnowledgeUpvotes(int postNo) {
-    	return session.update("boardMapper.increaseKnowledgeUpvotes",postNo);
-    }
-    // 6-10. 지식인 답변 수정
-    public int knowledgeAnswerUpdate(Board b) {
-		return session.update("boardMapper.knowledgeAnswerUpdate" , b);
-	}
-    
-
     //이찬우 구역 끝
 
 

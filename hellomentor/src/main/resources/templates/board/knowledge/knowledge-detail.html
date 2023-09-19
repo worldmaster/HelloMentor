@@ -47,28 +47,13 @@
                 <img th:src="@{/img/see.png}" class="seeimg1" />
                 <span th:text="${selectedPost.views}">조회수</span>
               </div>
-              <div  id="knowledge-chosen">
-				    <span th:if="${isAccepted == 1}">채택완료</span>
-				    <span th:unless="${isAccepted == 1}">답변대기중</span>
-				</div>
-							   
-
+              <div id="knowledge-chosen">채택완료</div>
             </div>
           </div>
         </div>
 
+        <div class="knowledge-content" th:text="${selectedPost.postContent}">질문 내용</div>
 
-			<div class="knowledge-content">
-			 <span th:text="${selectedPost.postContent}">내용</span>
-
-		      <div class="image-container" th:each="attach: ${attachList}">
-		        <a th:href="@{${attach.filePath} + ${attach.changeName}}"
-		           th:download="${attach.originName}">
-		          <img th:src="@{${attach.filePath} + ${attach.changeName}}">
-		        </a>
-		      </div>
- 
-			</div>
         <!--지식인 정보 및 내용 끝-->
 
         <!--신고-->
@@ -79,7 +64,7 @@
 
         <!--하단 버튼-->
         <!-- 아래 버튼은 작성자만 보여진다. -->
-         <div class="knowledge-btns" th:if="${(selectedPost.userNo == loginUser.userId) and (isAccepted == 0)}">
+         <div class="knowledge-btns" th:if="${selectedPost.userNo == loginUser.userId}">
         	<a th:href="'/hellomentor/knowledgeupdate?kno=' + ${selectedPost.postNo}">
             <button type="button" id="move-to-change">수정</button>
             </a>
@@ -91,7 +76,6 @@
       
 
         <!--좋아요-->
-        <a th:href="'/hellomentor/increaseknowledgeupvotes?uno=' + ${selectedPost.userNo} + '&kno=' + ${selectedPost.postNo}">
         <svg
           class="heart-logo"
           xmlns="http://www.w3.org/2000/svg"
@@ -108,18 +92,16 @@
             stroke-linejoin="round"
           />
         </svg>
-        </a>
         <span id="count-love" th:text="${selectedPost2.upVotes}">추천수</span>
 
 <input type="hidden" id="postNo" th:value="${selectedPost.postNo}" />
 
 <!-- 답변 버튼, 작성자 제외 모든 사람들에게 보여짐 -->
-	<div class="knowledge-reply" th:if="${(selectedPost.userNo != loginUser.userId) and (isAccepted == 0)}">
-    <a th:href="'/hellomentor/knowledgeanswerinsert?ano=' + ${selectedPost.postNo}">
-        <button type="button" id="move-to-insert">답변하기</button>
-    </a>
+<div class="knowledge-reply" th:if="${selectedPost.userNo != loginUser.userId}">
+<a th:href="'/hellomentor/knowledgeanswerinsert?ano=' + ${selectedPost.postNo}">
+    <button id="move-to-insert">답변하기</button>
+   </a>
 </div>
-
 
 
 
@@ -152,14 +134,10 @@
             <div class="reply-info" >
               <div th:text="${a.userNo}" >작성자</div>
               <div th:text="${a.createDate}" >작성일자</div>
-              
               <!-- 게시글 작성자 로그인 시에만 채택 버튼이 뜬다. -->
-              <a th:href="'/hellomentor/updateknowledgeacceped?ano=' + ${a.postNo} + '&kno=' + ${selectedPost.postNo}">
-              <button type="button" class="insert-correct" th:if="${selectedPost.userNo == loginUser.userId and isAccepted == 0}">채택하기</button>
-              </a>
-              
+              <button type="button" class="insert-correct" th:if="${selectedPost.userNo == loginUser.userId}">채택하기</button>
               <!-- 답변 작성자 로그인 시에만 delete-reply가 뜬다. -->
-              <div class="delete-reply" th:if="${(a.userNo == loginUser.userId) and (isAccepted == 0)}">
+              <div class="delete-reply" th:if="${a.userNo == loginUser.userId}">
                 <a th:href="'/hellomentor/deleteknowledgeanswer?ano=' + ${a.postNo} + '&kno=' + ${selectedPost.postNo}">
                 <svg class="trash-logo" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"fill="none">
                   <path d="M3 6H21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -170,14 +148,14 @@
                 </svg>
                 </a>
               </div>
-              
             </div>
 
             <div class="answer-content" th:text="${a.postContent}">답변 내용</div>
             
+            
             <!-- 해당 작성자 로그인 시에만 answer-edit이 보인다.-->
-            <div class="answer-edit" th:if="${(a.userNo == loginUser.userId) and (isAccepted == 0)} ">
-            <a th:href="'/hellomentor/knowledgeanswerupdate?ano=' + ${a.postNo} + '&kno=' + ${selectedPost.postNo}" >
+            <div class="answer-edit" th:if="${a.userNo == loginUser.userId}">
+            <a th:href="'/hellomentor/knowledgeanswerupdate?ano=' + ${a.postNo}">
               수정하기
               </a>
             </div>
