@@ -140,32 +140,32 @@ public class BoardController {
     ) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
-        
-        
+
+
     	  // 페이지 번호와 페이지당 항목 수로 페이징 정보를 생성합니다
         long totalItems = 0;
-        
+
         List<Board> pageItems;
         if (ntkind != null  && keyword != null) {
            // 검색 로직을 수행하고 결과를 처리
-           totalItems = boardService.searchNoticeCount(ntkind, keyword); // 현재 검색된 게시글의 총 갯수 
+           totalItems = boardService.searchNoticeCount(ntkind, keyword); // 현재 검색된 게시글의 총 갯수
            pageItems = boardService.searchNoticeList(ntkind, keyword, page, pageSize); // 현재 검색된 게시글
         } else {
            // 일반 목록을 가져옵니다
            totalItems = boardService.selectNoticeCount(); // 전체 일반목록의 총 갯수
            pageItems = boardService.selectNoticeList(page, pageSize); // 전체 일반목록의 게시글
         }
-        long totalPages = 0; // 
-        
+        long totalPages = 0; //
+
         if(totalItems == 0) {
            totalItems = 1;
            totalPages = (totalItems + pageSize - 1) / pageSize;
-        }                        
+        }
         totalPages = (totalItems + pageSize - 1) / pageSize;
-        
-        //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨                         
+
+        //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨
          // 모델에 데이터와 페이징 정보를 추가합니다.
-        
+
         model.addAttribute("list", pageItems);
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword", keyword);
@@ -307,31 +307,31 @@ public class BoardController {
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
         
- 
+
         	  // 페이지 번호와 페이지당 항목 수로 페이징 정보를 생성합니다
             long totalItems = 0;
-            
+
             List<Board> pageItems;
             if (faqkind != null  && keyword != null) {
                // 검색 로직을 수행하고 결과를 처리
-               totalItems = boardService.searchFaqCount(faqkind, keyword); // 현재 검색된 게시글의 총 갯수 
+               totalItems = boardService.searchFaqCount(faqkind, keyword); // 현재 검색된 게시글의 총 갯수
                pageItems = boardService.searchFaqList(faqkind, keyword, page, pageSize); // 현재 검색된 게시글
             } else {
                // 일반 목록을 가져옵니다
                totalItems = boardService.selectFaqCount(); // 전체 일반목록의 총 갯수
                pageItems = boardService.selectFaqList(page, pageSize); // 전체 일반목록의 게시글
             }
-            long totalPages = 0; // 
-            
+            long totalPages = 0; //
+
             if(totalItems == 0) {
                totalItems = 1;
                totalPages = (totalItems + pageSize - 1) / pageSize;
-            }                        
+            }
             totalPages = (totalItems + pageSize - 1) / pageSize;
-            
-            //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨                         
+
+            //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨
              // 모델에 데이터와 페이징 정보를 추가합니다.
-            
+
             model.addAttribute("list", pageItems);
             model.addAttribute("currentPage", page);
             model.addAttribute("keyword", keyword);
@@ -349,7 +349,7 @@ public class BoardController {
 
             return "board/faq/faq-board";
         }
-    
+
     //2-1. FAQ 삭제
     @GetMapping("/deletefaq")
     public String deleteFaq(
@@ -395,8 +395,8 @@ public class BoardController {
         String webPath = "/img/attachment/inquiry/";
         String currentDirectory = System.getProperty("user.dir");
         String FilesLocation = currentDirectory + "/src/main/resources/static"+webPath;
- 
-        
+
+
         board.setUserNo(userNo + "");
 
         // 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
@@ -457,29 +457,29 @@ public class BoardController {
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
         int userNo = loginUser.getUserNo();
-        
+
         // 페이지 번호와 페이지당 항목 수로 페이징 정보를 생성합니다
         long totalItems = 0;
         List<Board> list;
         List<Inquiry> list2;
-       
+
         // 일반 목록을 가져옵니다
         totalItems = boardService.selectInquiryCount(); // 전체 일반목록의 총 갯수
         list = boardService.selectInquiryList(userNo, page, pageSize); // 전체 일반목록의 게시글
         list2 = boardService.selectInquiryList2(userNo, page, pageSize);
-         long totalPages = 0; 
-         
+         long totalPages = 0;
+
          if(totalItems == 0) {
              totalItems = 1;
              totalPages = (totalItems + pageSize - 1) / pageSize;
-          }                        
+          }
           totalPages = (totalItems + pageSize - 1) / pageSize;
-          
+
           List<Object[]> combinedList = new ArrayList<>();
           for (int i = 0; i < list.size(); i++) {
               combinedList.add(new Object[]{list.get(i), list2.get(i)});
           }
-          
+
           model.addAttribute("combinedList", combinedList);
           model.addAttribute("currentPage", page);
           model.addAttribute("pageSize", pageSize);
@@ -490,7 +490,7 @@ public class BoardController {
           log.info("pageSize {}", pageSize);
           log.info("totalItems {}", totalItems);
           log.info("totalPages {}", totalPages);
-          
+
 
         return "board/inquiry/inquiry-board";
     }
@@ -510,7 +510,7 @@ public class BoardController {
         Inquiry selectedPost2 = boardService.selectInquiryDetail2(postNo);
         model.addAttribute("selectedPost2", selectedPost2);
         log.info("selectedPost2 {}", selectedPost2);
-        
+
         List<Attachment> attachList = boardService.selectAttachment(postNo);
         model.addAttribute("attachList", attachList);
         log.info("attachList {}", attachList);
@@ -532,36 +532,36 @@ public class BoardController {
     ) {
     	Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
-        
+
         // 페이지 번호와 페이지당 항목 수로 페이징 정보를 생성합니다
         long totalItems = 0;
-        
+
         List<Board> pageItems;
         List<Free> pageItems2;
         if ((freekind != null  && keyword != null) || views!=null) {
            // 검색 로직을 수행하고 결과를 처리
-           totalItems = boardService.searchFreeCount(freekind, keyword,views); // 현재 검색된 게시글의 총 갯수 
+           totalItems = boardService.searchFreeCount(freekind, keyword,views); // 현재 검색된 게시글의 총 갯수
            pageItems = boardService.searchFreeList(freekind, keyword, views,page, pageSize); // 현재 검색된 게시글
            pageItems2 = boardService.searchFreeList2(freekind, keyword, views,page, pageSize);
         } else {
            // 일반 목록을 가져옵니다
            totalItems = boardService.selectFreeCount(); // 전체 일반목록의 총 갯수
            pageItems = boardService.selectFreeList(page, pageSize); // 전체 일반목록의 게시글
-           pageItems2 = boardService.selectFreeList2(page, pageSize); 
+           pageItems2 = boardService.selectFreeList2(page, pageSize);
         }
-        long totalPages = 0; // 
-        
+        long totalPages = 0; //
+
         if(totalItems == 0) {
            totalItems = 1;
            totalPages = (totalItems + pageSize - 1) / pageSize;
-        }                        
+        }
         totalPages = (totalItems + pageSize - 1) / pageSize;
-        
-        //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨                         
+
+        //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨
          // 모델에 데이터와 페이징 정보를 추가합니다.
-        
+
         //일반 게시글
- 
+
 
         //핫 게시글
         List<Board> list3 = boardService.selectBestFreeList();
@@ -577,13 +577,13 @@ public class BoardController {
         for (int i = 0; i < pageItems.size(); i++) {
             combinedList.add(new Object[]{pageItems.get(i), pageItems2.get(i)});
         }
-        
+
         //핫게시글 묶어주기
         List<Object[]> combinedList2 = new ArrayList<>();
         for (int i = 0; i < list3.size(); i++) {
             combinedList2.add(new Object[]{list3.get(i), list4.get(i)});
         }
-        
+
         model.addAttribute("combinedList", combinedList);
         model.addAttribute("combinedList2", combinedList2);
         model.addAttribute("currentPage", page);
@@ -602,7 +602,7 @@ public class BoardController {
         log.info("pageSize {}", pageSize);
         log.info("totalItems {}", totalItems);
         log.info("totalPages {}", totalPages);
-        
+
         return "board/free/free-board";
     }
 
@@ -636,7 +636,7 @@ public class BoardController {
         List<Attachment> attachList = boardService.selectAttachment(postNo);
         model.addAttribute("attachList", attachList);
         log.info("attachList {}", attachList);
-        
+
     	// 상세조회 성공시 쿠키를 이용해서 조회수가 중복으로 증가되지 않도록 방지 + 본인의 글은 애초에 조회수 증가되지 않게 설정
 		if (selectedPost != null) {
 
@@ -844,9 +844,9 @@ public class BoardController {
     @GetMapping("/increaseupvotes")
     public String increaseUpvotes(Model model, HttpSession session,
             @RequestParam(name = "fno") int postNo,
-            @RequestParam(name = "uno") String userNo, 
+            @RequestParam(name = "uno") String userNo,
             HttpServletRequest req,
-            HttpServletResponse res, 
+            HttpServletResponse res,
             RedirectAttributes redirectAttributes) {
         log.info("postNo {}", postNo);
 
@@ -909,7 +909,7 @@ public class BoardController {
             }else {
             	redirectAttributes.addFlashAttribute("message", "자신의 글에는 추천할 수 없습니다.");
             }
-       
+
         } else {
             redirectAttributes.addFlashAttribute("message", "추천수 증가 실패");
         }
@@ -925,21 +925,21 @@ public class BoardController {
              @RequestParam(name = "fno") int postNo
              ) {
     	 model.addAttribute("postNo", postNo);
-    	 
+
         Board selectedPost = boardService.selectFreeDetail(postNo);
         selectedPost.setPostContent(Utils.newLineClear(selectedPost.getPostContent()));
         model.addAttribute("selectedPost", selectedPost);
         log.info("selectedPost {}", selectedPost);
-        
+
         List<Attachment> attachList = boardService.selectAttachment(postNo);
         model.addAttribute("attachList", attachList);
         log.info("attachList {}", attachList);
-        
+
         return "board/free/free-update";
     }
     @PostMapping("/freeupdate")
 	public String updateBoard(
-			Board board, 
+			Board board,
 			@RequestParam(value = "upfile", required = false) List<MultipartFile> upfiles,
 			HttpSession session,
 			Model model,
@@ -953,7 +953,7 @@ public class BoardController {
 		// Board 객체에 데이터 추가(boardCode , boardWriter , boardNo)
 		Member loginUser = (Member) session.getAttribute("loginUser");
 		board.setUserNo(loginUser.getUserId() + "");
-		
+
 		log.info("board ================== {}", board);
 		int result = 0;
 
@@ -985,17 +985,17 @@ public class BoardController {
     ) {
     	Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
- 
+
         	  // 페이지 번호와 페이지당 항목 수로 페이징 정보를 생성합니다
             long totalItems = 0;
-            
+
             List<Board> pageItems;
             List<Knowledge> pageItems2;
             List<Answer> pageItems3;
             if ((knowledgekind != null  && keyword != null) || best!=null || accepted!=null) {
                // 검색 로직을 수행하고 결과를 처리
 
-               totalItems = boardService.searchKnowledgeCount(knowledgekind, keyword, best, accepted); // 현재 검색된 게시글의 총 갯수 
+               totalItems = boardService.searchKnowledgeCount(knowledgekind, keyword, best, accepted); // 현재 검색된 게시글의 총 갯수
                pageItems = boardService.searchKnowledgeList(knowledgekind, keyword, best, accepted, page, pageSize); // 현재 검색된 게시글
                pageItems2 = boardService.searchKnowledgeList2(knowledgekind, keyword, best, accepted, page, pageSize); // 현재 검색된 게시글
             } else {
@@ -1004,21 +1004,21 @@ public class BoardController {
                pageItems = boardService.selectKnowledgeList(page, pageSize); // 전체 일반목록의 게시글
                pageItems2 = boardService.selectKnowledgeList2(page, pageSize);
             }
-            long totalPages = 0; // 
-            
+            long totalPages = 0; //
+
             if(totalItems == 0) {
                totalItems = 1;
                totalPages = (totalItems + pageSize - 1) / pageSize;
-            }                        
+            }
             totalPages = (totalItems + pageSize - 1) / pageSize;
-            
-            //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨                         
+
+            //페이징 처리시 totalPages가 html로 넘어가서 총 갯수에 맞게 밑에 번호버튼이 생성됨
              // 모델에 데이터와 페이징 정보를 추가합니다.
         List<Object[]> combinedList = new ArrayList<>();
         for (int i = 0; i < pageItems.size(); i++) {
             combinedList.add(new Object[]{pageItems.get(i), pageItems2.get(i)});
-        }    
-            
+        }
+
 
         model.addAttribute("combinedList", combinedList);
         model.addAttribute("currentPage", page);
@@ -1060,7 +1060,7 @@ public class BoardController {
         int total = boardService.selectKnowledgeAnswerCount(postNo);
         model.addAttribute("total", total);
         log.info("total {}", total);
-        
+
         int isAccepted = boardService.selectKnowledgeAccepted(postNo);
         model.addAttribute("isAccepted", isAccepted);
         log.info("isAccepted {}", isAccepted);
@@ -1080,8 +1080,8 @@ public class BoardController {
         List<Attachment> attachList = boardService.selectAttachment(postNo);
         model.addAttribute("attachList", attachList);
         log.info("attachList {}", attachList);
-        
-        
+
+
         	// 상세조회 성공시 쿠키를 이용해서 조회수가 중복으로 증가되지 않도록 방지 + 본인의 글은 애초에 조회수 증가되지 않게 설정
      		if (selectedPost != null) {
 
@@ -1242,7 +1242,7 @@ public class BoardController {
             RedirectAttributes redirectAttributes
 
     ) {
-    	
+
         Member loginUser = (Member) session.getAttribute("loginUser");
         int userNo = loginUser.getUserNo();
 
@@ -1300,26 +1300,26 @@ public class BoardController {
              @RequestParam(name = "kno") int postNo
              ) {
     	 model.addAttribute("postNo", postNo);
-    	 
+
         Board selectedPost = boardService.selectKnowledgeDetail(postNo);
         selectedPost.setPostTitle(Utils.newLineClear(selectedPost.getPostTitle()));
         selectedPost.setPostContent(Utils.newLineClear(selectedPost.getPostContent()));
         model.addAttribute("selectedPost", selectedPost);
         log.info("selectedPost {}", selectedPost);
-        
+
         Knowledge selectedPost2 = boardService.selectKnowledgeDetail2(postNo);
         model.addAttribute("selectedPost2", selectedPost2);
         log.info("selectedPost2 {}", selectedPost2);
-        
+
         List<Attachment> attachList = boardService.selectAttachment(postNo);
         model.addAttribute("attachList", attachList);
         log.info("attachList {}", attachList);
-        
+
         return "board/knowledge/knowledge-question-update";
     }
     @PostMapping("/knowledgeupdate")
 	public String updateKnowledgeQuestion(
-			Board board, 
+			Board board,
 			Knowledge knowledge,
 			@RequestParam(value = "upfile", required = false) List<MultipartFile> upfiles,
 			HttpSession session,
@@ -1358,7 +1358,7 @@ public class BoardController {
             RedirectAttributes redirectAttributes
     ) {
        log.info("postNo {}", postNo);
-       
+
        int result = boardService.deletePost(postNo);
        log.info("result {}", result);
         if (result > 0) {
@@ -1369,7 +1369,7 @@ public class BoardController {
              return "redirect:/knowledgedetail?kno="+knowledgePostNo;
          }
     }
-    
+
     //6-8. 지식인 채택
     @GetMapping("/updateknowledgeacceped")
     public String updateknowledgeacceped(
@@ -1380,7 +1380,7 @@ public class BoardController {
             RedirectAttributes redirectAttributes
     ) {
        log.info("postNo {}", postNo);
-       
+
        int result = boardService.updateknowledgeAcceped(postNo);
        log.info("result {}", result);
         if (result > 0) {
@@ -1395,9 +1395,9 @@ public class BoardController {
     @GetMapping("/increaseknowledgeupvotes")
     public String increaseKnowledgeUpvotes(Model model, HttpSession session,
             @RequestParam(name = "kno") int postNo,
-            @RequestParam(name = "uno") String userNo, 
+            @RequestParam(name = "uno") String userNo,
             HttpServletRequest req,
-            HttpServletResponse res, 
+            HttpServletResponse res,
             RedirectAttributes redirectAttributes) {
         log.info("postNo {}", postNo);
 
@@ -1460,7 +1460,7 @@ public class BoardController {
             }else {
             	redirectAttributes.addFlashAttribute("message", "자신의 글에는 추천할 수 없습니다.");
             }
-       
+
         } else {
             redirectAttributes.addFlashAttribute("message", "추천수 증가 실패");
         }
@@ -1477,24 +1477,24 @@ public class BoardController {
              ) {
     	 model.addAttribute("postNo", postNo);
     	 model.addAttribute("knowledgePostNo", knowledgePostNo);
-    	 
+
     	Board board = boardService.selectKnowledgeDetail(postNo);
     	board.setPostContent(Utils.newLineClear(board.getPostContent()));
          model.addAttribute("board", board);
         log.info("board {}", board);
-        
+
         return "board/knowledge/knowledge-answer-update";
     }
     @PostMapping("/knowledgeanswerupdate")
 	public String knowledgeAnswerUpdate(
-			Board board, 
+			Board board,
 			Answer answer,
 			HttpSession session,
 			Model model,
 			RedirectAttributes redirectAttributes
 			) {
 		// 이미지, 파일을 저장할 저장경로 얻어오기
-		
+
 		log.info("board ================== {}", board);
 		int result = 0;
 
@@ -1503,7 +1503,7 @@ public class BoardController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	
+
 
 		if (result > 0) {
 			redirectAttributes.addFlashAttribute("message", "게시글 수정 성공");
@@ -1513,7 +1513,7 @@ public class BoardController {
 			 return "redirect:/knowledgeanswerupdate?ano="+board.getPostNo();
 		}
 	}
-    
+
     //이찬우 구역 끝
 
 
