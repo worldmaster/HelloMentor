@@ -1,7 +1,6 @@
 package com.kh.hellomentor.admin.controller;
 
 import com.kh.hellomentor.admin.model.service.AdminService;
-import com.kh.hellomentor.admin.model.service.adminService;
 import com.kh.hellomentor.board.model.service.BoardService;
 import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.board.model.vo.Board;
@@ -32,7 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AdminController {
 
 	 @Autowired
-     private adminService aService;
+     private AdminService aService;
       
       @Autowired
      private BoardService boardService; 
