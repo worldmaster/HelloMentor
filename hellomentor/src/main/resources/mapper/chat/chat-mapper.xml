@@ -12,6 +12,7 @@
     <resultMap id="messageResultSet" type="chatMessageDTO">
         <result column="CHATROOM_ID" property="roomId"/>
         <result column="USER_ID" property="writer"/>
+        <result column="PROFILE" property="profile"/>
         <result column="MESSAGE_TEXT" property="message"/>
         <result column="SEND_DATETIME" property="sendDateTime"/>
     </resultMap>
@@ -30,9 +31,10 @@
     </select>
 
     <select id="findMessageById" parameterType="string" resultMap="messageResultSet">
-        SELECT * , M.USER_ID
+        SELECT * , M.USER_ID, CONCAT(P.FILE_PATH, P.FILE_CHANGE_NAME) AS PROFILE
         FROM MESSAGE A
         JOIN MEMBER M ON A.USER_NO = M.USER_NO
+        JOIN PROFILE_IMG P ON M.USER_NO = P.USER_NO
         WHERE CHATROOM_ID = #{roomId}
     </select>
 

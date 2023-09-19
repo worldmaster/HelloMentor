@@ -55,6 +55,7 @@
                         </th:block>
                         <th:block th:if="${message.writer != loginUser.userId}">
                             <li>
+                                <div class="chatProfile" th:style="'background-image: url(' + @{${message.profile}} + ')'"></div>
                                 <b th:text="${message.writer}"></b>
                                 <p class="chat" th:text="${message.message}"></p>
                                 <span class="chatDate" th:text="${message.sendDateTime}"></span>

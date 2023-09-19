@@ -74,6 +74,15 @@
     margin-bottom: 40px;
 }
 
+.chatProfile {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .chat {
     display: inline-block;
     border-radius: 10px;
