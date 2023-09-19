@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.kh.hellomentor.board.model.vo.*;
 import com.kh.hellomentor.matching.model.vo.StudyApplicant;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -22,6 +21,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hellomentor.board.model.service.BoardService;
+import com.kh.hellomentor.board.model.vo.Answer;
+import com.kh.hellomentor.board.model.vo.Attachment;
+import com.kh.hellomentor.board.model.vo.Board;
+import com.kh.hellomentor.board.model.vo.Free;
+import com.kh.hellomentor.board.model.vo.Inquiry;
+import com.kh.hellomentor.board.model.vo.Knowledge;
+import com.kh.hellomentor.board.model.vo.Reply;
 import com.kh.hellomentor.common.Utils;
 import com.kh.hellomentor.member.controller.MemberController;
 import com.kh.hellomentor.member.model.vo.Member;
@@ -1163,87 +1169,6 @@ public class BoardController {
 
         return url;
 
-
-    }
-
-    @GetMapping("/report/{postNo}")
-    public String reportWrite(
-            @PathVariable("postNo") int postNo,
-            HttpSession session,
-            Model model,
-            HttpServletRequest req,
-            HttpServletResponse res
-    ) {
-        Board reportTarget = boardService.selectBoard(postNo);
-
-        model.addAttribute("reportTarget", reportTarget);
-
-        return "common/report";
-
-    }
-
-    @PostMapping("/report.insert")
-    public String insertReport(
-            @RequestParam(value = "upfile", required = false) MultipartFile upfile,
-            HttpSession session,
-            HttpServletRequest request,
-            RedirectAttributes redirectAttributes,
-            @ModelAttribute("loginUser") Member loginUser,
-            @RequestParam("reportTargetId") int reportTargetId,
-            @RequestParam("reportTargetUser") int reportTargetUser,
-            @RequestParam("report-category") String reportCategory,
-            @RequestParam("report-content") String reportContent
-    ) {
-        int categoryId = Integer.parseInt(reportCategory);
-        reportContent = Utils.XSSHandling(reportContent);
-        reportContent = Utils.newLineHandling(reportContent);
-
-
-        // 이미지, 파일을 저장할 저장경로 얻어오기
-        String projectRootPath = System.getProperty("user.dir");
-        String savePath = projectRootPath + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "img" + File.separator + "attachment" + File.separator + "report" + File.separator;
-
-
-
-        // 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
-        File dir = new File(savePath);
-            System.out.println("Attempting to create directory: " + dir.getAbsolutePath());
-        if (!dir.exists()) {
-            dir.mkdirs();
-            System.out.println("Failed to create directory: " + dir.getAbsolutePath());
-        }
-
-        Map<String, Object> reportInfo = new HashMap<>();
-
-        if (!upfile.isEmpty()) {
-            //  파일명 재정의 해주는 함수.
-            String changeName = Utils.saveFile(upfile, savePath);
-            reportInfo.put("changeName", changeName);
-            reportInfo.put("originName", upfile.getOriginalFilename());
-            reportInfo.put("fileSize", upfile.getSize());
-        }
-
-
-        reportInfo.put("writerNo", loginUser.getUserNo());
-        reportInfo.put("postContent", reportContent);
-        reportInfo.put("categoryId", categoryId);
-        reportInfo.put("targetUser", reportTargetUser);
-        reportInfo.put("targetPost", reportTargetId);
-        reportInfo.put("webPath", savePath);
-
-
-
-        int result = 0;
-
-        result = boardService.insertReport(reportInfo);
-
-        if (result > 0) {
-            redirectAttributes.addFlashAttribute("message", "성공적으로 신고가 접수 되었습니다");
-            return "redirect:/main";
-        } else {
-            redirectAttributes.addFlashAttribute("message", "신고 접수가 실패했습니다.");
-            return "redirect:/main";
-        }
 
     }
 
