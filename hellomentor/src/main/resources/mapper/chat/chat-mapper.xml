@@ -36,7 +36,10 @@
         WHERE CHATROOM_ID = #{roomId}
     </select>
 
-    <insert id="insertMessage" parameterType="message"
+    <insert id="insertMessage" parameterType="chatMessageDTO">
+        INSERT INTO (CHATROOM_ID, USER_NO, MESSAGE_TEXT)
+        VALUES (#{roomId}, #{userId}, #{message})
+    </insert>
 
 
 </mapper>

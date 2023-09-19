@@ -82,6 +82,7 @@
         var roomName = [[${room.name}]];
         var roomId = [[${room.roomId}]];
         var userId = [[${loginUser.userId}]];
+        var userNo = [[${loginUser.userNo}]] + "";
 
         console.log(roomName + ", " + roomId + ", " + userId);
 
@@ -119,15 +120,15 @@
                 // $(".display-chatting").append(str);
             });
 
-            //3. send(path, header, message)로 메세지를 보낼 수 있음
-            stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, writer: userId}))
+            // //3. send(path, header, message)로 메세지를 보낼 수 있음
+            // stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, writer: userId}))
         });
 
         $("#send-btn").on("click", function (e) {
             var msg = document.getElementById("chat-write-area");
 
             console.log(userId + ":" + msg.value);
-            stomp.send('/pub/chat/message', {}, JSON.stringify({roomId: roomId, message: msg.value, writer: userId}));
+            stomp.send('/pub/chat/message', {}, JSON.stringify({roomId: roomId, message: msg.value, writer: userNo}));
             msg.value = '';
         });
     });
