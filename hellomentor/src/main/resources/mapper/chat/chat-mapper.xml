@@ -2,5 +2,44 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="chatMapper">
 
+    <resultMap id="chatRoomResultSet" type="chatRoomDTO">
+        <id column="CHATROOM_ID" property="roomId"/>
+        <result column="CHATROOM_NAME" property="name"/>
+        <result column="CHATROOM_TYPE" property="chatRoomType"/>
+        <result column="RELATED_NO" property="relatedNo"/>
+    </resultMap>
+
+    <resultMap id="messageResultSet" type="chatMessageDTO">
+        <result column="CHATROOM_ID" property="roomId"/>
+        <result column="USER_ID" property="writer"/>
+        <result column="MESSAGE_TEXT" property="message"/>
+        <result column="SEND_DATETIME" property="sendDateTime"/>
+    </resultMap>
+
+    <select id="findAllRooms" parameterType="int" resultMap="chatRoomResultSet">
+        SELECT *
+        FROM CHATROOM C
+        JOIN CHATROOM_PERSON P ON C.CHATROOM_ID = P.CHATROOM_ID
+        WHERE USER_NO = #{userNo}
+    </select>
+
+    <select id="findRoomById" parameterType="string" resultMap="chatRoomResultSet">
+        SELECT *
+        FROM CHATROOM
+        WHERE CHATROOM_ID = #{roomId}
+    </select>
+
+    <select id="findMessageById" parameterType="string" resultMap="messageResultSet">
+        SELECT * , M.USER_ID
+        FROM MESSAGE A
+        JOIN MEMBER M ON A.USER_NO = M.USER_NO
+        WHERE CHATROOM_ID = #{roomId}
+    </select>
+
+    <insert id="insertMessage" parameterType="chatMessageDTO">
+        INSERT INTO (CHATROOM_ID, USER_NO, MESSAGE_TEXT)
+        VALUES (#{roomId}, #{userId}, #{message})
+    </insert>
+
 
 </mapper>
