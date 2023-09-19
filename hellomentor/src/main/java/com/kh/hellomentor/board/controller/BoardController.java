@@ -1687,7 +1687,7 @@ public class BoardController {
 
         // 이미지, 파일을 저장할 저장경로 얻어오기
         String projectRootPath = System.getProperty("user.dir");
-        String savePath = projectRootPath + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "img" + File.separator + "attachment" + File.separator + "report" + File.separator;
+        String savePath = projectRootPath + File.separator + "hellomentor" + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "img" + File.separator + "attachment" + File.separator + "report" + File.separator;
 
 
 
