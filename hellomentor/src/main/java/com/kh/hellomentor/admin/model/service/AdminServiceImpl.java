@@ -1,7 +1,6 @@
 package com.kh.hellomentor.admin.model.service;
 
 import com.kh.hellomentor.admin.model.dao.AdminDao;
-import com.kh.hellomentor.admin.model.dao.adminDao;
 import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.board.model.vo.Board;
 import com.kh.hellomentor.board.model.vo.Report;
@@ -19,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class AdminServiceImpl implements AdminService {
 
 	 @Autowired
-	   private adminDao adminDao;
+	   private AdminDao adminDao;
 	
 	
 	@Override

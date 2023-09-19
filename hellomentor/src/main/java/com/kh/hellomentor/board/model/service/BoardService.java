@@ -3,6 +3,8 @@ package com.kh.hellomentor.board.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.kh.hellomentor.board.model.vo.Answer;
 import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.board.model.vo.Board;
@@ -22,7 +24,7 @@ public interface BoardService {
     //0. 조회수 증가
     public int increaseCount(int postNo);
     
-    //0-1. FAQ 삭제
+    //0-1. 글 삭제
     public int deletePost(int postNo);
     
     //1. 공지사항 목록 select
@@ -43,7 +45,7 @@ public interface BoardService {
     
 
     //3. 1:1문의 작성
-    public int insertInquiry(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception;
+    public int insertInquiry(Board board,  List<Attachment> list,  String webPath) throws Exception;
     public int insertInquiry2(Inquiry inquiry);
     
     //4. 문의내역 조회 (메인)
@@ -72,9 +74,10 @@ public interface BoardService {
     //5-2. 자유게시판 상세 조회
     public Board selectFreeDetail(int postNo);
     public Free selectFreeDetail2(int postNo);
+    public List<Attachment> selectAttachment(int postNo);
     
     //5-3. 자유게시판 글 작성
-    public int insertFree(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception;
+    public int insertFree(Board board,  List<Attachment> list, String webPath) throws Exception;
     public int insertFree2(int postNo);
     
     //5-4. 자유게시판 댓글 삽입
@@ -86,34 +89,50 @@ public interface BoardService {
 	//5-6. 자유게시판 댓글 삭제
     public int deleteReply(int replyId);
     
-    //5-7. 추천수 증가
+    //5-7. 자유게시판 추천수 증가
     public int increaseUpvotes(int postNo);
+    
+    //5-8. 자유게시판 수정
+    public int updateFree(Board b, List<MultipartFile> list, String wholePath, String webPath) throws Exception;
     
     //6. 지식인 조회 (메인)
     public int selectKnowledgeCount();
-    public int searchKnowledgeCount(String knowledgekind, String keyword);
+    public int searchKnowledgeCount(String knowledgekind, String keyword, String best, String accepted);
     public List<Board> selectKnowledgeList(int page, int pageSize);
     public List<Knowledge> selectKnowledgeList2(int page, int pageSize);
-    public List<Answer> selectKnowledgeList3(int page, int pageSize);
-    public List<Board> searchKnowledgeList(String knowledgekind, String keyword, int page, int pageSize);
-    public List<Knowledge> searchKnowledgeList2(String knowledgekind, String keyword, int page, int pageSize);
+    public List<Board> searchKnowledgeList(String knowledgekind, String keyword, String best, String accepted, int page, int pageSize);
+    public List<Knowledge> searchKnowledgeList2(String knowledgekind, String keyword, String best, String accepted, int page, int pageSize);
     public List<Answer> searchKnowledgeList3(String knowledgekind, String keyword, int page, int pageSize);
     
     //6-1. 지식인 상세 조회
     public Board selectKnowledgeDetail(int postNo);
     public Knowledge selectKnowledgeDetail2(int postNo);
     public List<Board> selectKnowledgeDetailAnswer(int postNo);
+    public int selectKnowledgeAccepted(int postNo);
     
     //6-2. 지식인 답변 갯수
     public int selectKnowledgeAnswerCount(int postNo);
     
     //6-3. 지식인 질문 등록
-    public int insertKnowledgeQuestion(Board board,  List<Attachment> list, String serverPath, String webPath) throws Exception;
+    public int insertKnowledgeQuestion(Board board,  List<Attachment> list,  String webPath) throws Exception;
     public int insertKnowledgeQuestion2(Knowledge knowledge);
     
     //6-4. 지식인 답변 등록
     public int insertKnowledgeAnswer(Board board) throws Exception;
     public int insertKnowledgeAnswer2(Answer answer);
+    
+    //6-6. 지식인 질문 수정
+    public int updateKnowledgeQuestion(Board b, Knowledge k, List<MultipartFile> list, String wholePath, String webPath) throws Exception;
+    
+    //6-8. 지식인 채택
+    public int updateknowledgeAcceped(int postNo);
+   
+    //6-9. 지식인 추천수 증가
+    public int increaseKnowledgeUpvotes(int postNo);
+
+    //6-10. 지식인 답변 수정
+    public int knowledgeAnswerUpdate(Board b) throws Exception;
+
     
     
 

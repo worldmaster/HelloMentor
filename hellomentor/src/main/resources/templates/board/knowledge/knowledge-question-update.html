@@ -23,22 +23,24 @@
       <div class="section">
         <div class="title">지식인</div>
 
-        <form th:action="@{knowledgequestioninsert}" method="post" id="knowledge-write-form" enctype="multipart/form-data">
+        <form th:action="@{knowledgeupdate}" method="post" id="knowledge-write-form" enctype="multipart/form-data">
           <!-- 지식인form안에.txt -->
+          <input type="hidden" name="postNo" th:value="${postNo}" />
           <table id="knowledge-table">
             <tr>
               <th>분야</th>
               <td>
-                <select name="categoryId" id="knowledge-kind">
-                  <option value="14">자바</option>
-                  <option value="15">스프링</option>
-                  <option value="16">HTML</option>
-                  <option value="17">C언어</option>
-                  <option value="18">파이썬</option>
-                  <option value="19">리액트</option>
-                  <option value="20">DB/SQL</option>
-                  <option value="21">기타</option>
-                </select>
+                <select name="categoryId" id="knowledge-kind" th:value="${selectedPost2.categoryId}">
+  <option value="14" th:selected="${selectedPost2.categoryId == '14'}">자바</option>
+  <option value="15" th:selected="${selectedPost2.categoryId == '15'}">스프링</option>
+  <option value="16" th:selected="${selectedPost2.categoryId == '16'}">HTML</option>
+  <option value="17" th:selected="${selectedPost2.categoryId == '17'}">C언어</option>
+  <option value="18" th:selected="${selectedPost2.categoryId == '18'}">파이썬</option>
+  <option value="19" th:selected="${selectedPost2.categoryId == '19'}">리액트</option>
+  <option value="20" th:selected="${selectedPost2.categoryId == '20'}">DB/SQL</option>
+  <option value="21" th:selected="${selectedPost2.categoryId == '21'}">기타</option>
+</select>
+
               </td>
             </tr>
 
@@ -51,6 +53,7 @@
                   name="postTitle"
                   placeholder="제목을 입력하세요"
                   required
+                  th:value="${selectedPost.postTitle}"
                 />
               </td>
             </tr>
@@ -63,6 +66,7 @@
                   name="postContent"
                   required
                   placeholder="내용을 입력하세요"
+                   th:text="${selectedPost.postContent}"
                 ></textarea>
               </td>
             </tr>
@@ -74,28 +78,21 @@
               </td>
             </tr>
           </table>
-        </form>
+        
         <div class="knowledge-btns">
           <button type="button" id="knowledge-reset-btn">취소</button>
-          <button
-            type="submit"
-            form="knowledge-write-form"
-            id="knowledge-submit-btn"
-          >
-            작성
-          </button>
-          <!-- 수정시에 아래가 뜨고 처음 작성시에만 작성이 뜨게한다. -->
-          <!-- <button
+
+           <button
             type="submit"
             form="knowledge-write-form"
             id="knowledge-submit-btn"
           >
             수정
-          </button> -->
+          </button>
         </div>
+    </form>
       </div>
     </div>
-    
     <div th:insert="common/footer :: footer"></div>
     
     <script th:inline="javascript">

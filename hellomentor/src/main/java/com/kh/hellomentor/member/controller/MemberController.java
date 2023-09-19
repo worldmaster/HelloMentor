@@ -53,8 +53,6 @@ public class MemberController {
     @Autowired
     private EmailService emailService;
     
-    @Autowired
-    private BaseResponse baseResponse;
     
     @PostMapping("login.me")
     public String loginMember(
