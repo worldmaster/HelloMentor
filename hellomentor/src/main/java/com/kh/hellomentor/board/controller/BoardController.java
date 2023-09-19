@@ -392,9 +392,11 @@ public class BoardController {
         int userNo = loginUser.getUserNo();
         
         // 이미지, 파일을 저장할 저장경로 얻어오기
-        String webPath = "c:/hellomentor/hellomentor/src/main/resources/static/img/attachment/inquiry/";
-
-
+        String webPath = "/img/attachment/inquiry/";
+        String currentDirectory = System.getProperty("user.dir");
+        String FilesLocation = currentDirectory + "/src/main/resources/static"+webPath;
+ 
+        
         board.setUserNo(userNo + "");
 
         // 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
@@ -413,7 +415,7 @@ public class BoardController {
                 continue;
 
             //  파일명 재정의 해주는 함수.
-            String changeName = Utils.saveFile(upfile, webPath);
+            String changeName = Utils.saveFile(upfile, FilesLocation);
             Attachment at = Attachment.
                     builder().
                     changeName(changeName).
@@ -508,6 +510,10 @@ public class BoardController {
         Inquiry selectedPost2 = boardService.selectInquiryDetail2(postNo);
         model.addAttribute("selectedPost2", selectedPost2);
         log.info("selectedPost2 {}", selectedPost2);
+        
+        List<Attachment> attachList = boardService.selectAttachment(postNo);
+        model.addAttribute("attachList", attachList);
+        log.info("attachList {}", attachList);
 
         return "board/inquiry/inquiry-detail";
     }
@@ -521,7 +527,8 @@ public class BoardController {
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(name = "freekind", required = false) String freekind,
-            @RequestParam(name = "keyword", required = false) String keyword
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "views", required = false) String views
     ) {
     	Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
@@ -531,11 +538,11 @@ public class BoardController {
         
         List<Board> pageItems;
         List<Free> pageItems2;
-        if (freekind != null  && keyword != null) {
+        if ((freekind != null  && keyword != null) || views!=null) {
            // 검색 로직을 수행하고 결과를 처리
-           totalItems = boardService.searchFreeCount(freekind, keyword); // 현재 검색된 게시글의 총 갯수 
-           pageItems = boardService.searchFreeList(freekind, keyword, page, pageSize); // 현재 검색된 게시글
-           pageItems2 = boardService.searchFreeList2(freekind, keyword, page, pageSize);
+           totalItems = boardService.searchFreeCount(freekind, keyword,views); // 현재 검색된 게시글의 총 갯수 
+           pageItems = boardService.searchFreeList(freekind, keyword, views,page, pageSize); // 현재 검색된 게시글
+           pageItems2 = boardService.searchFreeList2(freekind, keyword, views,page, pageSize);
         } else {
            // 일반 목록을 가져옵니다
            totalItems = boardService.selectFreeCount(); // 전체 일반목록의 총 갯수
@@ -582,12 +589,14 @@ public class BoardController {
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword", keyword);
         model.addAttribute("freekind", freekind);
+        model.addAttribute("views", views);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalItems", totalItems);
         model.addAttribute("totalPages", totalPages); // 총 페이지 수 추가
         log.info("combinedList {}", combinedList);
         log.info("combinedList2 {}", combinedList2);
         log.info("page {}", page);
+        log.info("views {}", views);
         log.info("keyword {}", keyword);
         log.info("freekind {}", freekind);
         log.info("pageSize {}", pageSize);
@@ -716,12 +725,13 @@ public class BoardController {
         int userNo = loginUser.getUserNo();
         // 이미지, 파일을 저장할 저장경로 얻어오기
         String webPath = "/img/attachment/free/";
-        String wholePath = "c:/hellomentor/hellomentor/src/main/resources/static"+webPath;
+        String currentDirectory = System.getProperty("user.dir");
+        String FilesLocation = currentDirectory + "/src/main/resources/static"+webPath;
 
         board.setUserNo(userNo + "");
 
         // 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
-        File dir = new File(wholePath);
+        File dir = new File(FilesLocation);
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -736,7 +746,7 @@ public class BoardController {
                 continue;
 
             //  파일명 재정의 해주는 함수.
-            String changeName = Utils.saveFile(upfile, wholePath);
+            String changeName = Utils.saveFile(upfile, FilesLocation);
             Attachment at = Attachment.
                     builder().
                     changeName(changeName).
@@ -1161,12 +1171,13 @@ public class BoardController {
         int userNo = loginUser.getUserNo();
         // 이미지, 파일을 저장할 저장경로 얻어오기
         String webPath = "/img/attachment/knowledge/";
-        String wholePath = "c:/hellomentor/hellomentor/src/main/resources/static"+webPath;
+        String currentDirectory = System.getProperty("user.dir");
+        String FilesLocation = currentDirectory + "/src/main/resources/static"+webPath;
 
         board.setUserNo(userNo + "");
 
         // 디렉토리생성 , 해당디렉토리가 존재하지 않는다면 생성
-        File dir = new File(wholePath);
+        File dir = new File(FilesLocation);
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -1181,7 +1192,7 @@ public class BoardController {
                 continue;
 
             //  파일명 재정의 해주는 함수.
-            String changeName = Utils.saveFile(upfile, wholePath);
+            String changeName = Utils.saveFile(upfile, FilesLocation);
             Attachment at = Attachment.
                     builder().
                     changeName(changeName).

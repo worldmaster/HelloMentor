@@ -426,6 +426,7 @@
 		JOIN MEMBER M ON USER_WRITER_NO = USER_NO
 		WHERE B.IS_DELETE = FALSE
 		AND B.BOARD_TYPE = 'F'
+		
 		<choose>
 			<when test="freekind == 'userId'">
 				AND M.USER_ID LIKE CONCAT('%', #{keyword}, '%')
@@ -437,7 +438,15 @@
 				AND B.POST_CONTENT LIKE CONCAT('%', #{keyword}, '%')
 			</when>
 		</choose>
-		ORDER BY B.POST_NO DESC
+		
+		<choose>
+		<when test="(views == null)">
+				ORDER BY B.POST_NO DESC
+			</when>
+			<when test="(views != null)">
+				ORDER BY B.VIEWS DESC
+			</when>
+		</choose>
 	</select>
 
 	<select id="selectFreeList" parameterType="hashmap"
@@ -489,7 +498,14 @@
 				AND B.POST_CONTENT LIKE CONCAT('%', #{keyword}, '%')
 			</when>
 		</choose>
-		ORDER BY B.POST_NO DESC
+		<choose>
+		<when test="(views == null)">
+				ORDER BY B.POST_NO DESC
+			</when>
+			<when test="(views != null)">
+				ORDER BY B.VIEWS DESC
+			</when>
+		</choose>
 		LIMIT #{start}, #{pageSize}
 	</select>
 	<select id="searchFreeList2" parameterType="hashmap"
@@ -511,7 +527,14 @@
 				AND B.POST_CONTENT LIKE CONCAT('%', #{keyword}, '%')
 			</when>
 		</choose>
-		ORDER BY B.POST_NO DESC
+		<choose>
+		<when test="(views == null)">
+				ORDER BY B.POST_NO DESC
+			</when>
+			<when test="(views != null)">
+				ORDER BY B.VIEWS DESC
+			</when>
+		</choose>
 		LIMIT #{start}, #{pageSize}
 	</select>
 

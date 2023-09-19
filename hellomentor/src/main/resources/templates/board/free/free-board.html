@@ -64,11 +64,21 @@
 
         <div id="button-container">
           <!-- 비동기식 list 조회 -->
-          <button id="align-see">조회순</button>
+          <button id="align-see" onclick="filterFreeView()">조회순</button>
           |
-          <button id="align-new">최신순</button>
+          <button id="align-new" onclick="window.location.href='/hellomentor/freelist'">최신순</button>
+          <input type="hidden" id="views" name="views" th:value="1" />
         </div>
-
+        
+	<script>
+	        function filterFreeView() {
+	            // 입력값 가져오기
+	            var freeValue  = document.getElementById('views').value;
+	
+	            // 값과 함께 URL로 이동
+	            window.location.href = '/hellomentor/freelist?views=' + encodeURIComponent(freeValue);
+	        }
+	    </script>
          <!-- 핫 게시글 -->
         <table align="center" id="hot-area">
           <thead>
@@ -132,15 +142,15 @@
          <div class="pagination">
 				<ul>
 					<li th:if="${currentPage > 1}"><a
-						th:href="@{${'/freelist?page=' + (currentPage - 1) + (freekind != null ? '&freekind=' + freekind : '') + (keyword != null ? '&keyword=' + keyword : '')}}">이전</a>
+						th:href="@{${'/freelist?page=' + (currentPage - 1) + (freekind != null ? '&freekind=' + freekind : '') + (keyword != null ? '&keyword=' + keyword : '')+ (views != null ? '&views=' + views : '')}}">이전</a>
 					</li>
 					<li
 						th:each="page, i : ${#numbers.sequence((currentPage - 5 < 1 ? 1 : currentPage - 5), (currentPage + 4 > totalPages ? totalPages : currentPage + 4))}"
 						th:classappend="${page == currentPage} ? 'active' : ''"><a
-						th:href="@{${'/freelist?page=' + page + (freekind != null ? '&freekind=' + freekind : '') + (keyword != null ? '&keyword=' + keyword : '')}}"
+						th:href="@{${'/freelist?page=' + page + (freekind != null ? '&freekind=' + freekind : '') + (keyword != null ? '&keyword=' + keyword : '')+ (views != null ? '&views=' + views : '')}}"
 						th:text="${page}"></a></li>
 					<li th:if="${currentPage < totalPages}"><a
-						th:href="@{${'/freelist?page=' + (currentPage + 1) + (freekind != null ? '&freekind=' + freekind : '') + (keyword != null ? '&keyword=' + keyword : '')}}">다음</a>
+						th:href="@{${'/freelist?page=' + (currentPage + 1) + (freekind != null ? '&freekind=' + freekind : '') + (keyword != null ? '&keyword=' + keyword : '')+ (views != null ? '&views=' + views : '')}}">다음</a>
 					</li>
 				</ul>
 			</div>

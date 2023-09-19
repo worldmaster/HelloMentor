@@ -177,10 +177,11 @@ public class BoardDao {
     	return session.selectOne("boardMapper.selectFreeCount");
     };
  
-    public int searchFreeCount(String freekind, String keyword) {
+    public int searchFreeCount(String freekind, String keyword,String views) {
     	 Map<String, Object> paramMap = new HashMap<>();
   	   paramMap.put("freekind", freekind);
   	    paramMap.put("keyword", keyword);
+  	   paramMap.put("views", views);
     	return session.selectOne("boardMapper.searchFreeCount",paramMap);
     };
 
@@ -203,20 +204,22 @@ public class BoardDao {
    	return session.selectList("boardMapper.selectFreeList2",params);
    };
  
-    public List<Board> searchFreeList(String freekind, String keyword, int page, int pageSize){
+    public List<Board> searchFreeList(String freekind, String keyword, String views, int page, int pageSize){
     	 Map<String, Object> paramMap = new HashMap<>();
 	        int start = (page - 1) * pageSize;
 	       paramMap.put("freekind", freekind);
 	       paramMap.put("keyword", keyword);
+	       paramMap.put("views", views);
 	       paramMap.put("start", start);
 	      paramMap.put("pageSize", pageSize);
     	return session.selectList("boardMapper.searchFreeList",paramMap);
     };
-    public List<Free> searchFreeList2(String freekind, String keyword, int page, int pageSize){
+    public List<Free> searchFreeList2(String freekind, String keyword,String views, int page, int pageSize){
    	 Map<String, Object> paramMap = new HashMap<>();
 	        int start = (page - 1) * pageSize;
 	       paramMap.put("freekind", freekind);
 	       paramMap.put("keyword", keyword);
+	       paramMap.put("views", views);
 	       paramMap.put("start", start);
 	      paramMap.put("pageSize", pageSize);
    	return session.selectList("boardMapper.searchFreeList2",paramMap);

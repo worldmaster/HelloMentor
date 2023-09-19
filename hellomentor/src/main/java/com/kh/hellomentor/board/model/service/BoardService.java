@@ -61,11 +61,11 @@ public interface BoardService {
     
     //5. 자유게시판 조회
     public int selectFreeCount();
-    public int searchFreeCount(String freekind, String keyword);
+    public int searchFreeCount(String freekind, String keyword,String views);
     public List<Board> selectFreeList(int page, int pageSize);
     public List<Free> selectFreeList2(int page, int pageSize);
-    public List<Board> searchFreeList(String freekind, String keyword, int page, int pageSize);
-    public List<Free> searchFreeList2(String freekind, String keyword, int page, int pageSize);
+    public List<Board> searchFreeList(String freekind, String keyword, String views,int page, int pageSize);
+    public List<Free> searchFreeList2(String freekind, String keyword, String views,int page, int pageSize);
     
     //5-1. 자유게시판 조회 (화제글 3개)
     public List<Board> selectBestFreeList();
