@@ -82,7 +82,7 @@
         var roomName = [[${room.name}]];
         var roomId = [[${room.roomId}]];
         var userId = [[${loginUser.userId}]];
-        var userNo = [[${loginUser.userNo}]] + "";
+        // var userNo = [[${loginUser.userNo}]] + "";
 
         console.log(roomName + ", " + roomId + ", " + userId);
 
@@ -128,7 +128,7 @@
             var msg = document.getElementById("chat-write-area");
 
             console.log(userId + ":" + msg.value);
-            stomp.send('/pub/chat/message', {}, JSON.stringify({roomId: roomId, message: msg.value, writer: userNo}));
+            stomp.send('/pub/chat/message', {}, JSON.stringify({roomId: roomId, message: msg.value, writer: userId}));
             msg.value = '';
         });
     });

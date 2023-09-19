@@ -37,9 +37,12 @@
     </select>
 
     <insert id="insertMessage" parameterType="chatMessageDTO">
-        INSERT INTO (CHATROOM_ID, USER_NO, MESSAGE_TEXT)
-        VALUES (#{roomId}, #{userId}, #{message})
-    </insert>
+        <selectKey resultType="int" keyProperty="userNo" order="BEFORE">
+            SELECT USER_NO FROM MEMBER WHERE USER_ID = #{writer}
+        </selectKey>
 
+        INSERT INTO MESSAGE (CHATROOM_ID, USER_NO, MESSAGE_TEXT)
+        VALUES (#{roomId}, #{userNo}, #{message})
+    </insert>
 
 </mapper>

@@ -9,6 +9,7 @@ import lombok.*;
 public class ChatMessageDTO {
     private String roomId;
     private String writer;
+    private int userNo;
     private String message;
     private String sendDateTime;
 }
