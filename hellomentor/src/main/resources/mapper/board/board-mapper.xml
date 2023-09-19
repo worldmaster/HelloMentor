@@ -336,14 +336,15 @@
 	</insert>
 	<insert id="insertInquiryAttachment" parameterType="list">
 		INSERT INTO ATTACHMENT(POST_NO, FILE_ORIGIN_NAME, FILE_CHANGE_NAME,
-		FILE_PATH)
+		FILE_PATH, FILE_SIZE)
 		VALUES
 		<foreach collection="list" item="attch" separator=",">
 			(
 			#{attch.postNo},
 			#{attch.originName},
 			#{attch.changeName},
-			#{attch.filePath}
+			#{attch.filePath},
+			#{attch.fileSize}
 			)
 		</foreach>
 	</insert>

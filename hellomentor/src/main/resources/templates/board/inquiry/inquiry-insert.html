@@ -75,13 +75,14 @@
               </td>
             </tr>
 
-            <tr>
-              <th>첨부파일</th>
-              <td>
-                <input type="file" id="inquiry-file" name="upfile" />
-              </td>
-            </tr>
           </table>
+          <div class="form-group" id="file-list">
+		        <a href="#this" onclick="addFile()">파일추가</a>
+		        <div class="file-group">
+		            <input type="file" id="free-file" name="upfile">
+		        <a href='#this' name='file-delete'>삭제</a>
+		        </div>
+		    </div>
           <br />
           <div align="center">
             <button type="reset" id="inquiry-reset">취소</button>
@@ -91,6 +92,28 @@
         
       </div>
     </div>
+    
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("a[name='file-delete']").on("click", function(e) {
+            e.preventDefault();
+            deleteFile($(this));
+        });
+    })
+ 
+    function addFile() {
+        var str = "<div class='file-group'><input type='file' id='free-file' name='upfile'><a href='#this' name='file-delete'>삭제</a></div>";
+        $("#file-list").append(str);
+        $("a[name='file-delete']").on("click", function(e) {
+            e.preventDefault();
+            deleteFile($(this));
+        });
+    }
+ 
+    function deleteFile(obj) {
+        obj.parent().remove();
+    }
+</script>
     
     
     <div th:insert="common/footer :: footer"></div>

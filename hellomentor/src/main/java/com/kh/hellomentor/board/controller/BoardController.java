@@ -392,7 +392,8 @@ public class BoardController {
         int userNo = loginUser.getUserNo();
         
         // 이미지, 파일을 저장할 저장경로 얻어오기
-        String webPath = "c:/hellomentor/hellomentor/src/main/resources/static/img/attachment/inquiry/";
+        String webPath = "/img/attachment/inquiry/";
+        String wholePath = "c:/hellomentor/hellomentor/src/main/resources/static"+webPath;
 
 
         board.setUserNo(userNo + "");
@@ -413,7 +414,7 @@ public class BoardController {
                 continue;
 
             //  파일명 재정의 해주는 함수.
-            String changeName = Utils.saveFile(upfile, webPath);
+            String changeName = Utils.saveFile(upfile, wholePath);
             Attachment at = Attachment.
                     builder().
                     changeName(changeName).
@@ -510,6 +511,10 @@ public class BoardController {
         Inquiry selectedPost2 = boardService.selectInquiryDetail2(postNo);
         model.addAttribute("selectedPost2", selectedPost2);
         log.info("selectedPost2 {}", selectedPost2);
+        
+        List<Attachment> attachList = boardService.selectAttachment(postNo);
+        model.addAttribute("attachList", attachList);
+        log.info("attachList {}", attachList);
 
         return "board/inquiry/inquiry-detail";
     }
