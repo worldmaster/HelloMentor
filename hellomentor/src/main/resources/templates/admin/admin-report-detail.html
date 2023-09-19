@@ -39,7 +39,7 @@
                               </span>
                               </div>
               <div id="report-target-info">
-                <div id="board-title">제목 : <span th:text="${bReport1.pTitle}"></span></div>
+                <div id="board-title">제목 : <span th:text="${bReport1.postTitle}"></span></div>
                 <div id="board-writer">게시글 작성자 : <span th:text="${mReport1.userId}"></span></div>
               </div>
               <div id="writer-info">
@@ -52,12 +52,12 @@
                 <input
                   type="text"
                   id="report-title"
-                  th:value="${bReport2.pTitle}"
+                  th:value="${bReport2.postTitle}"
                   readonly
                 />
               </div>
               <div id="report-content-box">
-                <textarea id="report-content" readonly th:text="${bReport2.pContent}"></textarea>
+                <textarea id="report-content" readonly th:text="${bReport2.postContent}"></textarea>
               </div>
               
                <div>
@@ -82,7 +82,7 @@
     class="report-btn report-accept-btn"
     type="button"
     id="accept-button"
-    th:onclick="'acceptReport(\'' + ${bReport2.postNo} + '\', \'' + ${bReport2.userNo} + '\');'">
+    th:attr="data-postno=${bReport2.postNo}, data-userno=${bReport2.userNo}" th:onclick="acceptReport(this)">
   접수
 </button>
             </div>
@@ -93,17 +93,20 @@
     
     <script th:inline="javascript">
   /* 스크립트에서 타임리프 변수 사용 */
-  /* postNo 값을 받아서 AJAX 요청을 보내는 함수 */
-  function acceptReport(postNo, userNo) {
+  /* 클릭된 버튼으로부터 데이터를 읽어서 AJAX 요청을 보내는 함수 */
+  function acceptReport(button) {
+    var postNo = button.getAttribute("data-postno");
+    var userNo = button.getAttribute("data-userno");
+    
     $.ajax({
       type: "POST",
       url: "/hellomentor/admin/reportSend",
       data: {
-          postNo: postNo,
-          userNo: userNo // 추가로 userNo를 전송
-        },
+        postNo: postNo,
+        userNo: userNo
+      },
       success: function(response) {
-    	alert("신고처리 완료 및 알람전송이 완료됐습니다.");
+        alert("신고처리 완료 및 알람전송이 완료됐습니다.");
         window.location.href = "http://localhost:8082/hellomentor/admin/memberReport";
         /* 여기에서 추가적인 처리를 할 수 있습니다. */
       },

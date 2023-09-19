@@ -208,8 +208,8 @@ public class AdminController {
          Attachment attachment = aService.reportAttachment(postNo); //신고자가 올린 첨부파일
          
         // 회원 상세 정보를 모델에 추가하고 회원 상세 정보 페이지로 이동
-          model.addAttribute("bReport1", bReport1);
-          model.addAttribute("mReport1",mReport1);
+           model.addAttribute("bReport1", bReport1);
+           model.addAttribute("mReport1",mReport1);
 		   model.addAttribute("bReport2", bReport2);
 		   model.addAttribute("mReport2", mReport2);
 		   model.addAttribute("attachment", attachment);
@@ -307,7 +307,7 @@ public class AdminController {
    
    @PostMapping("/admin/QuestionWrite")//문의답변작성
    public String QuestionWrite(@RequestParam("postNo") int postNo,
-   		                 @RequestParam("pContent") String pContent,
+   		                 @RequestParam("postContent") String pContent,
    		                 RedirectAttributes redirectAttributes,
    		                 Model model) {
        // board 테이블에 데이터 삽입
@@ -316,11 +316,12 @@ public class AdminController {
 	 
 		  if(result > 0) {
 			  redirectAttributes.addFlashAttribute("message", "문의답변 작성이 완료됐습니다.");
-			  return "redirect:/inquirylist";
+			  
 		}else {
 			  redirectAttributes.addFlashAttribute("message", "문의답변을 다시 작성해주세요");
-			  return "redirect:/inquirylist";
+			
 		}
+		  return "redirect:/inquirylist";
    }
    
 }

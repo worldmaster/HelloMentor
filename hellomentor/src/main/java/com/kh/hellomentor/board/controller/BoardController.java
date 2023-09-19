@@ -490,8 +490,6 @@ public class BoardController {
           log.info("totalPages {}", totalPages);
           
 
-  
-
         return "board/inquiry/inquiry-board";
     }
 

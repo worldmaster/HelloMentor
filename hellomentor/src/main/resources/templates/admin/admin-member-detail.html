@@ -135,7 +135,7 @@
                     <table id="list">
                       <tbody>
                          <tr th:if="${not #lists.isEmpty(boardF)}" th:each="boardF : ${boardF}">
-                         <td th:text="${boardF.PTitle}"></td>
+                         <td th:text="${boardF.postTitle}"></td>
                          <td th:text="${boardF.createDate}"></td>
                          </tr>
                          <tr th:if="${#lists.isEmpty(boardF)}">
@@ -149,7 +149,7 @@
                     <table id="list" >
                       <tbody>
                         <tr th:if="${not #lists.isEmpty(boardK)}" th:each="boardK : ${boardK}">
-                         <td th:text="${boardK.PTitle}"></td>
+                         <td th:text="${boardK.postTitle}"></td>
                          <td th:text="${boardK.createDate}"></td>
                          </tr>
                          <tr th:if="${#lists.isEmpty(boardK)}">
@@ -163,7 +163,7 @@
                     <table id="list">
                       <tbody>
                         <tr th:if="${not #lists.isEmpty(boardS)}" th:each="boardS : ${boardS}">
-                         <td th:text="${boardS.PTitle}"></td>
+                         <td th:text="${boardS.postTitle}"></td>
                          <td th:text="${boardS.createDate}"></td>
                          </tr>
                          <tr th:if="${#lists.isEmpty(boardS)}">

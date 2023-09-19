@@ -5,16 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HelloMentor-문의관리</title>
 
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="../../static/css/admin-question-answer-style.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="../../static/css/cs-menu.css"
-    />
+  
+    <link th:href="@{/css/admin-question-answer-style.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/cs-menu.css}" type="text/css" rel="stylesheet" />
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
   </head>
   <body>
@@ -62,7 +56,7 @@
         <div class="answer-section">
           <div id="a-logo">A.</div>
           <textarea
-            name="pContent"
+            name="postContent"
             id="answer"
             placeholder="(이곳에 답변을 등록해주세요)"
           ></textarea>

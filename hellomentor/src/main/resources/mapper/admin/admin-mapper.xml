@@ -20,8 +20,8 @@
 <resultMap id="boardResultMap" type="board">
     <id column="POST_NO" property="postNo"/>
     <result column="USER_WRITER_NO" property="userNo"/>
-    <result column="POST_TITLE" property="pTitle"/>
-    <result column="POST_CONTENT" property="pContent"/>
+    <result column="POST_TITLE" property="postTitle"/>
+    <result column="POST_CONTENT" property="postContent"/>
     <result column="IS_DELETE" property="isDeleted"/>
     <result column="VIEWS" property="views"/>
     <result column="CREATE_DATE" property="createDate"/>
