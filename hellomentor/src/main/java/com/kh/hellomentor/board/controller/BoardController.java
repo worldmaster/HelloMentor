@@ -140,6 +140,7 @@ public class BoardController {
     ) {
         Member loginUser = (Member) session.getAttribute("loginUser");
         model.addAttribute("loginUser", loginUser);
+        log.info("loginUser : {}", loginUser);
 
 
     	  // 페이지 번호와 페이지당 항목 수로 페이징 정보를 생성합니다

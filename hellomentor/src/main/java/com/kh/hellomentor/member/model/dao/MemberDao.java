@@ -3,6 +3,9 @@ package com.kh.hellomentor.member.model.dao;
 import com.kh.hellomentor.member.model.vo.Calendar;
 import com.kh.hellomentor.member.model.vo.Payment;
 import com.kh.hellomentor.member.model.vo.Profile;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,6 +17,7 @@ import java.util.Objects;
 
 
 @Repository
+@Slf4j
 public class MemberDao {
 
     @Autowired
@@ -21,12 +25,15 @@ public class MemberDao {
 
     public Member loginUser(Member m) {
         Member loginUser = sqlSession.selectOne("memberMapper.loginUser", m);
-        Profile profile = sqlSession.selectOne("memberMapper.selectProfile", loginUser.getUserNo());
-        if (profile != null) {
-            loginUser.setProfile(profile.getFilePath() + profile.getChangeName());
-        } else {
-            loginUser.setProfile("/img/default-profile.jpg");
+        if(loginUser != null) {
+        	Profile profile = sqlSession.selectOne("memberMapper.selectProfile", loginUser.getUserNo());
+        	if (profile != null) {
+        		loginUser.setProfile(profile.getFilePath() + profile.getChangeName());
+        	} else {
+        		loginUser.setProfile("/img/default-profile.jpg");
+        	}        	
         }
+        log.info("loginUser : {}", loginUser);
         return loginUser;
     }
     
