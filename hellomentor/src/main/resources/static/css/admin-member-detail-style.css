@@ -94,6 +94,15 @@
     align-items: center;
     overflow: hidden;
 }
+#member-profile img {
+    width: 200px;
+    height: 200px;
+    border-radius: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
 
 #member-info {
     width: 300px;
