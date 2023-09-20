@@ -71,7 +71,7 @@ public class MemberController {
       	 }else {
       		 session.setAttribute("loginUser", loginUser);
       		 model.addAttribute("message", loginUser.getUserName()+"님 반갑습니다");
-               url = "common/main";
+               url = "redirect:/main";
       	 }
       	 }else{
       		 model.addAttribute("message", "아이디 또는 비밀번호를 확인해주세요.");
@@ -131,6 +131,7 @@ public class MemberController {
         List<Profile> profileList = mService.getFollowingProfileList(userNo);
 
 
+
         List<Map<String, Object>> combinedList = new ArrayList<>();
         for (Member member : followingList) {
             Map<String, Object> combinedInfo = new HashMap<>();
@@ -144,19 +145,18 @@ public class MemberController {
                 }
             }
 
-            if (profile != null) {
+            if (profile.getChangeName() != null) {
                 combinedInfo.put("profile", profile);
             } else {
-                Profile defaultProfile = new Profile();
-                defaultProfile.setFilePath("/img/");
-                defaultProfile.setChangeName("default-profile.jpg");
-                combinedInfo.put("profile", defaultProfile);
+                profile.setFilePath("/img/");
+                profile.setChangeName("default-profile.jpg");
+                combinedInfo.put("profile", profile);
             }
 
             combinedList.add(combinedInfo);
         }
-
         model.addAttribute("combinedList", combinedList);
+
         return "mypage/home_following_list";
     }
 
@@ -182,13 +182,12 @@ public class MemberController {
                 }
             }
 
-            if (profile != null) {
+            if (profile.getChangeName() != null) {
                 combinedInfo.put("profile", profile);
             } else {
-                Profile defaultProfile = new Profile();
-                defaultProfile.setFilePath("/img/");
-                defaultProfile.setChangeName("default-profile.jpg");
-                combinedInfo.put("profile", defaultProfile);
+                profile.setFilePath("/img/");
+                profile.setChangeName("default-profile.jpg");
+                combinedInfo.put("profile", profile);
             }
 
             combinedList.add(combinedInfo);
@@ -203,11 +202,6 @@ public class MemberController {
 
     public String profileEdit(Model model, HttpSession session) {
         Member loginUser = (Member) session.getAttribute("loginUser");
-        if ("E".equals(loginUser.getMemberType())) {
-            loginUser.setMemberType("멘티");
-        } else if ("O".equals(loginUser.getMemberType())) {
-            loginUser.setMemberType("멘토");
-        }
         model.addAttribute("loginUser", loginUser);
         return "mypage/profile_edit_info";
     }
@@ -237,10 +231,8 @@ public class MemberController {
         File buildDestFile = new File(buildUploadPath, fileName);
 
         file.transferTo(destFile);
-        logger.info("Saved file path: {}", destFile.getAbsolutePath());
 
         Files.copy(destFile.toPath(), buildDestFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        logger.info("Saved file path in build directory: {}", buildDestFile.getAbsolutePath());
 
         return fileName;
     }
@@ -259,37 +251,36 @@ public class MemberController {
         }
 
         try {
-            String fileName = uploadProfileImg(file, loginUser.getUserNo());
+            if (!"notchanged".equals(file.getOriginalFilename())) {
+                String fileName = uploadProfileImg(file, loginUser.getUserNo());
 
-            Profile profile = new Profile();
-            profile.setUserNo(loginUser.getUserNo());
-            profile.setOriginName(file.getOriginalFilename());
-            profile.setChangeName(fileName);
-            profile.setFilePath("img/profile/");
-            profile.setFileSize(file.getSize());
+                Profile profile = new Profile();
+                profile.setUserNo(loginUser.getUserNo());
+                profile.setOriginName(file.getOriginalFilename());
+                profile.setChangeName(fileName);
+                profile.setFilePath("img/profile/");
+                profile.setFileSize(file.getSize());
 
-            if (newPwd.isEmpty()) {
-                loginUser.setUserPwd(originPwd);
-            } else {
+                if (mService.isProfileImgExists(loginUser.getUserNo())) {
+                    mService.updateProfileImg(profile);
+                } else {
+                    mService.insertProfileImg(profile);
+                }
+            }
+
+            if (!newPwd.isEmpty()) {
                 loginUser.setUserPwd(newPwd);
             }
 
-            if (mService.isProfileImgExists(loginUser.getUserNo())) {
-                mService.updateProfileImg(profile);
-            } else {
-                mService.insertProfileImg(profile);
-            }
-
-
             loginUser.setIntroduction(intro);
             mService.updateMember(loginUser);
-
             return ResponseEntity.ok("프로필이 업데이트되었습니다.");
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("프로필 업데이트 중 오류가 발생했습니다. 다시 시도해주세요");
         }
     }
+
 
     @RequestMapping("/payment_payment_history")
 
@@ -471,6 +462,125 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("탈퇴 처리 중 오류가 발생했습니다.");
         }
     }
+
+    //정승훈 회원 토큰 충전
+    @PostMapping("/insert/token")
+    public String insertToken(
+            HttpSession session,
+            Model model,
+            RedirectAttributes redirectAttributes,
+            Payment payment,
+            Member m,
+            @RequestParam(name = "token", defaultValue = "") String token
+    ) {
+        Member loginUser = (Member) session.getAttribute("loginUser");
+        int newToken = Integer.parseInt(token); //선택된 토큰
+        int currentToken = loginUser.getToken(); //기존에 있던 토큰
+        int updatedToken = currentToken + newToken; //선택된 토큰과 + 기존에 있던 토큰
+
+        m.setToken(updatedToken); // 업데이트된 토큰 값을 Member 객체에 설정
+        m.setUserNo(loginUser.getUserNo());
+        payment.setUserNo(loginUser.getUserNo());
+
+
+        // token 값에 따라 price 설정
+        int price;
+        switch (token) {
+            case "10":
+                price = 1000;
+                break;
+            case "50":
+                price = 5000;
+                break;
+            case "100":
+                price = 10000;
+                break;
+            case "200":
+                price = 20000;
+                break;
+            case "500":
+                price = 50000;
+                break;
+            default:
+                price = 0;
+                break;
+        }
+        payment.setPrice(price); // payment 객체에 가격 설정
+
+        Map<String, Object> tokenData = new HashMap<>();
+        tokenData.put("payment", payment);
+        tokenData.put("m", m);
+
+
+        int result = mService.insertUpdateToken(tokenData);
+        log.info("tokenData {}", tokenData);
+        log.info("result {}", result);
+
+
+
+
+        int updateToken = mService.getUpdateToken(loginUser.getUserNo());
+        //변경된 토큰의 값을 다시 새로 세션에 담아줘야됨.
+        loginUser.setToken(updateToken);
+        session.setAttribute("loginUser", loginUser);
+
+
+
+        if (result >= 0) {
+            redirectAttributes.addFlashAttribute("message", "토큰충전 완료되었습니다");
+            return "redirect:/main";
+        } else {
+            redirectAttributes.addFlashAttribute("message", "토큰충전을 실패했습니다.");
+            return "common/main";
+        }
+    }
+
+    @PostMapping("/exchange/token")
+    public String exchageToken(
+            HttpSession session,
+            Member m,
+            Model model,
+            Payment payment,
+            RedirectAttributes redirectAttributes) {
+
+        Member loginUser = (Member) session.getAttribute("loginUser");
+
+        m.setUserNo(loginUser.getUserNo());
+        payment.setUserNo(loginUser.getUserNo());
+        log.info("loginUser {}", loginUser.getToken());
+
+        if (loginUser.getToken() == 0) {
+            model.addAttribute("message", "토큰이 비어있습니다. 충전페이지로 이동합니다.");
+            return "token/tokenInsert";
+        } else {
+            log.info("loginUser {}", loginUser.getToken());
+
+            int result = mService.exchangeToken(m);
+
+            // 변경된 토큰의 값을 가져오기
+            int updateToken = mService.getUpdateToken(loginUser.getUserNo());
+            int paymentresult = mService.paymentResult(loginUser.getUserNo());
+
+            //변경된 토큰의 값을 다시 새로 세션에 담아줘야됨.
+            loginUser.setToken(updateToken);
+            session.setAttribute("loginUser", loginUser);
+
+            log.info("result {}", result);
+            log.info("loginUser {}", loginUser.getToken());
+
+            model.addAttribute("token", loginUser.getToken());
+
+            if (result > 0) {
+                redirectAttributes.addFlashAttribute("message", "토큰환전이 완료되었습니다.");
+                return "redirect:/main";
+            } else {
+                model.addAttribute("message", "오류발생");
+                return "main";
+            }
+        }
+    }
+
+
 
 }
 

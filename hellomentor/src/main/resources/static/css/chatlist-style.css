@@ -90,6 +90,7 @@
 .chatroom:hover {
     background-color: #48917A;
     color: white;
+    cursor: pointer;
 }
 
 .bold-span {
@@ -123,7 +124,7 @@
     border-radius: 50px;
     background-color: #40E0D0;
     color: white;
-    font-size: 30px;
+    font-size: 20px;
     font-family: "bd";
     text-align: center;
     line-height: 55px;
