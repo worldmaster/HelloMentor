@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.hellomentor.board.model.vo.*;
+import com.kh.hellomentor.matching.model.vo.Mentoring;
 import com.kh.hellomentor.matching.model.vo.StudyApplicant;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -599,5 +600,13 @@ public class BoardDao {
             return result1 * result2;
         }
         return result1 * result2;
+    }
+
+    public List<Map<String, Object>> topFiveBoard(String boardType) {
+        return session.selectList("boardMapper.topFiveBoard", boardType);
+    }
+
+    public List<Map<String, Object>> newMentoring() {
+        return session.selectList("boardMapper.newMentoring");
     }
 }

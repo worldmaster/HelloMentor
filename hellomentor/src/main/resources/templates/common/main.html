@@ -27,30 +27,31 @@
                     <div class="best-hot" id="hot">HOT</div>
                 </div>
                 <th:block th:each="fList : ${fLists}">
-                    <div class="section-line top5">
+                    <div class="section-line" th:onclick="|location.href='/hellomentor/freedetail?fno=' + ${fList.board.postNo}|">
                         <div class="line-info">
                             <div th:text="${fList.member.userId}" class="line-writer">line-writer</div>
                             <div class="count-box">
-                                <div th:text="${fList.free.upVotes}" clss="line-recomend"><b>추천수 </b>10</div>
-                                <div th:text="${fList.board.views}" class="line-count"><b>조회수 </b>16</div>
+                                <div class="line-recomend"><b>추천수 </b><span th:text="${fList.free.upVotes}"></span></div>
+                                <div class="line-count"><b>조회수 </b><span th:text="${fList.board.views}"></span></div>
                             </div>
                         </div>
                         <div th:text="${fList.board.postTitle}" class="line-title">line-title</div>
                     </div>
                 </th:block>
             </div>
+
             <div class="section section2">
                 <div class="section-title">
                     <div class="st section-knowledge">지식인</div>
                     <div class="best-hot" id="best">BEST</div>
                 </div>
                 <th:block th:each="kList : ${kLists}">
-                    <div class="section-line top5">
+                    <div class="section-line" th:onclick="|location.href='/hellomentor/knowledgedetail?kno=' + ${kList.board.postNo}|">
                         <div class="line-info">
                             <div th:text="${kList.member.userId}" class="line-writer">line-writer</div>
                             <div class="count-box">
-                                <div th:text="${kList.knowledge.upVotes}" clss="line-recomend"><b>추천수 </b>10</div>
-                                <div th:text="${kList.board.views}" class="line-count"><b>조회수 </b>16</div>
+                                <div class="line-recomend"><b>추천수 </b><span th:text="${kList.knowledge.upVotes}"></span></div>
+                                <div class="line-count"><b>조회수 </b><span th:text="${kList.board.views}"></span></div>
                             </div>
                         </div>
                         <div th:text="${kList.board.postTitle}" class="line-title">line-title</div>
@@ -58,40 +59,40 @@
                 </th:block>
             </div>
         </div>
-        <div class="section-wrap2">
-            <div class="section section3">
-                <div class="section-title">
-                    <div class="st section-study">스터디모집</div>
-                </div>
-                <th:block th:each="sList : ${sLists}">
-                    <div class="section-line top5">
-                        <div class="line-info">
-                            <div th:text="${sList.member.userId}" class="line-writer">line-writer</div>
-                            <div class="count-box">
-                                <div th:text="${sList.board.views}" class="line-count"><b>조회수 </b>16</div>
-                            </div>
-                        </div>
-                        <div th:text="${sList.board.postTitle}" class="line-title">line-title</div>
+        <th:block th:if="${session.loginUser.memberType == 'E'}">
+            <div class="section-wrap2">
+                <div class="section section3">
+                    <div class="section-title">
+                        <div class="st section-study">스터디모집</div>
                     </div>
-                </th:block>
-            </div>
-            <div class="section section4">
-                <div class="section-title">
-                    <div class="st section-mentoring">멘토링</div>
-                </div>
-                <th:block th:each="mList : ${mLists}">
-                    <div class="section-line top5">
-                        <div class="line-info">
-                            <div th:text="${mList.member.userId}" class="line-writer">line-writer</div>
-                            <div class="count-box">
-                                <div th:text="${mList.board.views}" class="line-count"><b>조회수 </b>16</div>
+                    <th:block th:each="sList : ${sLists}">
+                        <div class="section-line" th:onclick="|location.href='/hellomentor/study/detail/' + ${sList.board.postNo}|">
+                            <div class="line-info">
+                                <div th:text="${sList.member.userId}" class="line-writer">line-writer</div>
+                                <div class="count-box">
+                                    <div class="line-count"><b>조회수 </b><span th:text="${sList.board.views}"></span></div>
+                                </div>
                             </div>
+                            <div th:text="${sList.board.postTitle}" class="line-title">line-title</div>
                         </div>
-                        <div th:text="${mList.board.postTitle}" class="line-title">line-title</div>
+                    </th:block>
+                </div>
+
+                <div class="section section4">
+                    <div class="section-title">
+                        <div class="st section-mentoring">멘토링</div>
                     </div>
-                </th:block>
+                    <th:block th:each="mList : ${mLists}">
+                        <div class="section-line">
+                            <div class="line-info">
+                                <div th:text="${mList.member.userId}" class="line-writer">line-writer</div>
+                            </div>
+                            <div th:text="${mList.mentoring.title}" class="line-title">line-title</div>
+                        </div>
+                    </th:block>
+                </div>
             </div>
-        </div>
+        </th:block>
     </div>
 </div>
 

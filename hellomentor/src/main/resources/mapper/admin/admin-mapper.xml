@@ -96,6 +96,7 @@
 	<select id="selectMList" parameterType="hashmap" resultType="int">
 		SELECT COUNT(*)
 		FROM MEMBER
+		WHERE MEMBER_TYPE = 'E' OR MEMBER_TYPE = 'O'
 	</select>
 	
 	<select id="selectSList" parameterType="hashmap" resultType="int">
@@ -116,6 +117,7 @@
 	 <select id="getSideMemberList" resultType="member">
 	    SELECT *
 	    FROM MEMBER
+	    WHERE MEMBER_TYPE = 'E' OR MEMBER_TYPE = 'O'
 	    LIMIT #{start}, #{pageSize}
     </select>
     

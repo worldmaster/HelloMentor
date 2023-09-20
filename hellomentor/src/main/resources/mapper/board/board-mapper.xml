@@ -1299,5 +1299,81 @@
 		VALUES (#{postNo}, #{originName}, #{changeName}, #{webPath}, #{fileSize})
 	</insert>
 
+	<resultMap id="memberResultSet" type="member">
+		<id column="USER_NO" property="userNo"/>
+		<result column="USER_ID" property='userId'/>
+		<result column="USER_PWD" property="userPwd"/>
+		<result column="USER_NAME" property="userName"/>
+		<result column="PHONE" property="phone"/>
+		<result column="EMAIL" property="email"/>
+		<result column="ENROLL_DATE" property="enrollDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="INTRODUCTION" property="introduction"/>
+		<result column="MEMBER_TYPE" property="memberType"/>
+		<result column="TOKEN" property="token"/>
+		<result column="GRADE" property="grade"/>
+	</resultMap>
+
+	<resultMap id="topFiveBoardMap" type="hashmap">
+		<association property="board" resultMap="boardResultMap"/>
+		<association property="member" resultMap="memberResultSet"/>
+		<association property="free" resultMap="freeResultMap"/>
+		<association property="knowledge" resultMap="knowledgeResultMap"/>
+	</resultMap>
+
+
+	<select id="topFiveBoard" resultMap="topFiveBoardMap" parameterType="string">
+		SELECT *
+		FROM BOARD B
+		<choose>
+			<when test="boardType.equals('F')">
+				JOIN FREE F ON F.POST_NO = B.POST_NO
+			</when>
+			<when test="boardType.equals('K')">
+				JOIN KNOWLEDGE K ON K.POST_NO = B.POST_NO
+			</when>
+		</choose>
+		JOIN MEMBER M ON M.USER_NO = B.USER_WRITER_NO
+		WHERE BOARD_TYPE = #{boardType}
+		<choose>
+			<!-- boardType이 'F' 혹은 'K'인 경우 -->
+			<when test="boardType.equals('F')">
+				ORDER BY F.UPVOTES DESC LIMIT 5
+			</when>
+			<when test="boardType.equals('K')">
+				ORDER BY K.UPVOTES DESC LIMIT 5
+			</when>
+			<!-- 그 외의 경우 -->
+			<otherwise>
+				ORDER BY B.CREATE_DATE DESC LIMIT 5
+			</otherwise>
+		</choose>
+	</select>
+
+	<resultMap id="mentoringResult2" type="mentoring">
+		<id column="MENTOR_REGIS_NO" property="regisNo"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT_1" property="content1"/>
+		<result column="CONTENT_2" property="content2"/>
+		<result column="CONTENT_3" property="content3"/>
+		<result column="CODE_LANG" property="codeLang"/>
+	</resultMap>
+
+	<resultMap id="mentoringSet" type="hashmap">
+		<association property="member" resultMap="memberResultSet"/>
+		<association property="mentoring" resultMap="mentoringResult2"/>
+	</resultMap>
+
+
+	<select id="newMentoring" resultMap="mentoringSet">
+		SELECT *
+		FROM MENTOR R
+		JOIN MEMBER M ON M.USER_NO = R.USER_NO
+		WHERE M.MEMBER_TYPE = 'O'
+		ORDER BY M.ENROLL_DATE LIMIT 5
+	</select>
+
+
 
 </mapper>

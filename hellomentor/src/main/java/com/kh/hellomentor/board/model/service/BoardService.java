@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.hellomentor.board.model.vo.*;
+import com.kh.hellomentor.matching.model.vo.Mentoring;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hellomentor.matching.model.vo.StudyApplicant;
@@ -197,4 +198,8 @@ public interface BoardService {
     Board selectBoard(int postNo);
 
     int insertReport(Map<String, Object> reportInfo);
+
+    List<Map<String, Object>> topFiveBoard(String boardType);
+
+    List<Map<String, Object>> newMentoring();
 }
