@@ -23,13 +23,13 @@
 
     <div class="search-option">
       <div>
-        <form>
+        <form action="/hellomentor/study" method="get">
           <div class="search-bar">
-            <select id="search-option">
+            <select id="search-option" name="searchOption">
               <option value="title">제목</option>
               <option value="id">아이디</option>
             </select>
-            <input type="text" id="keyword" />
+            <input type="text" id="keyword" name="keyword" />
             <button type="submit" id="search-btn">
               <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -47,13 +47,14 @@
             </button>
           </div>
         </form>
+
+
         <div class="order-option">
           <a href="">최신등록순</a>
           <span>|</span>
           <a href="">이름순</a>
-          <span>|</span>
-          <a href="">댓글순</a>
         </div>
+
       </div>
     </div>
 
@@ -62,7 +63,7 @@
 
     <th:block th:each="study : ${list}">
       <div class="study-list" th:attr="onclick='movePage(\'' + ${study.postNo} + '\');'">
-        <div class="group" >
+        <div class="group">
           <div class="so-group1">
             <div class="study-title" th:text="${study.postTitle}"></div>
             <div class="lines" th:text="${study.postNo}"></div>
@@ -71,34 +72,53 @@
             <div th:text="${study.userNo}"></div>
           </div>
           <div class="so-group2">
-            <div class="recruitment">모집중</div>
-            <div>모집인원(<span th:text="${postRecruitmentCountMap[study.postNo]}"></span>/5)</div>
-            <div th:text="${study.createDate}"></div>
+            <th:block th:if="${postRecruitmentCountMap[study.postNo] != postRecruitmentCountMap1[study.postNo]}">
+              <div class="recruitment">모집중</div>
+            </th:block>
+            <th:block th:if="${postRecruitmentCountMap[study.postNo] == postRecruitmentCountMap1[study.postNo]}">
+              <div class="completed" th:style="'color: red; font-family: bd'">모집완료</div>
+            </th:block>
+
+            <div>
+              모집인원(<span th:text="${postRecruitmentCountMap[study.postNo]}"></span>/
+              <span th:text="${postRecruitmentCountMap1[study.postNo]}"></span>)
+            </div>
           </div>
         </div>
       </div>
     </th:block>
 
+
+
+
+
+
+
+
+
     <div class="write-btn">
-      <button class="study-insert" >글 작성</button>
+      <button class="study-insert" onclick="location.href='/hellomentor/study/insert'" >글 작성</button>
     </div>
 
-    <div align="center" class="paging-area">
-      <button onclick="location.href= '#' ">이전 페이지</button>
-      <button onclick="location.href='#'">1</button>
-      <button onclick="location.href='#'">2</button>
-      <button onclick="location.href='#'">3</button>
-      <button onclick="location.href='#'">4</button>
-      <button onclick="location.href='#'">5</button>
-      <button onclick="location.href='#'">6</button>
-      <button onclick="location.href='#'">7</button>
-      <button onclick="location.href='#'">8</button>
-      <button onclick="location.href='#'">9</button>
-      <button onclick="location.href='#'">10</button>
-      <button onclick="location.href = '#'">다음 페이지</button>
+    <div class="pagination">
+      <ul>
+        <li th:if="${currentPage > 1}">
+          <a th:href="@{${'/study?page=' + (currentPage - 1) + (searchOption != null ? '&searchOption=' + searchOption : '') + (keyword != null ? '&keyword=' + keyword : '')}}">이전</a>
+        </li>
+        <li th:each="page, i : ${#numbers.sequence((currentPage - 5 < 1 ? 1 : currentPage - 5), (currentPage + 4 > totalPages ? totalPages : currentPage + 4))}"
+            th:classappend="${page == currentPage} ? 'active' : ''">
+          <a th:if="${page >= 1 and page <= totalPages}" th:href="@{${'/study?page=' + page + (searchOption != null ? '&searchOption=' + searchOption : '') + (keyword != null ? '&keyword=' + keyword : '')}}" th:text="${page}"></a>
+        </li>
+        <li th:if="${currentPage < totalPages}">
+          <a th:href="@{${'/study?page=' + (currentPage + 1) + (searchOption != null ? '&searchOption=' + searchOption : '') + (keyword != null ? '&keyword=' + keyword : '')}}">다음</a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
+
+<div th:insert="common/footer :: footer"></div>
+
 
 <script>
       $(document).ready(function () {
