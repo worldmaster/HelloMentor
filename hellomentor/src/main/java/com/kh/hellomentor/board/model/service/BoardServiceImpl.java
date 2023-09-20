@@ -243,7 +243,7 @@ public class BoardServiceImpl implements BoardService {
     
     //5-8. 자유게시판 수정
     @Override
-    public int updateFree(Board b, List<Long> deleteList, List<MultipartFile> list, String FilesLocation, String webPath) throws Exception{
+    public int updateFree(Board b, List<String> deleteList, List<MultipartFile> list, String webPath , String FilesLocation) throws Exception{
     	// 1) XSS, 개행문자 처리
 		b.setPostTitle(Utils.XSSHandling(b.getPostTitle()));
 		b.setPostContent(Utils.XSSHandling(b.getPostContent()));
@@ -276,6 +276,7 @@ if(result> 0) {
 										.filePath(webPath)
 										.build();
 						attachList.add(at);
+						
 					}
 				}
 			}
@@ -288,9 +289,12 @@ if(result> 0) {
 			// 5) db에서 삭제에 성공했따면 or 게시판 업데이트에 성공했다면
 			if(result > 0) {
 				// Attachment객체 하나하나 업데이트
-				for( Attachment at      :       attachList) {
-				
-						result = boardDao.insertAttachment(at);
+				for( Attachment attach      :       attachList) {
+					System.out.println(attach);
+					result = boardDao.updateAttachment(attach);
+					if(result == 0) {
+						result = boardDao.insertAttachment(attach);
+					}
 					
 				}
 			}

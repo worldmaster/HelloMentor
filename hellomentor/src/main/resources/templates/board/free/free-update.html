@@ -63,7 +63,7 @@
 		          <a th:href="@{${attachList.filePath} + ${attachList.changeName}}" th:download="${attachList.originName}"> 
 				     <span th:text="${attachList.originName}"  id='uploaded-file'></span>
 				     </a>
-				     <a href='#this' name='file-delete' id='uploaded-delete' class="delete-image"  onclick="deleteAttachment('${attachList.attachmentId}')">삭제</a>
+				     <a href='#this' name='file-delete' id='uploaded-delete' class="delete-image"  data-attachmentid="${attachList.attachmentId}" onclick="deleteAttachment(this.getAttribute('data-attachmentid'))">삭제</a>
 				     <input type="hidden" name="deletedAttachmentIds" th:value="${deletedAttachmentIds}">
 				</div>
 				

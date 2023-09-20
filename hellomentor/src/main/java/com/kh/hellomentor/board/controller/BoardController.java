@@ -725,6 +725,8 @@ public class BoardController {
             RedirectAttributes redirectAttributes
 
     ) {
+    	log.info("upfiles {}", upfiles);
+    	
         Member loginUser = (Member) session.getAttribute("loginUser");
         int userNo = loginUser.getUserNo();
         // 이미지, 파일을 저장할 저장경로 얻어오기
@@ -949,17 +951,20 @@ public class BoardController {
 			HttpSession session,
 			Model model,
 			RedirectAttributes redirectAttributes,
-			@RequestParam("deletedAttachmentIds") List<Long> deleteList
+			@RequestParam("deletedAttachmentIds") List<String> deleteList
 			
 			) {
     	
     	log.info("deleteList {}", deleteList);
-    	
+    	log.info("upfiles {}", upfiles);
 		// 이미지, 파일을 저장할 저장경로 얻어오기
 		// /resources/images/board/{boardCode}/
+    	
     	String webPath = "/img/attachment/free/";
         String currentDirectory = System.getProperty("user.dir");
         String FilesLocation = currentDirectory + "/src/main/resources/static"+webPath;
+        
+  
 
 		// Board 객체에 데이터 추가(boardCode , boardWriter , boardNo)
 		Member loginUser = (Member) session.getAttribute("loginUser");
