@@ -71,7 +71,7 @@ public class MemberController {
       	 }else {
       		 session.setAttribute("loginUser", loginUser);
       		 model.addAttribute("message", loginUser.getUserName()+"님 반갑습니다");
-               url = "common/main";
+               url = "redirect:/main";
       	 }
       	 }else{
       		 model.addAttribute("message", "아이디 또는 비밀번호를 확인해주세요.");
