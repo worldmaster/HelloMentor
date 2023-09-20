@@ -3,6 +3,7 @@ package com.kh.hellomentor.matching.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.hellomentor.matching.model.vo.Matching;
 import com.kh.hellomentor.member.model.vo.Follow;
 import com.kh.hellomentor.member.model.vo.Member;
 import com.kh.hellomentor.member.model.vo.Profile;
@@ -94,6 +95,54 @@ public class MatchingServiceImpl implements MatchingService{
     public int unfollow(Follow follow) {
         return matchingDao.unfollow(follow);
     }
+
+
+    @Override
+    public List<Member> getMentorList(int userNo) {
+        return matchingDao.getMentorList(userNo);
+    }
+
+    @Override
+    public List<Profile> getMentorProfileList(int userNo) {
+        return matchingDao.getMentorProfileList(userNo);
+    }
+
+    @Override
+    public List<Mentoring> getMentoringList(int userNo) {
+        return matchingDao.getMentoringList(userNo);
+    }
+
+    @Override
+    public List<Matching> getMatchingList(int userNo) {
+        return matchingDao.getMatchingList(userNo);
+    }
+
+    @Override
+    public List<Member> getMentorList2(int userNo) {
+        return matchingDao.getMentorList2(userNo);
+    }
+
+    @Override
+    public List<Profile> getMentorProfileList2(int userNo) {return matchingDao.getMentorProfileList2(userNo); }
+
+
+    @Override
+    public List<Mentoring> getMentoringList2(int userNo) {
+        return matchingDao.getMentoringList2(userNo);
+    }
+
+    @Override
+    public List<Matching> getMatchingList2(int userNo) {
+        return matchingDao.getMatchingList2(userNo);
+    }
+
+    @Override
+    public void mentoring_cancel(int userNo, int regisNo) {
+        matchingDao.mentoring_cancel(userNo, regisNo);
+    }
+
+    @Override
+    public void mentoring_accept(int userNo, int regisNo, int loginuserNo) { matchingDao.mentoring_accept(userNo, regisNo, loginuserNo); }
 
 
 }

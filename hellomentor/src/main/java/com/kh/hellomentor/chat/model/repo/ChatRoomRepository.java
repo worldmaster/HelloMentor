@@ -12,12 +12,6 @@ import java.util.*;
 @Repository
 public class ChatRoomRepository {
 
-    private Map<String, ChatRoomDTO> chatRoomDTOMap;
-
-    @PostConstruct
-    private void init() {
-        chatRoomDTOMap = new LinkedHashMap<>();
-    }
 
     @Autowired
     private ChatDao chatDao;
@@ -33,9 +27,10 @@ public class ChatRoomRepository {
         return chatDao.findMessageById(id);
     }
 
-    public ChatRoomDTO createChatRoomDTO(String name) {
-        ChatRoomDTO room = ChatRoomDTO.create(name);
-        chatRoomDTOMap.put(room.getRoomId(), room);
+    public ChatRoomDTO createStudyChatRoomDTO(int postNo) {
+        String name = chatDao.findStudyTitle(postNo);
+        ChatRoomDTO room = ChatRoomDTO.createStudyRoom(name, postNo);
+        chatDao.createStudyRoom(room);
 
         return room;
     }
