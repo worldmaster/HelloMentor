@@ -50,7 +50,7 @@
     <div class="my_editinfo_box_2">
         <div class="my_editinfo_inputbox">
             <span>가입 상태</span>
-            <input type="text" id="edit_info_status" th:value="${loginUser.memberType}" disabled>
+            <input type="text" id="edit_info_status" th:value="${loginUser.memberType == 'E' ? '멘티' : '멘토'}" disabled>
         </div>
     </div>
 
@@ -85,32 +85,6 @@
 
 </div>
 
-<script>
-    document.getElementById('withdrawyesButton').addEventListener('click', function () {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'userExit', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    alert("탈퇴 성공");
-                    window.location.href = '/hellomentor'
-
-                } else {
-                    alert("탈퇴 실패");
-                }
-            }
-        };
-
-        xhr.send();
-    });
-
-
-    document.getElementById('withdrawnoButton').addEventListener('click', function () {
-        document.getElementById('withdrawModal').style.display = 'none';
-    });
-</script>
-
 
 <script>
     document.getElementById('my_editinfo_editBtn').addEventListener('click', function () {
@@ -144,7 +118,9 @@
         if (profileImageChanged) {
             formData.append('file', file);
         }
-        console.log(formData);
+        else {
+            formData.append('file', new Blob(), 'notchanged');
+        }
 
 
         // 프로필 업데이트 요청

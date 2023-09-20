@@ -508,7 +508,7 @@ ul > li {
     margin-left: 3%;
 }
 
-.my_mentorapp_title{
+.my_mentorapp_title {
     margin-top: 0.5%;
     margin-left: 1%;
     font-size: 24px;
@@ -520,20 +520,21 @@ ul > li {
     margin-left: 1%;
 }
 
-.my_mentorapp_btnbox{
+.my_mentorapp_btnbox {
     text-align: right;
     /*margin-top: 3%;*/
     margin-right: 3%;
 }
 
-.my_mentorapp_btn{
+.my_mentorapp_btn {
     background-color: #DFF6ED;
     width: 100px;
     height: 30px;
     border-radius: 5px;
     cursor: pointer;
 }
-.my_mentorapp_btn:hover{
+
+.my_mentorapp_btn:hover {
     background-color: #48917A;
 }
 
@@ -570,12 +571,12 @@ ul > li {
     width: 33%;
 }
 
-.my_payment_content2 > div:nth-child(1), .my_payment_content2 > div:nth-child(2), .my_payment_content2 > div:nth-child(3), .my_payment_content2 > div:nth-child(4){
+.my_payment_content2 > div:nth-child(1), .my_payment_content2 > div:nth-child(2), .my_payment_content2 > div:nth-child(3), .my_payment_content2 > div:nth-child(4) {
     font-size: 24px;
     font-family: "bd";
 }
 
-#my_profileInput:hover , #profileImage:hover {
+#my_profileInput:hover, #profileImage:hover {
     cursor: pointer;
     color: #48917A;
 }
@@ -601,11 +602,11 @@ ul > li {
     pointer-events: none;
 }
 
- button#compile-button:hover {
-     background-color: #4CAF50;
-     color: white;
-     cursor: pointer;
- }
+button#compile-button:hover {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
 
 button#run-button:hover {
     background-color: #008CBA;
@@ -618,6 +619,60 @@ button#clear-button:hover {
     color: white;
     cursor: pointer;
 }
+
+.mypage_followbtnpush, .mypage_followbtnpush2 {
+    border: none;
+    box-shadow: 0px 5px 0px 0px #1E8185;
+    background: #5DC8CD;
+    width: 120px;
+    padding: 0;
+    margin: 0px 20px 10px 0;
+    font-weight: 600;
+    text-align: center;
+    line-height: 30px;
+    color: #FFF;
+    border-radius: 5px;
+    transition: all 0.2s;
+}
+
+.mypage_followbtnpush:active, .mypage_followbtnpush2:active {
+    border: none;
+}
+
+.mypage_followbtnpush:hover {
+    border: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    box-shadow: 0px 0px 0px 0px #1E8185;
+}
+
+.mypage_followbtnpush2:hover {
+    border: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    box-shadow: 0px 0px 0px 0px #1E8185;
+}
+
+.my_btn_container1 {
+    justify-content: left;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-left: 2%;
+}
+
+.my_btn_container2 {
+    text-align: center;
+    height: 75px;
+    padding-top: 1em;
+    width: 15%;
+}
+
+
+
+
+
+
 
 
 

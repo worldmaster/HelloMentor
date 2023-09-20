@@ -83,9 +83,9 @@
     <select id="getFollowList" parameterType="int" resultMap="memberResultSet">
         SELECT M.*
         FROM FOLLOW AS F
-                 INNER JOIN MEMBER AS M ON F.FROM_USER = M.USER_NO
-        WHERE F.TO_USER = #{userNo}
-        ORDER BY M.USER_ID ASC
+                 JOIN MEMBER AS M ON F.TO_USER = M.USER_NO
+        WHERE F.FROM_USER = #{userNo}
+        ORDER BY M.USER_ID ASC;
     </select>
 
     <select id="getFollowingProfileList" parameterType="int" resultMap="profileResultSet">
@@ -94,15 +94,15 @@
                  INNER JOIN FOLLOW AS F ON M.USER_NO = F.TO_USER
                  LEFT JOIN PROFILE_IMG AS P ON M.USER_NO = P.USER_NO
         WHERE F.FROM_USER = #{userNo}
-        ORDER BY M.USER_ID ASC
+        ORDER BY M.USER_NO ASC
     </select>
 
     <select id="getFollowerList" parameterType="int" resultMap="memberResultSet">
         SELECT M.*
         FROM FOLLOW AS F
-                 INNER JOIN MEMBER AS M ON F.TO_USER = M.USER_NO
-        WHERE F.FROM_USER = #{userNo}
-        ORDER BY M.USER_ID ASC
+                 JOIN MEMBER AS M ON F.FROM_USER = M.USER_NO
+        WHERE F.TO_USER = #{userNo}
+        ORDER BY M.USER_NO ASC;
     </select>
 
     <select id="getFollowerProfileList" parameterType="int" resultMap="profileResultSet">
@@ -111,7 +111,7 @@
                  INNER JOIN FOLLOW AS F ON M.USER_NO = F.FROM_USER
                  LEFT JOIN PROFILE_IMG AS P ON M.USER_NO = P.USER_NO
         WHERE F.TO_USER = #{userNo}
-        ORDER BY M.USER_ID ASC
+        ORDER BY M.USER_NO ASC;
     </select>
 
     <update id="updateProfile" parameterType="member">
