@@ -362,7 +362,8 @@ VALUES ( #{userNo}, "신고접수가 완료됐습니다." , #{postNo})
 
 <update id="QUpdate">
     UPDATE INQUIRY_BOARD
-    SET IQ_ANSWER = #{pContent}
+    SET IQ_ANSWER = #{pContent},
+    	IS_PROCESSED = TRUE
     WHERE POST_NO = #{postNo}
 </update>
  

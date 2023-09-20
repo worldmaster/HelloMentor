@@ -290,11 +290,9 @@ if(result> 0) {
 			if(result > 0) {
 				// Attachment객체 하나하나 업데이트
 				for( Attachment attach      :       attachList) {
-					System.out.println(attach);
-					result = boardDao.updateAttachment(attach);
-					if(result == 0) {
+					
 						result = boardDao.insertAttachment(attach);
-					}
+					
 					
 				}
 			}

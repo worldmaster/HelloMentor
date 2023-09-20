@@ -952,7 +952,7 @@ public class BoardController {
 			HttpSession session,
 			Model model,
 			RedirectAttributes redirectAttributes,
-			@RequestParam("deletedAttachmentIds") List<String> deleteList
+			@RequestParam(value = "deletedAttachmentIds", required = false) List<String> deleteList
 			
 			) {
     	

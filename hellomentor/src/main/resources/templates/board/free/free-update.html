@@ -22,7 +22,7 @@
       <div class="section">
         <div class="title">자유게시판</div>
 
-         <form th:action="@{/freeupdate}" method="post"  enctype="multipart/form-data"> 
+         <form id="freeForm" th:action="@{/freeupdate}" method="post"  enctype="multipart/form-data"> 
           <!-- 회원가입form안에.txt -->
              <input type="hidden" name="postNo" th:value="${postNo}" />
           <table id="free-table">
@@ -63,8 +63,8 @@
 		          <a th:href="@{${attachList.filePath} + ${attachList.changeName}}" th:download="${attachList.originName}"> 
 				     <span th:text="${attachList.originName}"  id='uploaded-file'></span>
 				     </a>
-				     <a href='#this' name='file-delete' id='uploaded-delete' class="delete-image"  data-attachmentid="${attachList.attachmentId}" onclick="deleteAttachment(this.getAttribute('data-attachmentid'))">삭제</a>
-				     <input type="hidden" name="deletedAttachmentIds" th:value="${deletedAttachmentIds}">
+				     <a href='#this' name='file-delete' id='uploaded-delete' class="delete-image" th:attr="data-attachmentid=${attachList.attachmentId}"  onclick="deleteAttachment(this)">삭제</a>
+				     <!-- <input type="hidden" name="deletedAttachmentIds" th:value="${deletedAttachmentIds}"> -->
 				</div>
 				
               </td>
@@ -84,19 +84,27 @@
     
   
     <script>
-    var deletedAttachmentIds = [];
+    //var deletedAttachmentIds = [];
 
-    function deleteAttachment(attachmentId) {
+    function deleteAttachment(ele) {
         // 이미 삭제된 이미지인지 확인하고 배열에 추가
-        if (!deletedAttachmentIds.includes(attachmentId)) {
+        /* if (!deletedAttachmentIds.includes(attachmentId)) {
             deletedAttachmentIds.push(attachmentId);
-        }
-
+        } */
+        const input = document.createElement("input");
+        input.setAttribute('type','hidden');
+        input.setAttribute('name','deletedAttachmentIds');
+        input.value = ele.dataset.attachmentid;
+        
+        const form = document.querySelector("#freeForm");
+        form.append(input);
+        
+        /* <input type="hidden" name="deletedAttachmentIds" th:value="${deletedAttachmentIds}">
         // hidden input 엘리먼트를 사용하여 deletedAttachmentIds 값을 폼 데이터로 업데이트
         var hiddenInput = document.querySelector('input[name="deletedAttachmentIds"]');
         if (hiddenInput) {
             hiddenInput.value = JSON.stringify(deletedAttachmentIds);
-        }
+        } */
     }
 
 </script>
