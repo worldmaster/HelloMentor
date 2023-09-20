@@ -74,7 +74,7 @@
         <!--신고-->
 
         <div id="move-to-report" th:if="${selectedPost.userNo != loginUser.userId}">
-        <a  th:onclick="|window.location.href='/hellomentor/common/report'|">신고하기</a>
+            <a th:attr="onclick='movePage(\'' + ${selectedPost.postNo} + '\');'" class="report-this-board">신고하기</a>
         </div>
 
         <!--하단 버튼-->
@@ -215,6 +215,13 @@
     </script>
     
     <div th:insert="common/footer :: footer"></div>
+
+  <script>
+      function movePage(no) {
+          var url = "/hellomentor/report/" + no;
+          window.location.href = url;
+      }
+  </script>
     
     
   </body>

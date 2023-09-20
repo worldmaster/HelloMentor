@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.hellomentor.board.model.dao.BoardDao;
 import com.kh.hellomentor.board.model.vo.Answer;
-import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.board.model.vo.Board;
 import com.kh.hellomentor.board.model.vo.Free;
 import com.kh.hellomentor.board.model.vo.Inquiry;
@@ -534,6 +533,15 @@ public class BoardServiceImpl implements BoardService {
         return boardDao.insertReport(reportInfo);
     }
 
+    @Override
+    public List<Map<String, Object>> topFiveBoard(String boardType) {
+        return boardDao.topFiveBoard(boardType);
+    }
+
+    @Override
+    public List<Map<String, Object>> newMentoring() {
+        return boardDao.newMentoring();
+    }
 
 }
 

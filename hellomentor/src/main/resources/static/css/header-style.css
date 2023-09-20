@@ -68,8 +68,15 @@ header {
     align-items: center;
 }
 
-.menubar {
+.menubar1 {
     width: 448px;
+    height: 24px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.menubar2 {
+    width: 400px;
     height: 24px;
     display: flex;
     justify-content: space-between;
@@ -89,7 +96,7 @@ header {
 
 
 .profile-bar {
-    width: 207px;
+    width: 150px;
     height: 64px;
     display: flex;
     justify-content: space-between;
@@ -211,6 +218,10 @@ header {
 
 .logout-btn {
     background-color: #48917A;
+}
+
+.charge-btn12, .exchange-btn12 {
+    background-color: white;
 }
 
 footer {
