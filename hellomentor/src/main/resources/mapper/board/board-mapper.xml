@@ -596,6 +596,7 @@
 	<select id="selectAttachment" parameterType="int"
 		resultMap="attachmentResultMap">
 		SELECT
+		ATTACHMENT_ID,
 		FILE_ORIGIN_NAME,
 		FILE_CHANGE_NAME,
 		FILE_PATH
@@ -680,26 +681,25 @@
 		WHERE POST_NO =
 		#{postNo}
 	</update>
-	<update id="updateAttachment" parameterType="attachment">
-		UPDATE ATTACHMENT
-		SET
-		FILE_ORIGIN_NAME = #{originName},
-		FILE_CHANGE_NAME = #{changeName},
-		FILE_PATH = #{filePath}
-		WHERE POST_NO = #{postNo}
-	</update>
+
 	<insert id="insertAttachment" parameterType="attachment">
 		INSERT INTO ATTACHMENT(POST_NO, FILE_ORIGIN_NAME, FILE_CHANGE_NAME,
 		FILE_PATH)
 		VALUES
-		( #{attch.postNo},
-		#{attch.originName},
-		#{attch.changeName},
-		#{attch.filePath}
+		( #{postNo},
+		#{originName},
+		#{changeName},
+		#{filePath}
 		)
 
 	</insert>
-
+		<delete id="deleteAttachment" parameterType="java.util.List">
+		    DELETE FROM ATTACHMENT
+		    WHERE ATTACHMENT_ID IN
+		    <foreach collection="list" item="delete" open="(" separator="," close=")">
+		        #{delete}
+		    </foreach>
+		</delete>
 	<!-- 6. 지식인 글 조회 (메인) -->
 	<select id="selectKnowledgeCount" resultType="int">
 		SELECT COUNT(*)

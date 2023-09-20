@@ -89,23 +89,40 @@
 
 /* 첨부파일 */
 
-#inquiry-file {
 
-    color: rgb(95, 95, 95);
+#file-list{
+	margin-bottom: 15px;
+	transform:translate(10px,0px);
+}
+#file-plus {
+    font-size: 17px;
+    color: #48917A;
+    text-decoration: none;
+    margin-bottom: 10px;
+   
+}
+#free-file {
+     color: rgb(95, 95, 95);
     font-size: 12px;
-    transform: translate(5px, 0px);
-
+     transform:translate(-5px,0px);
+}
+#file-delete {
+    font-size: 17px;
+    color: #48917A;
+    text-decoration: none;
 }
 
 input[type=file]::file-selector-button {
             border: 0px solid black;
-            font-size: 18px;
-            color: #48917A;
+            font-size: 15px;
+     
             background-color: #ffffff;
             cursor: pointer;
             font-weight: 1000;
             
         }
+
+
 
 
 

@@ -88,7 +88,7 @@ public interface BoardService {
     public int increaseUpvotes(int postNo);
     
     //5-8. 자유게시판 수정
-    public int updateFree(Board b, List<MultipartFile> list, String wholePath, String webPath) throws Exception;
+    public int updateFree(Board b, List<String> deleteList, List<MultipartFile> list, String FilesLocation, String webPath) throws Exception;
     
     //6. 지식인 조회 (메인)
     public int selectKnowledgeCount();

@@ -255,9 +255,7 @@ public class BoardDao {
     public int insertFree2(int postNo) {
     	return session.insert("boardMapper.insertFree2" , postNo);
     }
-    public int insertAttachment(Attachment attach) {
-		return session.insert("boardMapper.insertAttachment", attach);
-	}
+   
     public int insertFreeAttachment(List<Attachment> list) {
         return session.insert("boardMapper.insertFreeAttachment", list);
     }
@@ -278,13 +276,18 @@ public class BoardDao {
     	return session.update("boardMapper.increaseUpvotes",postNo);
     }
     // 5-8. 자유게시판 수정
+    public int insertAttachment(Attachment attach) {
+		return session.insert("boardMapper.insertAttachment", attach);
+	}
     public int updateFree(Board b) {
 		return session.update("boardMapper.updateFree" , b);
 	}
     public int updateAttachment(Attachment at) {
 		return session.update("boardMapper.updateAttachment", at);
 	}
-
+    public int deleteAttachment(List<String> deleteList) {
+		return session.delete("boardMapper.deleteAttachment" , deleteList);
+	}
     //6. 지식인 조회 (메인)
     public int selectKnowledgeCount() {
     	return session.selectOne("boardMapper.selectKnowledgeCount");

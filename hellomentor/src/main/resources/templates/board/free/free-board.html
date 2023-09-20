@@ -102,10 +102,11 @@
         <!-- 핫 게시글 끝 -->
 
         <!-- 일반 게시글 -->
+        
         <table align="center" id="free-area">
           <tbody>
         	<tr th:if="${#lists.isEmpty(combinedList)}">
-				<td colspan="4">글이 존재하지 않습니다</td>
+				<td width="840">글이 존재하지 않습니다</td>
 			</tr>
 			<tr th:each="item : ${combinedList}"  class="movingDetailFree">
               <td width="150" th:text="${item[0].userNo}">사용자 ID</td>
