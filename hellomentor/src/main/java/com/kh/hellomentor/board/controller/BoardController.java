@@ -1828,8 +1828,21 @@ public class BoardController {
         log.info("result {}", result);
 
         if (result > 0) {
-            redirectAttributes.addFlashAttribute("message", "스터디 신청이 완료되었습니다");
-            return "redirect:/study";
+
+            //신청자 인원수 조회
+            int studyDetailApplicant = boardService.studyDetailApplicant(postNo);
+
+
+            //스터디 작성자가 설정한 인원수 가져오기 2023-09-08
+            int boardstudypeple = boardService.selectStudypeople(postNo);
+
+            if(studyDetailApplicant == boardstudypeple) {
+                log.info("postNo : " + postNo);
+                return "redirect:/chat/studyRoomCreate/"+ postNo;
+            } else {
+                redirectAttributes.addFlashAttribute("message", "스터디 신청이 완료되었습니다");
+                return "redirect:/study";
+            }
         } else {
             redirectAttributes.addFlashAttribute("message", "스터디 신청을 실패했습니다.");
             return "common/main";

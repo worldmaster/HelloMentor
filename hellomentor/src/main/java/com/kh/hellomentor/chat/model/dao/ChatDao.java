@@ -6,7 +6,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ChatDao {
@@ -31,5 +33,24 @@ public class ChatDao {
 
     public void insertMessage(ChatMessageDTO message) {
         session.insert("chatMapper.insertMessage", message);
+    }
+
+    public String findStudyTitle(int postNo) {
+        return session.selectOne("chatMapper.findStudyTitle", postNo);
+    }
+
+    public void createStudyRoom(ChatRoomDTO room) {
+        session.insert("chatMapper.createStudyRoom", room);
+        int postNo = room.getRelatedNo();
+        List<Integer> applicants = session.selectList("chatMapper.findStudyApplicants", postNo);
+        Map<String, Object> data = new HashMap<>();
+        data.put("roomId", room.getRoomId());
+
+        for(int i = 0; i < applicants.size(); i++) {
+            int userNo = applicants.get(i);
+            data.put("userNo", userNo);
+            session.insert("chatMapper.insertChatMember", data);
+        }
+
     }
 }

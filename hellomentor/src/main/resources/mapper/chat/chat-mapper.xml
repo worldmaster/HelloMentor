@@ -48,4 +48,25 @@
         VALUES (#{roomId}, #{userNo}, #{message})
     </insert>
 
+    <select id="findStudyTitle" parameterType="int" resultType="string">
+        SELECT POST_TITLE
+        FROM BOARD
+        WHERE POST_NO = #{postNo}
+    </select>
+
+    <insert id="createStudyRoom" parameterType="chatRoomDTO">
+        INSERT INTO CHATROOM (CHATROOM_ID, CHATROOM_NAME, CHATROOM_TYPE, RELATED_NO)
+        VALUES (#{roomId}, #{name}, #{chatRoomType}, #{relatedNo})
+    </insert>
+
+    <select id="findStudyApplicants" parameterType="int" resultType="int">
+        SELECT USER_NO
+        FROM STUDY_APPLICANT
+        WHERE POST_NO = #{postNo}
+    </select>
+
+    <insert id="insertChatMember" parameterType="hashmap">
+        INSERT INTO CHATROOM_PERSON
+        VALUES (#{roomId}, #{userNo})
+    </insert>
 </mapper>
