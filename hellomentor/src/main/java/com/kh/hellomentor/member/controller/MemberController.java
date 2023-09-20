@@ -131,6 +131,7 @@ public class MemberController {
         List<Profile> profileList = mService.getFollowingProfileList(userNo);
 
 
+
         List<Map<String, Object>> combinedList = new ArrayList<>();
         for (Member member : followingList) {
             Map<String, Object> combinedInfo = new HashMap<>();
@@ -144,19 +145,18 @@ public class MemberController {
                 }
             }
 
-            if (profile != null) {
+            if (profile.getChangeName() != null) {
                 combinedInfo.put("profile", profile);
             } else {
-                Profile defaultProfile = new Profile();
-                defaultProfile.setFilePath("/img/");
-                defaultProfile.setChangeName("default-profile.jpg");
-                combinedInfo.put("profile", defaultProfile);
+                profile.setFilePath("/img/");
+                profile.setChangeName("default-profile.jpg");
+                combinedInfo.put("profile", profile);
             }
 
             combinedList.add(combinedInfo);
         }
-
         model.addAttribute("combinedList", combinedList);
+
         return "mypage/home_following_list";
     }
 
@@ -182,13 +182,12 @@ public class MemberController {
                 }
             }
 
-            if (profile != null) {
+            if (profile.getChangeName() != null) {
                 combinedInfo.put("profile", profile);
             } else {
-                Profile defaultProfile = new Profile();
-                defaultProfile.setFilePath("/img/");
-                defaultProfile.setChangeName("default-profile.jpg");
-                combinedInfo.put("profile", defaultProfile);
+                profile.setFilePath("/img/");
+                profile.setChangeName("default-profile.jpg");
+                combinedInfo.put("profile", profile);
             }
 
             combinedList.add(combinedInfo);
