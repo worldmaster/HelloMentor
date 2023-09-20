@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 
-import com.kh.hellomentor.board.model.vo.Attachment;
+import com.kh.hellomentor.board.model.vo.*;
 import com.kh.hellomentor.matching.model.vo.StudyApplicant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +18,7 @@ import com.kh.hellomentor.board.model.vo.Free;
 import com.kh.hellomentor.board.model.vo.Inquiry;
 import com.kh.hellomentor.board.model.vo.Knowledge;
 import com.kh.hellomentor.board.model.vo.Reply;
+import com.kh.hellomentor.board.model.vo.Attachment;
 import com.kh.hellomentor.common.Utils;
 
 @Service
@@ -483,10 +484,33 @@ public class BoardServiceImpl implements BoardService {
 
     //----------------------------------정승훈----------------------------------
     @Override
-    public List<Board> selectStudyList(int currentPage, Map<String, Object> paramMap) {
-        return boardDao.selectStudyList(currentPage, paramMap);
+    //페이징처리
+    public List<Board> selectStudyList(String searchOption, String keyword, int page, int pageSize,Map<String, Object> paramMap) {
+        return boardDao.selectStudyList(searchOption,keyword,page,pageSize,paramMap);
     }
 
+    @Override
+    public long selectListCount() {
+        return boardDao.selectListCount();
+    }
+
+    @Override
+    public StudyApplicant duStudy(Map<String, Integer> params) {
+        return boardDao.duStudy(params);
+    }
+
+
+    @Override
+    public List<Board> getSideStudyList(int page, int pageSize) {
+        return boardDao.getSideStudyList(page,pageSize);
+    }
+
+    @Override
+    public long selectStudyListCount(String searchOption, String keyword) {
+        return boardDao.selectStudyListCount(searchOption, keyword);
+    }
+
+    //--------------------------------------------------------------
 
     @Override
     public List<StudyApplicant> selectPepleList(Map<String, Object> paramMap) {
@@ -503,10 +527,7 @@ public class BoardServiceImpl implements BoardService {
 
 
     //스터디 게시글 등록
-    @Override
-    public int insertStudy(Board b) {
-        return boardDao.insertStudy(b);
-    }
+
 
     @Override
     public Board selectDetailStudy(int postNo) {
@@ -521,6 +542,47 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<Reply> selectReplyList(int postNo) {
         return boardDao.selectReplyList(postNo);
+    }
+
+
+    @Override
+    public int insertBoardAndStudy(Map<String, Object> boardData) {
+        return boardDao.insertBoardAndStudy(boardData);
+    }
+
+
+    //-------------------------2023-09-09 정승훈 작업---------------------------
+    @Override
+    public int insertReply(Reply r) {
+        return boardDao.insertReply(r);
+    }
+
+    @Override
+    public List<Study> selectStudyList(Study study) {
+        return boardDao.selectStudyList(study);
+    }
+
+    @Override
+    public int selectStudypeople(int postNo) {
+        return boardDao.selectStudypeople(postNo);
+    }
+
+    //------------------2023-09-10 정승훈 작업-----------------
+
+    //댓글삭제
+    @Override
+    public int deleteStudyReply(Reply r) {
+        return boardDao.deleteStudyReply(r);
+    }
+
+    @Override
+    public int insertStudyApplicant(StudyApplicant sa) {
+        return boardDao.insertStudyApplicant(sa);
+    }
+
+    @Override
+    public int studyDelete(int postNo) {
+        return boardDao.studyDelete(postNo);
     }
 
     @Override

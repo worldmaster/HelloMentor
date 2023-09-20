@@ -7,6 +7,7 @@ import com.kh.hellomentor.member.model.vo.Profile;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface MemberService {
 
@@ -46,4 +47,14 @@ public interface MemberService {
     Calendar loadMemo(Calendar memoRequest);
 
     boolean performExit(int userNo);
+
+    //정승훈 토큰충전
+    int insertUpdateToken(Map<String, Object> tokenData);
+
+    int exchangeToken(Member m);
+
+    int getUpdateToken(int userNo);
+
+    int paymentResult(int userNo);
+
 }
