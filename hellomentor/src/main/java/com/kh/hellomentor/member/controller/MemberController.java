@@ -202,11 +202,6 @@ public class MemberController {
 
     public String profileEdit(Model model, HttpSession session) {
         Member loginUser = (Member) session.getAttribute("loginUser");
-        if ("E".equals(loginUser.getMemberType())) {
-            loginUser.setMemberType("멘티");
-        } else if ("O".equals(loginUser.getMemberType())) {
-            loginUser.setMemberType("멘토");
-        }
         model.addAttribute("loginUser", loginUser);
         return "mypage/profile_edit_info";
     }
@@ -236,10 +231,8 @@ public class MemberController {
         File buildDestFile = new File(buildUploadPath, fileName);
 
         file.transferTo(destFile);
-        logger.info("Saved file path: {}", destFile.getAbsolutePath());
 
         Files.copy(destFile.toPath(), buildDestFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        logger.info("Saved file path in build directory: {}", buildDestFile.getAbsolutePath());
 
         return fileName;
     }
@@ -258,37 +251,36 @@ public class MemberController {
         }
 
         try {
-            String fileName = uploadProfileImg(file, loginUser.getUserNo());
+            if (!"notchanged".equals(file.getOriginalFilename())) {
+                String fileName = uploadProfileImg(file, loginUser.getUserNo());
 
-            Profile profile = new Profile();
-            profile.setUserNo(loginUser.getUserNo());
-            profile.setOriginName(file.getOriginalFilename());
-            profile.setChangeName(fileName);
-            profile.setFilePath("img/profile/");
-            profile.setFileSize(file.getSize());
+                Profile profile = new Profile();
+                profile.setUserNo(loginUser.getUserNo());
+                profile.setOriginName(file.getOriginalFilename());
+                profile.setChangeName(fileName);
+                profile.setFilePath("img/profile/");
+                profile.setFileSize(file.getSize());
 
-            if (newPwd.isEmpty()) {
-                loginUser.setUserPwd(originPwd);
-            } else {
+                if (mService.isProfileImgExists(loginUser.getUserNo())) {
+                    mService.updateProfileImg(profile);
+                } else {
+                    mService.insertProfileImg(profile);
+                }
+            }
+
+            if (!newPwd.isEmpty()) {
                 loginUser.setUserPwd(newPwd);
             }
 
-            if (mService.isProfileImgExists(loginUser.getUserNo())) {
-                mService.updateProfileImg(profile);
-            } else {
-                mService.insertProfileImg(profile);
-            }
-
-
             loginUser.setIntroduction(intro);
             mService.updateMember(loginUser);
-
             return ResponseEntity.ok("프로필이 업데이트되었습니다.");
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("프로필 업데이트 중 오류가 발생했습니다. 다시 시도해주세요");
         }
     }
+
 
     @RequestMapping("/payment_payment_history")
 

@@ -9,27 +9,24 @@
 
     <script>
         $(document).ready(function () {
-            loadPage1('home_following_list');
+            $('.my_following').html('');
+            loadInitialContent();
         });
 
-        function loadPage1(pageName) {
-            $('.my_following').html('');
+        function loadInitialContent() {
+            loadPage1('home_following_list');
+        }
 
+        function loadPage1(pageName) {
             $.get(pageName, function (data) {
                 $('.my_following').html(data);
-
-                // 페이지 로드 후 버튼에 이벤트 리스너 추가
                 attachButtonClickListeners();
             });
         }
 
-        // 버튼에 이벤트 리스너 추가하는 함수
         function attachButtonClickListeners() {
             $('.mypage_followbtn').click(function () {
-                // 모든 버튼에서 클래스 제거
                 $('.mypage_followbtn').removeClass('active');
-
-                // 클릭한 버튼에 클래스 추가
                 $(this).addClass('active');
             });
         }
@@ -38,9 +35,13 @@
 <body>
 <div class="my_right_title">팔로잉/팔로워 목록</div>
 <br>
-<div class="my_btn_container">
-<button class="mypage_followbtn1 mypage_followbtnpush" onclick="loadPage1('home_following_list')">팔로잉</button>
-<button class="mypage_followbtn1 mypage_followbtnpush" onclick="loadPage1('home_follower_list')">팔로워</button>
+<div class="my_btn_container1">
+    <div class="my_btn_container2">
+        <button class="mypage_followbtnpush" onclick="loadPage1('home_following_list')">팔로잉</button>
+    </div>
+    <div class="my_btn_container2">
+        <button class="mypage_followbtnpush2" onclick="loadPage1('home_follower_list')">팔로워</button>
+    </div>
 </div>
 <div class="my_following"></div>
 </body>
