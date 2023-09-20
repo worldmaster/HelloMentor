@@ -366,7 +366,7 @@ VALUES ( #{userNo}, "신고접수가 완료됐습니다." , #{postNo})
     WHERE POST_NO = #{postNo}
 </update>
  
- <select id="getprofile" resultType="profile">
+ <select id="getprofile" resultMap="profileResultSet">
 	    SELECT *
 	    FROM PROFILE_IMG
  	    WHERE USER_NO = #{userNo}

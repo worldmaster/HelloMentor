@@ -132,7 +132,9 @@ public class AdminController {
 		   model.addAttribute("boardK", boardK);
 		   model.addAttribute("boardS", boardS);
 		   model.addAttribute("profile", profileList);
-			
+           
+		   System.out.println(profileList);
+		    
           //예를 들어 model.addAttribute("프로필사진", 프로필사진); -> userNo값은 넘어와있으니까 프로필사진만 이런식으로 꺼내서쓰기
           return "admin/admin-member-detail"; // 이동할 뷰 이름
       }
