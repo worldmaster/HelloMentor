@@ -112,17 +112,21 @@
     padding: 10px;
 }
 
- .image-container {
-    max-width: 400px; /* 원하는 최대 너비(px) 설정 */
-    max-height: 400px; /* 원하는 최대 높이(px) 설정 */
-    text-align: center; /* 이미지 중앙 정렬을 위한 설정 */
-  }
+.inquiryAttach{
+	transform:translate(380px,0px)
+}
+#attachtext{
+	font-size: 17px;
+	text-align:right;
+}
+.file-info a{
+	text-decoration: none;
+	
+}
+.file-info{
 
-  .image-container img {
-    max-width: 100%;
-    max-height: 100%;
-  }
-
+	text-align:right;
+}
 
 
 /*목록 버튼*/

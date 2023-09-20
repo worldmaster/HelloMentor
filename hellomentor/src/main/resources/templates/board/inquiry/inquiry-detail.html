@@ -62,16 +62,20 @@
           <div class="question-box">
             <div name="question" id="question" >
             <span th:text="${selectedPost.postContent}">내용</span>
-
-		      <div class="image-container" th:each="attach: ${attachList}">
-		        <a th:href="@{${attach.filePath} + ${attach.changeName}}"
-		           th:download="${attach.originName}">
-		          <img th:src="@{${attach.filePath} + ${attach.changeName}}">
-		        </a>
-		      </div>
             </div>
           </div>
+          <br>   
         </div>
+         <div class="inquiryAttach" th:if="${#lists.size(attachList) > 0}" >
+			            <div id="attachtext">첨부파일</div>
+			    
+	        <div th:each="file : ${attachList}">
+	            <div class="file-info">
+	                <a th:href="@{${file.filePath} + ${file.changeName}}" th:download="${file.originName}"> 
+         			  <span th:text="${file.originName}"></span></a>
+	            </div>
+	        </div>
+		</div>
 
         <div class="line line2"></div>
 

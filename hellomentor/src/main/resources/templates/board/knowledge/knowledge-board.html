@@ -50,11 +50,11 @@
 				<!-- Q&A 와 best 버튼 클릭시 비동기로 데이터 전송 받아서 table에 넣어주기 -->
 				<button id="filtering-qna" onclick="window.location.href='/hellomentor/knowledgelist'">Q&A</button>
 				|
-				<button id="filtering-best"  onclick="filterKnowledgeBest()">베스트</button>
+				<button id="filtering-best"  onclick="filterKnowledgeAccepted()">베스트</button>
 			
 				<button id="filtering-all" onclick="window.location.href='/hellomentor/knowledgelist'">전체</button>
 				|
-				<button id="filtering-notdone" onclick="filterKnowledgeAccepted()">미답변만 보기</button>
+				<button id="filtering-notdone" onclick="filterKnowledgeBest()">미답변만 보기</button>
 				
 				<input type="hidden" id="best" name="best" th:value="1" />
 				<input type="hidden" id="accepted" name="accepted" th:value="1" />
@@ -85,6 +85,9 @@
 			<!-- 일반 게시글 -->
 			<table align="center" id="knowledge-area">
 				<tbody>
+				<tr th:if="${#lists.isEmpty(combinedList)}">
+						<td width="840">글이 존재하지 않습니다</td>
+					</tr>
 					<tr th:each="item : ${combinedList}"  class="movingDetailKnowledge">
 						<td width="100" th:text="'#' + ${item[1].categoryId}">카테고리</td>
 						<td width="540" align="left">
@@ -151,46 +154,7 @@
 		</div>
 	</div>
 
-	<script>
-		$(document).ready(
-				function() {
-					$("#search-btn").mouseenter(
-							function() {
-								$("#search-btn>svg").addClass(
-										"animate__animated animate__swing");
-							});
-
-					$("#search-btn").mouseleave(
-							function() {
-								$("#search-btn>svg").removeClass(
-										"animate__animated animate__swing");
-							});
-				});
-
-		$(document).ready(
-				function() {
-					$("#filtering-qna").addClass("mainColor").removeClass(
-							"blackColor");
-					$("#filtering-best").addClass("blackColor").removeClass(
-							"mainColor");
-
-					$("#filtering-best").click(
-							function() {
-								$(this).addClass("mainColor").removeClass(
-										"blackColor");
-								$("#filtering-qna").addClass("blackColor")
-										.removeClass("mainColor");
-							});
-
-					$("#filtering-qna").click(
-							function() {
-								$(this).addClass("mainColor").removeClass(
-										"blackColor");
-								$("#filtering-best").addClass("blackColor")
-										.removeClass("mainColor");
-							});
-				});
-	</script>
+	
 
 	<div th:insert="common/footer :: footer"></div>
  <script th:inline="javascript">

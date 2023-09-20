@@ -596,6 +596,7 @@
 	<select id="selectAttachment" parameterType="int"
 		resultMap="attachmentResultMap">
 		SELECT
+		ATTACHMENT_ID,
 		FILE_ORIGIN_NAME,
 		FILE_CHANGE_NAME,
 		FILE_PATH
@@ -699,7 +700,13 @@
 		)
 
 	</insert>
-
+		<delete id="deleteAttachments" parameterType="java.util.List">
+		    DELETE FROM ATTACHMENT
+		    WHERE ATTACHMENT_ID IN
+		    <foreach collection="list" item="deleteList" open="(" separator="," close=")">
+		        #{deleteList}
+		    </foreach>
+		</delete>
 	<!-- 6. 지식인 글 조회 (메인) -->
 	<select id="selectKnowledgeCount" resultType="int">
 		SELECT COUNT(*)

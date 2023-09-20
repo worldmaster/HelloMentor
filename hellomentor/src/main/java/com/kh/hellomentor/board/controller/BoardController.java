@@ -499,9 +499,13 @@ public class BoardController {
     @GetMapping("/inquirydetail")
     public String selectInquiryDetail(
             Model model,
+            HttpSession session,
             @RequestParam(name = "ino") int postNo
     ) {
        log.info("postNo {}", postNo);
+       
+       Member loginUser = (Member) session.getAttribute("loginUser");
+       model.addAttribute("loginUser", loginUser);
        
         Board selectedPost = boardService.selectInquiryDetail(postNo);
         model.addAttribute("selectedPost", selectedPost);
@@ -940,15 +944,22 @@ public class BoardController {
     @PostMapping("/freeupdate")
 	public String updateBoard(
 			Board board, 
+			Attachment attachment,
 			@RequestParam(value = "upfile", required = false) List<MultipartFile> upfiles,
 			HttpSession session,
 			Model model,
-			RedirectAttributes redirectAttributes
+			RedirectAttributes redirectAttributes,
+			@RequestParam("deletedAttachmentIds") List<Long> deleteList
+			
 			) {
+    	
+    	log.info("deleteList {}", deleteList);
+    	
 		// 이미지, 파일을 저장할 저장경로 얻어오기
 		// /resources/images/board/{boardCode}/
     	String webPath = "/img/attachment/free/";
-        String wholePath = "c:/hellomentor/hellomentor/src/main/resources/static"+webPath;
+        String currentDirectory = System.getProperty("user.dir");
+        String FilesLocation = currentDirectory + "/src/main/resources/static"+webPath;
 
 		// Board 객체에 데이터 추가(boardCode , boardWriter , boardNo)
 		Member loginUser = (Member) session.getAttribute("loginUser");
@@ -958,7 +969,7 @@ public class BoardController {
 		int result = 0;
 
 		try {
-			result = boardService.updateFree(board, upfiles, webPath, wholePath);
+			result = boardService.updateFree(board, deleteList, upfiles, webPath, FilesLocation);
 		} catch (Exception e) {
 			log.error("error = {}", e.getMessage());
 		}

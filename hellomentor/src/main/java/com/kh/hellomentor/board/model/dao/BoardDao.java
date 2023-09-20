@@ -289,7 +289,9 @@ public class BoardDao {
     public int updateAttachment(Attachment at) {
 		return session.update("boardMapper.updateAttachment", at);
 	}
-
+    public int deleteAttachment(List<Long> deleteList) {
+		return session.delete("boardMapper.deleteAttachment" , deleteList);
+	}
     //6. 지식인 조회 (메인)
     public int selectKnowledgeCount() {
     	return session.selectOne("boardMapper.selectKnowledgeCount");
