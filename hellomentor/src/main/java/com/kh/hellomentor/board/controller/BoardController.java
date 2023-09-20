@@ -1744,5 +1744,16 @@ public class BoardController {
 
     }
 
+    @RequestMapping("/main")
+    public String main(Model model) {
+
+        model.addAttribute("fLists", boardService.topFiveBoard("F"));
+        model.addAttribute("kLists", boardService.topFiveBoard("K"));
+        model.addAttribute("sLists", boardService.topFiveBoard("S"));
+        model.addAttribute("mLists", boardService.newMentoring());
+
+        return "common/main";
+    }
+
 
 }
